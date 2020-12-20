@@ -1,0 +1,15 @@
+{
+  "name": "@othrworld/system-map",
+  "version": "0.0.1",
+  "private": true,
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "dependencies": {
+    "@othrworld/core": "*",
+    "@othrworld/systemgen": "*"
+  },
+  "scripts": {
+    "start": "tsc -w",
+    "build": "tsc"
+  }
+}
