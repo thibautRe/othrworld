@@ -1,5 +1,5 @@
 {
-  "name": "@othrwolrd/monorepo",
+  "name": "@othrworld/monorepo",
   "version": "0.0.1",
   "private": true,
   "workspaces": {
@@ -14,10 +14,12 @@
     "concurrently": "^5.3.0"
   },
   "scripts": {
-    "prestart": "yarn workspace @othrworld/namegen-core build && yarn workspace @othrworld/namegen-nobel build",
+    "prestart": "yarn workspace @othrworld/core build && yarn workspace @othrworld/gen-core build && yarn workspace @othrworld/namegen-nobel build && yarn workspace @othrworld/systemgen build",
     "start": "concurrently yarn:start:*",
     "start:shared": "concurrently yarn:start:shared:*",
-    "start:shared:namegen-core": "yarn workspace @othrworld/namegen-core start",
-    "start:shared:namegen-nobel": "yarn workspace @othrworld/namegen-nobel start"
+    "start:shared:core": "yarn workspace @othrworld/core start",
+    "start:shared:gen-core": "yarn workspace @othrworld/gen-core start",
+    "start:shared:namegen-nobel": "yarn workspace @othrworld/namegen-nobel start",
+    "start:shared:systemgen": "yarn workspace @othrworld/systemgen start"
   }
 }

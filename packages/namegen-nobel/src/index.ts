@@ -1,5 +1,5 @@
-import { createGenerator } from '@othrworld/namegen-core'
+import { createNameGenerator } from '@othrworld/gen-core'
 
 import { names } from './data'
 
-export const generate = createGenerator(names)
+export const generate = createNameGenerator(names)

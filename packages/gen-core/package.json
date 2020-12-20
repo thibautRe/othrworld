@@ -1,12 +1,9 @@
 {
-  "name": "@othrworld/namegen-nobel",
+  "name": "@othrworld/gen-core",
   "version": "0.0.1",
   "private": true,
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
-  "dependencies": {
-    "@othrworld/gen-core": "*"
-  },
   "scripts": {
     "start": "tsc -w",
     "build": "tsc"
