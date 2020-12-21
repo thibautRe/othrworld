@@ -1,5 +1,6 @@
-import { zoom, ZoomBehavior } from 'd3-zoom'
 import React from 'react'
+import { zoom } from 'd3-zoom'
+import { select } from 'd3-selection'
 
 interface CanvasViewTransform {
   x: number
@@ -9,13 +10,11 @@ interface CanvasViewTransform {
 const defaultTransform: CanvasViewTransform = { x: 0, y: 0, k: 1 }
 export interface CanvasViewContext {
   transform: CanvasViewTransform
-  zoomBehaviour: ZoomBehavior<SVGSVGElement, unknown>
+  applyZoomEvents: (elt: SVGSVGElement) => void
 }
 const CanvasViewContext = React.createContext<CanvasViewContext>({
   transform: defaultTransform,
-
-  // @ts-expect-error The zoomBehaviour is initialized in the Provider
-  zoomBehaviour: () => {
+  applyZoomEvents: () => {
     throw new Error('No CanvasViewProvider found')
   },
 })
@@ -29,8 +28,15 @@ export const CanvasViewProvider: React.FC = ({ children }) => {
     zoom<SVGSVGElement, unknown>().on('zoom', (e) => setTransform(e.transform))
   )
 
+  const applyZoomEvents = React.useCallback(
+    (elt: SVGSVGElement) => {
+      select(elt).call(zoomBehaviour)
+    },
+    [zoomBehaviour]
+  )
+
   return (
-    <CanvasViewContext.Provider value={{ transform, zoomBehaviour }}>
+    <CanvasViewContext.Provider value={{ transform, applyZoomEvents }}>
       {children}
     </CanvasViewContext.Provider>
   )

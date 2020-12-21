@@ -1,19 +1,12 @@
 import React from 'react'
-import { generateSystem } from '@othrworld/systemgen'
+
 import { SvgRoot } from './components/Canvas/SvgRoot'
+import { SystemComponent } from './components/Canvas/SystemComponent'
 
 export const App = () => {
-  const [system, setSystem] = React.useState(() => generateSystem())
   return (
     <SvgRoot>
-      {system.planets.map((planet) => (
-        <circle
-          key={planet.id}
-          r={planet.radius}
-          cx={planet.distance}
-          cy={40}
-        />
-      ))}
+      <SystemComponent />
     </SvgRoot>
   )
 }

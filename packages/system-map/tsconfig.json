@@ -1,26 +1,9 @@
 {
+  "extends": "../../tsconfig.base.json",
   "compilerOptions": {
-    "module": "commonjs",
-    "lib": ["ES2020"],
-    "esModuleInterop": true,
-    "allowSyntheticDefaultImports": true,
-    "target": "es6",
-    "moduleResolution": "node",
-    "sourceMap": true,
     "rootDir": "src",
     "outDir": "dist",
-    "tsBuildInfoFile": "dist/tsconfig.tsbuildinfo",
-    "pretty": true,
-    "incremental": true,
-    "declaration": true,
-
-    "forceConsistentCasingInFileNames": true,
-    "noErrorTruncation": true,
-    "noFallthroughCasesInSwitch": true,
-    "noImplicitReturns": true,
-    "noImplicitAny": true,
-    "noUnusedLocals": false,
-    "noUnusedParameters": false
+    "tsBuildInfoFile": "dist/tsconfig.tsbuildinfo"
   },
   "include": ["src/**/*"]
 }

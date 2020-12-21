@@ -6,8 +6,6 @@
     "esModuleInterop": true,
     "allowSyntheticDefaultImports": true,
     "moduleResolution": "node",
-    "outDir": "dist",
-    "tsBuildInfoFile": "dist/tsconfig.tsbuildinfo",
     "pretty": true,
     "incremental": true,
     "declaration": true,

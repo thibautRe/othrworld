@@ -1,4 +1,3 @@
-export type ID<TBrand extends string> = string & { __brand: TBrand }
+export * from './createID'
 
-export const createID = <TBrand extends string>(): ID<TBrand> =>
-  (Math.random() * 1000000000000).toString() as ID<TBrand>
+export * from './types'

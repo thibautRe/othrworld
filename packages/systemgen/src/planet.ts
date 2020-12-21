@@ -1,16 +1,21 @@
-import { ID, createID } from '@othrworld/core'
+import { Planet, createID } from '@othrworld/core'
 
-export interface Planet {
-  id: ID<'planet'>
-  type: 'planet'
-  name: string
-  radius: number
-  distance: number
+interface GeneratePlanetProps {
+  maxRadius: number
+  minDistance: number
+  maxDistance: number
 }
-export const generatePlanet = (): Planet => {
+export const generatePlanet = ({
+  maxRadius,
+  minDistance,
+  maxDistance,
+}: GeneratePlanetProps): Planet => {
   const name = 'Planet'
-  const radius = Math.random() * 10
-  const distance = Math.random() * 1000
+  const radius = Math.min(maxRadius, Math.random() * 10)
+  const distance = Math.max(minDistance, Math.random() * maxDistance)
+
+  // const moonsAmt = Math.floor(3*Math.random() ** 4)
+  const moonsAmt = 0
 
   return {
     id: createID(),
@@ -18,5 +23,12 @@ export const generatePlanet = (): Planet => {
     name,
     radius,
     distance,
+    moons: new Array(moonsAmt).fill(null).map(() =>
+      generatePlanet({
+        minDistance: radius * 10,
+        maxDistance: radius * 100,
+        maxRadius: radius / 100,
+      })
+    ),
   }
 }
