@@ -11,5 +11,6 @@ export interface Planet {
   name: string
   radius: number
   distance: number
-  moons: Planet[]
+
+  orbitAngle: number
 }

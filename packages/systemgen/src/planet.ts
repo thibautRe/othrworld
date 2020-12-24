@@ -14,9 +14,7 @@ export const generatePlanet = ({
   const name = generate()
   const radius = Math.min(maxRadius, Math.random() * 10)
   const distance = Math.max(minDistance, Math.random() * maxDistance)
-
-  // const moonsAmt = Math.floor(3*Math.random() ** 4)
-  const moonsAmt = 0
+  const orbitAngle = Math.random() * Math.PI * 2
 
   return {
     id: createID(),
@@ -24,12 +22,6 @@ export const generatePlanet = ({
     name,
     radius,
     distance,
-    moons: new Array(moonsAmt).fill(null).map(() =>
-      generatePlanet({
-        minDistance: radius * 10,
-        maxDistance: radius * 100,
-        maxRadius: radius / 100,
-      })
-    ),
+    orbitAngle,
   }
 }

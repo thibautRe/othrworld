@@ -23,7 +23,7 @@ export const SvgRoot: React.FC = ({ children }) => {
           scale(${transform.k})
         `}
       >
-        {children}
+        <g style={{ transform: 'translate(50%, 50%)' }}>{children}</g>
       </g>
     </svg>
   )
