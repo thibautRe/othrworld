@@ -6,7 +6,8 @@
   "types": "dist/index.d.ts",
   "dependencies": {
     "@othrworld/core": "*",
-    "@othrworld/gen-core": "*"
+    "@othrworld/gen-core": "*",
+    "@othrworld/namegen-nobel": "*"
   },
   "scripts": {
     "start": "tsc -w",

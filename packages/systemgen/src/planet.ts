@@ -1,4 +1,5 @@
 import { Planet, createID } from '@othrworld/core'
+import { generate } from '@othrworld/namegen-nobel'
 
 interface GeneratePlanetProps {
   maxRadius: number
@@ -10,7 +11,7 @@ export const generatePlanet = ({
   minDistance,
   maxDistance,
 }: GeneratePlanetProps): Planet => {
-  const name = 'Planet'
+  const name = generate()
   const radius = Math.min(maxRadius, Math.random() * 10)
   const distance = Math.max(minDistance, Math.random() * maxDistance)
 

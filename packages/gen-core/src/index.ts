@@ -10,9 +10,11 @@ export interface GenerateNameProps {
   prefix?: string
   suffix?: string
 }
-export const createNameGenerator = (items: string[]) => ({
-  prefix,
-  suffix,
-}: GenerateNameProps) => {
-  return withPrefixSuffix(prefix, suffix)(getRandomItemFromArray(items))
+export const createNameGenerator = (items: string[]) => (
+  props?: GenerateNameProps
+) => {
+  return withPrefixSuffix(
+    props?.prefix,
+    props?.suffix
+  )(getRandomItemFromArray(items))
 }

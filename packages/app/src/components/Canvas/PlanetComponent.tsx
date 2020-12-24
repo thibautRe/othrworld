@@ -20,12 +20,26 @@ export const PlanetComponent = ({ planet, parent }: PlanetProps) => {
   return (
     <>
       {/* Planet dot */}
-      <circle
-        r={Math.max(2, planet.radius)}
-        cx={Math.sin(angle) * planet.distance}
-        cy={Math.cos(angle) * planet.distance}
-        style={{ fill: '#c1beae' }}
-      />
+      <g
+        transform={`translate(${Math.sin(angle) * planet.distance} ${
+          Math.cos(angle) * planet.distance
+        })`}
+      >
+        <circle
+          r={Math.max(2, planet.radius)}
+          cx={0}
+          cy={0}
+          style={{ fill: '#c1beae' }}
+        />
+        <text
+          textAnchor="middle"
+          x={0}
+          y={planet.radius + 16}
+          style={{ fill: 'white' }}
+        >
+          {planet.name}
+        </text>
+      </g>
 
       {/* Planet orbit */}
       <circle
