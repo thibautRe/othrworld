@@ -19,19 +19,39 @@ export const SystemProvider: React.FC = ({ children }) => {
 
   // Update system
   React.useEffect(() => {
+    let playPause: 0 | 1 = 1
     const run = () => {
       setSystem((s) => ({
         ...s,
         planets: s.planets.map((p) => ({
           ...p,
           // Update planet orbit angle
-          orbitAngle: p.orbitAngle + 100 / p.distance ** 2,
+          orbitAngle:
+            p.orbitAngle +
+            (p.parentId
+              ? s.planets.find(({ id }) => id === p.parentId!)!.radius ** 3
+              : 100) /
+              p.distance ** 2,
         })),
       }))
       frame = requestAnimationFrame(run)
     }
     let frame = window.requestAnimationFrame(run)
-    return () => window.cancelAnimationFrame(frame)
+
+    const playPauseListener = (e: KeyboardEvent) => {
+      // Space key
+      if (e.key === ' ') {
+        // @ts-expect-error "number" is not assignable to 0 | 1
+        playPause = 1 - playPause
+        if (playPause) frame = requestAnimationFrame(run)
+        else cancelAnimationFrame(frame)
+      }
+    }
+    window.addEventListener('keypress', playPauseListener)
+    return () => {
+      window.cancelAnimationFrame(frame)
+      window.removeEventListener('keypress', playPauseListener)
+    }
   }, [])
 
   return (

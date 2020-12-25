@@ -10,7 +10,14 @@ export const SystemComponent = () => {
     <>
       <circle style={{ fill: '#fcef99' }} r={30} />
       {system.planets.map((planet) => (
-        <PlanetComponent planet={planet} key={planet.id} />
+        <PlanetComponent
+          key={planet.id}
+          planet={planet}
+          parent={
+            planet.parentId &&
+            system.planets.find(({ id }) => id === planet.parentId!)!
+          }
+        />
       ))}
     </>
   )

@@ -7,6 +7,7 @@ export interface System {
 
 export interface Planet {
   id: ID<'planet'>
+  parentId?: ID<'planet'>
   type: 'planet'
   name: string
   radius: number

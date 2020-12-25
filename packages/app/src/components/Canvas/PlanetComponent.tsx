@@ -1,34 +1,47 @@
 import React from 'react'
 import { Planet } from '@othrworld/core'
 
+/** Translation group for a planet */
+const PlanetGroup: React.FC<{ planet?: Planet }> = ({ planet, children }) =>
+  planet ? (
+    <g
+      transform={`translate(
+        ${Math.sin(planet.orbitAngle) * planet.distance}
+        ${Math.cos(planet.orbitAngle) * planet.distance}
+      )`}
+    >
+      {children}
+    </g>
+  ) : (
+    <>{children}</>
+  )
+
 interface PlanetProps {
   planet: Planet
   parent?: Planet
 }
-export const PlanetComponent = ({
-  planet: { distance, orbitAngle, radius, name },
-  parent,
-}: PlanetProps) => (
-  <>
-    <g
-      transform={`translate(${Math.sin(orbitAngle) * distance} ${
-        Math.cos(orbitAngle) * distance
-      })`}
-    >
+export const PlanetComponent = ({ planet, parent }: PlanetProps) => (
+  <PlanetGroup planet={parent}>
+    <PlanetGroup planet={planet}>
       <circle
-        r={Math.max(2, radius)}
+        r={Math.max(2, planet.radius)}
         cx={0}
         cy={0}
         style={{ fill: '#c1beae' }}
       />
-      <text textAnchor="middle" x={0} y={radius + 16} style={{ fill: 'white' }}>
-        {name}
+      <text
+        textAnchor="middle"
+        x={0}
+        y={planet.radius + 16}
+        style={{ fill: 'white' }}
+      >
+        {planet.name}
       </text>
-    </g>
+    </PlanetGroup>
 
     <circle
-      r={distance}
-      cx={parent?.distance ?? 0}
+      r={planet.distance}
+      cx={0}
       cy={0}
       style={{
         fill: 'none',
@@ -37,5 +50,5 @@ export const PlanetComponent = ({
         opacity: 0.8,
       }}
     />
-  </>
+  </PlanetGroup>
 )
