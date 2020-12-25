@@ -16,15 +16,17 @@ export const generateSystem = (): System => {
     .sort((p1, p2) => p1.distance - p2.distance)
 
   // Generate moons for random planets
-  const moons = new Array(amtMoons).fill(null).map(() => {
-    const parent = getRandomItemFromArray(planets)
-    return generatePlanet({
-      parentId: parent.id,
-      minDistance: parent.radius * 2,
-      maxDistance: parent.distance / 10,
-      maxRadius: parent.radius / 10,
-    })
-  })
+  const moons = planets.length
+    ? new Array(amtMoons).fill(null).map(() => {
+        const parent = getRandomItemFromArray(planets)
+        return generatePlanet({
+          parentId: parent.id,
+          minDistance: parent.radius * 2,
+          maxDistance: parent.distance / 10,
+          maxRadius: parent.radius / 10,
+        })
+      })
+    : []
 
   return {
     id: createID(),

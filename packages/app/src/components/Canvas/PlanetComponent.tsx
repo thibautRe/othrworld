@@ -1,5 +1,6 @@
 import React from 'react'
 import { Planet } from '@othrworld/core'
+import { useCanvasView } from '../../providers/CanvasViewProvider'
 
 /** Translation group for a planet */
 const PlanetGroup: React.FC<{ planet?: Planet }> = ({ planet, children }) =>
@@ -20,35 +21,38 @@ interface PlanetProps {
   planet: Planet
   parent?: Planet
 }
-export const PlanetComponent = ({ planet, parent }: PlanetProps) => (
-  <PlanetGroup planet={parent}>
-    <PlanetGroup planet={planet}>
+export const PlanetComponent = ({ planet, parent }: PlanetProps) => {
+  const {
+    transform: { k },
+  } = useCanvasView()
+
+  const textFontSize = 16 / k
+  return (
+    <PlanetGroup planet={parent}>
+      <PlanetGroup planet={planet}>
+        <circle r={planet.radius} cx={0} cy={0} style={{ fill: '#c1beae' }} />
+        <text
+          textAnchor="middle"
+          x={0}
+          y={planet.radius + textFontSize}
+          fontSize={textFontSize}
+          style={{ fill: 'white' }}
+        >
+          {planet.name}
+        </text>
+      </PlanetGroup>
+
       <circle
-        r={Math.max(2, planet.radius)}
+        r={planet.distance}
         cx={0}
         cy={0}
-        style={{ fill: '#c1beae' }}
+        strokeWidth={2 / k}
+        style={{
+          fill: 'none',
+          stroke: '#c1beae',
+          opacity: 0.8,
+        }}
       />
-      <text
-        textAnchor="middle"
-        x={0}
-        y={planet.radius + 16}
-        style={{ fill: 'white' }}
-      >
-        {planet.name}
-      </text>
     </PlanetGroup>
-
-    <circle
-      r={planet.distance}
-      cx={0}
-      cy={0}
-      style={{
-        fill: 'none',
-        stroke: '#c1beae',
-        strokeWidth: '1px',
-        opacity: 0.8,
-      }}
-    />
-  </PlanetGroup>
-)
+  )
+}
