@@ -27,6 +27,9 @@ export const PlanetComponent = ({ planet, parent }: PlanetProps) => {
   } = useCanvasView()
 
   const textFontSize = 16 / k
+  // If the planet's visual radius is above N px, show the name
+  const textOpacity = planet.distance * k > 50 ? 1 : 0
+
   return (
     <PlanetGroup planet={parent}>
       <PlanetGroup planet={planet}>
@@ -36,7 +39,11 @@ export const PlanetComponent = ({ planet, parent }: PlanetProps) => {
           x={0}
           y={planet.radius + textFontSize}
           fontSize={textFontSize}
-          style={{ fill: 'white' }}
+          style={{
+            fill: 'white',
+            opacity: textOpacity,
+            transition: 'opacity .2s',
+          }}
         >
           {planet.name}
         </text>
