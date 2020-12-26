@@ -14,12 +14,12 @@
     "concurrently": "^5.3.0"
   },
   "scripts": {
-    "prestart": "yarn workspace @othrworld/core build && yarn workspace @othrworld/gen-core build && yarn workspace @othrworld/namegen-nobel build && yarn workspace @othrworld/systemgen build",
+    "prestart": "yarn workspace @othrworld/core build && yarn workspace @othrworld/stitches-config build && yarn workspace @othrworld/gen-core build && yarn workspace @othrworld/namegen-nobel build && yarn workspace @othrworld/systemgen build",
     "start": "concurrently yarn:start:*",
     "start:app": "yarn workspace @othrworld/app start",
-    "start:shared": "concurrently yarn:start:shared:*",
     "start:shared:core": "yarn workspace @othrworld/core start",
     "start:shared:gen-core": "yarn workspace @othrworld/gen-core start",
+    "start:shared:stitches-config": "yarn workspace @othrworld/stitches-config start",
     "start:shared:namegen-nobel": "yarn workspace @othrworld/namegen-nobel start",
     "start:shared:systemgen": "yarn workspace @othrworld/systemgen start"
   }

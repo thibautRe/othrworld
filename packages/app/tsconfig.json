@@ -2,17 +2,11 @@
   "extends": "../../tsconfig.base.json",
   "compilerOptions": {
     "rootDir": "src",
-    "resolveJsonModule": true,
     "isolatedModules": true,
     "noFallthroughCasesInSwitch": true,
     "noEmit": true,
-    "jsx": "react-jsx",
-    "allowJs": true,
-    "skipLibCheck": true,
     "strict": true,
-    "module": "esnext"
+    "allowJs": true
   },
-  "include": [
-    "src/**/*"
-  ]
+  "include": ["src/**/*"]
 }

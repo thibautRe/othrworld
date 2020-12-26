@@ -5,6 +5,7 @@
   "dependencies": {
     "@othrworld/core": "*",
     "@othrworld/systemgen": "*",
+    "@othrworld/stitches-config": "*",
     "@types/d3-selection": "^2.0.0",
     "@types/d3-zoom": "^2.0.0",
     "@types/react": "^17.0.0",

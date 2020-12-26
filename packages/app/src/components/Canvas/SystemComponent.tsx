@@ -2,13 +2,14 @@ import React from 'react'
 
 import { PlanetComponent } from './PlanetComponent'
 import { useSystem } from '../../providers/SystemProvider'
+import { SolComponent } from './SolComponent'
 
 export const SystemComponent = () => {
   const system = useSystem()
 
   return (
     <>
-      <circle style={{ fill: '#fcef99' }} r={30} />
+      <SolComponent radius={30} />
       {system.planets.map((planet) => (
         <PlanetComponent
           key={planet.id}

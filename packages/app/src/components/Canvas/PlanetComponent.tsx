@@ -1,6 +1,20 @@
 import React from 'react'
 import { Planet } from '@othrworld/core'
 import { useCanvasView } from '../../providers/CanvasViewProvider'
+import { styled } from '@othrworld/stitches-config'
+
+const PlanetReal = styled.circle({
+  fill: '$planet',
+})
+const PlanetText = styled.text({
+  fill: 'white',
+  textAnchor: 'middle',
+  transition: 'opacity 200ms',
+})
+const PlanetOrbit = styled.circle({
+  stroke: '$planetorbit',
+  opacity: 0.8,
+})
 
 /** Translation group for a planet */
 const PlanetGroup: React.FC<{ planet?: Planet }> = ({ planet, children }) =>
@@ -22,9 +36,8 @@ interface PlanetProps {
   parent?: Planet
 }
 export const PlanetComponent = ({ planet, parent }: PlanetProps) => {
-  const {
-    transform: { k },
-  } = useCanvasView()
+  const { transform } = useCanvasView()
+  const { k } = transform
 
   const textFontSize = 16 / k
   // If the planet's visual radius is above N px, show the name
@@ -33,33 +46,17 @@ export const PlanetComponent = ({ planet, parent }: PlanetProps) => {
   return (
     <PlanetGroup planet={parent}>
       <PlanetGroup planet={planet}>
-        <circle r={planet.radius} cx={0} cy={0} style={{ fill: '#c1beae' }} />
-        <text
-          textAnchor="middle"
-          x={0}
+        <PlanetReal r={planet.radius} />
+        <PlanetText
           y={planet.radius + textFontSize}
           fontSize={textFontSize}
-          style={{
-            fill: 'white',
-            opacity: textOpacity,
-            transition: 'opacity .2s',
-          }}
+          style={{ opacity: textOpacity }}
         >
           {planet.name}
-        </text>
+        </PlanetText>
       </PlanetGroup>
 
-      <circle
-        r={planet.distance}
-        cx={0}
-        cy={0}
-        strokeWidth={2 / k}
-        style={{
-          fill: 'none',
-          stroke: '#c1beae',
-          opacity: 0.8,
-        }}
-      />
+      <PlanetOrbit r={planet.distance} strokeWidth={2 / k} />
     </PlanetGroup>
   )
 }
