@@ -39,6 +39,8 @@ export const { styled, css } = createStyled({
       $grey30: 'hsl(10, 12%, 33%)',
       $grey50: 'hsl(10, 5%, 55%)',
       $grey95: 'hsl(2, 10%, 95%)',
+
+      $pauseBanner: '#934b29',
     },
     sizes: {
       $ticketWidth: '17rem',

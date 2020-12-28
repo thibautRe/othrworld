@@ -15,7 +15,7 @@ export const generatePlanet = ({
 }: GeneratePlanetProps): Planet => {
   const name = generate()
   const radius = Math.min(maxRadius, Math.random() * 10)
-  const distance = Math.max(minDistance, Math.random() * maxDistance)
+  const a = Math.max(minDistance, Math.random() * maxDistance)
   const orbitAngle = Math.random() * Math.PI * 2
 
   return {
@@ -24,7 +24,11 @@ export const generatePlanet = ({
     type: 'planet',
     name,
     radius,
-    distance,
-    orbitAngle,
+    orbit: {
+      a,
+      e: Math.random() ** 3,
+      phi: 0, //Math.random() * 2 * Math.PI,
+      angle: 0, //orbitAngle,
+    },
   }
 }
