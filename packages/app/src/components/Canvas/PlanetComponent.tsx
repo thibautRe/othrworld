@@ -9,6 +9,7 @@ import {
 } from '@othrworld/orbital-mechanics'
 import { useCanvasView } from '../../providers/CanvasViewProvider'
 import { useCurrentDate } from '../../providers/DateProvider'
+import { adaptDistanceToSVG } from '../../utils/distanceAdapter'
 
 const PlanetReal = styled.circle({
   fill: '$planet',
@@ -33,7 +34,13 @@ const PlanetGroup: React.FC<{ planet?: Planet }> = ({ planet, children }) => {
   if (!planet) return <>{children}</>
 
   const { x, y } = getCarthesianCoords(planet.orbit, date)
-  return <g transform={`translate(${x} ${y})`}>{children}</g>
+  return (
+    <g
+      transform={`translate(${adaptDistanceToSVG(x)} ${adaptDistanceToSVG(y)})`}
+    >
+      {children}
+    </g>
+  )
 }
 
 interface PlanetProps {
@@ -46,15 +53,18 @@ export const PlanetComponent = ({ planet, parent }: PlanetProps) => {
 
   const textFontSize = 10 / k
   // If the planet's visual radius is above N px, show the name
-  const textOpacity = planet.orbit.a * k > 50 ? 1 : 0
+  const textOpacity = adaptDistanceToSVG(planet.orbit.a) * k > 50 ? 1 : 0
 
   return (
     <PlanetGroup planet={parent}>
       <PlanetGroup planet={planet}>
-        <PlanetReal r={planet.radius} />
+        <PlanetReal
+          r={adaptDistanceToSVG(planet.radius)}
+          data-dbg-r={planet.radius}
+        />
         <PlanetIcon r={5 / k} />
         <PlanetText
-          y={planet.radius + textFontSize}
+          y={adaptDistanceToSVG(planet.radius) + textFontSize}
           fontSize={textFontSize}
           style={{ opacity: textOpacity }}
         >
@@ -63,11 +73,11 @@ export const PlanetComponent = ({ planet, parent }: PlanetProps) => {
       </PlanetGroup>
 
       <PlanetOrbit
-        rx={planet.orbit.a}
-        ry={getSemiMinorAxis(planet.orbit)}
+        rx={adaptDistanceToSVG(planet.orbit.a)}
+        ry={adaptDistanceToSVG(getSemiMinorAxis(planet.orbit))}
         transform={`
           rotate(${(planet.orbit.phi * 360) / (Math.PI * 2)})
-          translate(${-planet.orbit.a * planet.orbit.e} 0)
+          translate(${-adaptDistanceToSVG(planet.orbit.a * planet.orbit.e)} 0)
         `}
         strokeWidth={1 / k}
         data-dbg-peri={getPeriapsis(planet.orbit)}

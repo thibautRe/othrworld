@@ -1,6 +1,10 @@
 import React from 'react'
 import { styled } from '@othrworld/stitches-config'
-import { useCurrentDate, usePlayPause } from '../providers/DateProvider'
+import {
+  useCurrentDate,
+  useCurrentTimeMult,
+  usePlayPause,
+} from '../providers/DateProvider'
 
 const Wrapper = styled.div({
   position: 'absolute',
@@ -16,6 +20,12 @@ const Wrapper = styled.div({
 export const PlayPauseComponent = () => {
   const isPlay = usePlayPause()
   const currentDate = useCurrentDate()
+  const currentTimeMult = useCurrentTimeMult()
 
-  return <Wrapper>{isPlay ? currentDate.toLocaleString() : 'Paused'}</Wrapper>
+  return (
+    <Wrapper>
+      {currentDate.toLocaleString()} (
+      {isPlay ? `${currentTimeMult}x` : '*PAUSED*'})
+    </Wrapper>
+  )
 }

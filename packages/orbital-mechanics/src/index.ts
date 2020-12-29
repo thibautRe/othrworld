@@ -19,11 +19,23 @@ const getDistanceForTrueAnomaly = (orbit: Orbit, trueAnomaly: number) =>
 
 /** Returns the angular speed for a circular orbit to complete an orbit */
 export const getMeanMotion = (orbit: Orbit) =>
-  Math.sqrt((G * orbit.parentMass) / orbit.a ** 3)
+  // Unit hack: G needs meter, not KM
+  Math.sqrt((G * orbit.parentMass) / (orbit.a * 1e3) ** 3)
 
 /** Returns the period */
 export const getOrbitPeriod = (orbit: Orbit) =>
   (2 * Math.PI) / getMeanMotion(orbit)
+
+console.log(
+  'Earth orbit period',
+  getOrbitPeriod({
+    a: 149598023,
+    e: 0.0167086,
+    parentMass: 1.98e30,
+    phi: 0,
+    t0: new Date(),
+  })
+)
 
 /**
  * Returns the mean anomaly at a given time
@@ -35,7 +47,7 @@ export const getOrbitPeriod = (orbit: Orbit) =>
 const getMeanAnomaly = (orbit: Orbit, t: Date, M0 = 0) =>
   M0 +
   getMeanMotion(orbit) *
-    ((t.getTime() - orbit.t0.getTime()) % getOrbitPeriod(orbit))
+    ((t.getTime() / 1000 - orbit.t0.getTime() / 1000) % getOrbitPeriod(orbit))
 
 const ε = 1e-4
 const maxIter = 10

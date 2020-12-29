@@ -63,5 +63,6 @@ export const DateProvider: React.FC = ({ children }) => {
 
 export const useDateContext = () => React.useContext(DateContext)
 export const useCurrentDate = () => useDateContext().currentDate
+export const useCurrentTimeMult = () => useDateContext().currentTimeMult
 
 export const usePlayPause = () => React.useContext(PlayPauseContext)

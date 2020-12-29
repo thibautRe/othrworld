@@ -1,7 +1,11 @@
 import React from 'react'
 
 import { System } from '@othrworld/core'
-import { generateDebugSystem, generateSystem } from '@othrworld/systemgen'
+import {
+  generateDebugSystem,
+  generateSolarSystem,
+  generateSystem,
+} from '@othrworld/systemgen'
 
 import { useDateContext } from './DateProvider'
 
@@ -18,9 +22,11 @@ export const SystemProvider: React.FC = ({ children }) => {
       if (e.key === 'r') {
         setSystem(generateSystem())
         resetCurrentDate()
-      }
-      if (e.key === 'd') {
+      } else if (e.key === 'd') {
         setSystem(generateDebugSystem())
+        resetCurrentDate()
+      } else if (e.key === 's') {
+        setSystem(generateSolarSystem())
         resetCurrentDate()
       }
     }

@@ -2,9 +2,10 @@ import { createID, System } from '@othrworld/core'
 
 export const generateDebugSystem = (): System => {
   const phi = Math.PI / 4
-  const a = 100
-  const parentMass = 100000
+  const a = 1e10
+  const parentMass = 1e28
   const t0 = new Date()
+  const radius = 1e6
   return {
     id: createID(),
     type: 'system',
@@ -13,7 +14,7 @@ export const generateDebugSystem = (): System => {
         id: createID(),
         type: 'planet',
         name: 'Planet ellipse',
-        radius: 2,
+        radius,
         orbit: {
           t0,
           parentMass,
@@ -26,7 +27,7 @@ export const generateDebugSystem = (): System => {
         id: createID(),
         type: 'planet',
         name: 'Planet ellipse 2',
-        radius: 2,
+        radius,
         orbit: {
           t0,
           parentMass,
@@ -39,7 +40,7 @@ export const generateDebugSystem = (): System => {
         id: createID(),
         type: 'planet',
         name: 'Planet ellipse 3',
-        radius: 2,
+        radius,
         orbit: {
           t0,
           parentMass,
@@ -52,7 +53,7 @@ export const generateDebugSystem = (): System => {
         id: createID(),
         type: 'planet',
         name: 'Planet ellipse 4',
-        radius: 2,
+        radius,
         orbit: {
           t0,
           parentMass,
@@ -65,7 +66,7 @@ export const generateDebugSystem = (): System => {
         id: createID(),
         type: 'planet',
         name: 'Planet circle',
-        radius: 2,
+        radius,
         orbit: {
           t0,
           parentMass,

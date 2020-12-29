@@ -6,9 +6,15 @@ export interface System {
   planets: Planet[]
 }
 
+/** Distances are in km */
+type Distance = number
+
+/** Mass of an object, in kg */
+type Mass = number
+
 export interface Orbit {
   /** semi-major axis distance */
-  a: number
+  a: Distance
 
   /** eccentricity */
   e: number
@@ -19,7 +25,7 @@ export interface Orbit {
   /** Mass of the parent
    * @note This might be better stored somewhere else but is useful for calculations
    */
-  parentMass: number
+  parentMass: Mass
 
   /** semi-major axis angle from horizontal (radians) */
   phi: number
@@ -29,6 +35,6 @@ export interface Planet {
   parentId?: ID<'planet'>
   type: 'planet'
   name: string
-  radius: number
+  radius: Distance
   orbit: Orbit
 }

@@ -4,6 +4,7 @@ import { getRandomItemFromArray } from '@othrworld/gen-core'
 import { generatePlanet } from './planet'
 
 export * from './debug'
+export * from './solar'
 
 export const generateSystem = (): System => {
   const amtPlanets = Math.floor(Math.random() * 10)
@@ -14,10 +15,11 @@ export const generateSystem = (): System => {
     .fill(null)
     .map(() =>
       generatePlanet({
-        parentMass: 100000,
-        maxRadius: 100,
-        minDistance: 600,
-        maxDistance: 100000,
+        parentMass: 1e30,
+        minRadius: 1e4,
+        maxRadius: 1e7,
+        minDistance: 1e7,
+        maxDistance: 1e10,
       })
     )
     .sort((p1, p2) => p1.orbit.a - p2.orbit.a)
@@ -28,10 +30,11 @@ export const generateSystem = (): System => {
         const parent = getRandomItemFromArray(planets)
         return generatePlanet({
           parentId: parent.id,
-          parentMass: parent.radius ** 2,
-          minDistance: parent.radius * 2,
+          parentMass: parent.radius ** 3,
+          minRadius: parent.radius / 5000,
+          maxRadius: parent.radius / 100,
+          minDistance: parent.radius * 4,
           maxDistance: parent.orbit.a / 10,
-          maxRadius: parent.radius / 10,
         })
       })
     : []
