@@ -12,9 +12,9 @@ export const getApoapsis = (orbit: Orbit) => (1 + orbit.e) * orbit.a
 export const getSemiMinorAxis = (orbit: Orbit) =>
   orbit.a * Math.sqrt(1 - orbit.e ** 2)
 
-/** Returns the current distance for a given orbit */
-export const getDistanceForAngle = (orbit: Orbit) =>
-  (orbit.a * (1 - orbit.e ** 2)) / (1 + orbit.e * Math.cos(orbit.angle))
+/** Returns the current distance for a given true anomaly */
+const getDistanceForTrueAnomaly = (orbit: Orbit, trueAnomaly: number) =>
+  (orbit.a * (1 - orbit.e ** 2)) / (1 + orbit.e * Math.cos(trueAnomaly))
 
 /** Returns the angular speed for a circular orbit to complete an orbit */
 export const getMeanMotion = (orbit: Orbit) =>
@@ -66,3 +66,9 @@ export const getTrueAnomaly = (orbit: Orbit, t: Date) =>
     Math.sqrt((1 + orbit.e) / (1 - orbit.e)) *
       Math.tan(getEccentricAnomaly(orbit, t) / 2)
   )
+
+export const getRadialCoords = (orbit: Orbit, t: Date) => {
+  const trueAnomaly = getTrueAnomaly(orbit, t)
+  const r = getDistanceForTrueAnomaly(orbit, trueAnomaly)
+  return { r, angle: trueAnomaly }
+}

@@ -1,33 +1,16 @@
 import React from 'react'
 
-import { Planet, System } from '@othrworld/core'
+import { System } from '@othrworld/core'
 import { generateDebugSystem, generateSystem } from '@othrworld/systemgen'
-import { getTrueAnomaly } from '@othrworld/orbital-mechanics'
 
 import { useDateContext } from './DateProvider'
 
 // @ts-expect-error uninitialized system here
 const SystemContext = React.createContext<System>(null)
 
-const getSystemAtDate = (s: System, date: Date): System => {
-  return {
-    ...s,
-    planets: s.planets.map(
-      (p): Planet => ({
-        ...p,
-        // Update planet orbit angle
-        orbit: {
-          ...p.orbit,
-          angle: getTrueAnomaly(p.orbit, date),
-        },
-      })
-    ),
-  }
-}
-
 export const SystemProvider: React.FC = ({ children }) => {
   const [system, setSystem] = React.useState(generateSystem)
-  const { currentDate, resetCurrentDate } = useDateContext()
+  const { resetCurrentDate } = useDateContext()
 
   // Keyboard event listeners
   React.useEffect(() => {
@@ -45,15 +28,8 @@ export const SystemProvider: React.FC = ({ children }) => {
     return () => window.removeEventListener('keypress', listener)
   }, [resetCurrentDate])
 
-  const systemAtDate = React.useMemo(
-    () => getSystemAtDate(system, currentDate),
-    [system, currentDate]
-  )
-
   return (
-    <SystemContext.Provider value={systemAtDate}>
-      {children}
-    </SystemContext.Provider>
+    <SystemContext.Provider value={system}>{children}</SystemContext.Provider>
   )
 }
 

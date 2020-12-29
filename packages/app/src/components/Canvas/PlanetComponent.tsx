@@ -3,11 +3,12 @@ import { Planet } from '@othrworld/core'
 import { styled } from '@othrworld/stitches-config'
 import {
   getSemiMinorAxis,
-  getDistanceForAngle,
   getPeriapsis,
   getApoapsis,
+  getRadialCoords,
 } from '@othrworld/orbital-mechanics'
 import { useCanvasView } from '../../providers/CanvasViewProvider'
+import { useCurrentDate } from '../../providers/DateProvider'
 
 const PlanetReal = styled.circle({
   fill: '$planet',
@@ -24,21 +25,19 @@ const PlanetOrbit = styled.ellipse({
 
 /** Translation group for a planet */
 const PlanetGroup: React.FC<{ planet?: Planet }> = ({ planet, children }) => {
+  const date = useCurrentDate()
   if (!planet) return <>{children}</>
 
-  const dist = getDistanceForAngle(planet.orbit)
-  return planet ? (
+  const { r, angle } = getRadialCoords(planet.orbit, date)
+  return (
     <g
       transform={`translate(
-        ${Math.cos(planet.orbit.angle) * dist}
-        ${Math.sin(planet.orbit.angle) * dist}
+        ${Math.cos(angle) * r}
+        ${Math.sin(angle) * r}
       )`}
-      data-debug-dist={dist}
     >
       {children}
     </g>
-  ) : (
-    <>{children}</>
   )
 }
 

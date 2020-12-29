@@ -18,7 +18,8 @@ export const generatePlanet = ({
   const name = generate()
   const radius = Math.min(maxRadius, Math.random() * 10)
   const a = Math.max(minDistance, Math.random() * maxDistance)
-  const orbitAngle = Math.random() * Math.PI * 2
+  const t0 = new Date()
+  t0.setTime(Math.random() * 1000000)
 
   return {
     id: createID(),
@@ -30,11 +31,9 @@ export const generatePlanet = ({
       parentMass,
       a,
       e: Math.random() ** 3,
-
+      t0,
       // TODO: random params below
       phi: 0, //Math.random() * 2 * Math.PI,
-      angle: 0, //orbitAngle,
-      t0: new Date(),
     },
   }
 }

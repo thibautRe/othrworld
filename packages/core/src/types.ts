@@ -23,9 +23,6 @@ export interface Orbit {
 
   /** semi-major axis angle from horizontal (radians) */
   phi: number
-
-  /** Current planet angle as seen from the semi-major axis (radians) */
-  angle: number
 }
 export interface Planet {
   id: ID<'planet'>
