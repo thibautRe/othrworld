@@ -31,7 +31,7 @@ export const { styled, css } = createStyled({
     space,
     colors: {
       $sol: '#fcef99',
-      $planet: '#c1beae',
+      $planet: '#5f5c59',
       $planetorbit: '#c1beae',
 
       $grey10: 'hsl(10, 12%, 12%)',

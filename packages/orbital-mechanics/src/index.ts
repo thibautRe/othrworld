@@ -1,4 +1,5 @@
 import { Orbit } from '@othrworld/core'
+import { CarthCoords, RadialCoords, radialToCarth } from './coords'
 
 export const G = 6.6743e-11
 
@@ -38,6 +39,8 @@ const getMeanAnomaly = (orbit: Orbit, t: Date, M0 = 0) =>
 
 const ε = 1e-4
 const maxIter = 10
+
+/** @link https://github.com/benelsen/orb/blob/master/src/position/keplerian.js source of the alg */
 const getEccentricAnomaly = (orbit: Orbit, t: Date) => {
   const { e } = orbit
   const M = getMeanAnomaly(orbit, t)
@@ -67,8 +70,14 @@ export const getTrueAnomaly = (orbit: Orbit, t: Date) =>
       Math.tan(getEccentricAnomaly(orbit, t) / 2)
   )
 
-export const getRadialCoords = (orbit: Orbit, t: Date) => {
+const getRadialCoords = (orbit: Orbit, t: Date): RadialCoords => {
   const trueAnomaly = getTrueAnomaly(orbit, t)
   const r = getDistanceForTrueAnomaly(orbit, trueAnomaly)
   return { r, angle: trueAnomaly }
+}
+
+export const getCarthesianCoords = (orbit: Orbit, t: Date): CarthCoords => {
+  const rad = getRadialCoords(orbit, t)
+  rad.angle += orbit.phi
+  return radialToCarth(rad)
 }

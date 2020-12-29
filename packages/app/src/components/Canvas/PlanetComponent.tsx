@@ -5,13 +5,17 @@ import {
   getSemiMinorAxis,
   getPeriapsis,
   getApoapsis,
-  getRadialCoords,
+  getCarthesianCoords,
 } from '@othrworld/orbital-mechanics'
 import { useCanvasView } from '../../providers/CanvasViewProvider'
 import { useCurrentDate } from '../../providers/DateProvider'
 
 const PlanetReal = styled.circle({
   fill: '$planet',
+})
+const PlanetIcon = styled.circle({
+  fill: '$planet',
+  opacity: 0.3,
 })
 const PlanetText = styled.text({
   fill: 'white',
@@ -20,7 +24,7 @@ const PlanetText = styled.text({
 })
 const PlanetOrbit = styled.ellipse({
   stroke: '$planetorbit',
-  opacity: 0.8,
+  opacity: 0.5,
 })
 
 /** Translation group for a planet */
@@ -28,17 +32,8 @@ const PlanetGroup: React.FC<{ planet?: Planet }> = ({ planet, children }) => {
   const date = useCurrentDate()
   if (!planet) return <>{children}</>
 
-  const { r, angle } = getRadialCoords(planet.orbit, date)
-  return (
-    <g
-      transform={`translate(
-        ${Math.cos(angle) * r}
-        ${Math.sin(angle) * r}
-      )`}
-    >
-      {children}
-    </g>
-  )
+  const { x, y } = getCarthesianCoords(planet.orbit, date)
+  return <g transform={`translate(${x} ${y})`}>{children}</g>
 }
 
 interface PlanetProps {
@@ -49,7 +44,7 @@ export const PlanetComponent = ({ planet, parent }: PlanetProps) => {
   const { transform } = useCanvasView()
   const { k } = transform
 
-  const textFontSize = 16 / k
+  const textFontSize = 10 / k
   // If the planet's visual radius is above N px, show the name
   const textOpacity = planet.orbit.a * k > 50 ? 1 : 0
 
@@ -57,6 +52,7 @@ export const PlanetComponent = ({ planet, parent }: PlanetProps) => {
     <PlanetGroup planet={parent}>
       <PlanetGroup planet={planet}>
         <PlanetReal r={planet.radius} />
+        <PlanetIcon r={5 / k} />
         <PlanetText
           y={planet.radius + textFontSize}
           fontSize={textFontSize}
@@ -73,7 +69,7 @@ export const PlanetComponent = ({ planet, parent }: PlanetProps) => {
           rotate(${(planet.orbit.phi * 360) / (Math.PI * 2)})
           translate(${-planet.orbit.a * planet.orbit.e} 0)
         `}
-        strokeWidth={2 / k}
+        strokeWidth={1 / k}
         data-dbg-peri={getPeriapsis(planet.orbit)}
         data-dbg-apoa={getApoapsis(planet.orbit)}
       />

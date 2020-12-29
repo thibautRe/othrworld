@@ -31,9 +31,8 @@ export const generatePlanet = ({
       parentMass,
       a,
       e: Math.random() ** 3,
+      phi: Math.random() * 2 * Math.PI,
       t0,
-      // TODO: random params below
-      phi: 0, //Math.random() * 2 * Math.PI,
     },
   }
 }
