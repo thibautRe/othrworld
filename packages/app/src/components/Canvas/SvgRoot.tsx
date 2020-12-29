@@ -9,6 +9,7 @@ const SVG = styled.svg({
   height: '100%',
   fill: 'none',
   userSelect: 'none',
+  fontFamily: 'inherit',
 })
 const CenterG = styled.g({
   transform: 'translate(50%,50%)',

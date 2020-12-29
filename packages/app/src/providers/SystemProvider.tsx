@@ -1,17 +1,15 @@
 import React from 'react'
+
 import { Planet, System } from '@othrworld/core'
 import { generateDebugSystem, generateSystem } from '@othrworld/systemgen'
-import { useFrame } from '../hooks/useFrame'
 import { getTrueAnomaly } from '@othrworld/orbital-mechanics'
+
+import { useDateContext } from './DateProvider'
 
 // @ts-expect-error uninitialized system here
 const SystemContext = React.createContext<System>(null)
-const PlayPauseContext = React.createContext<boolean>(true)
 
-let t = new Date()
-const resetT = () => (t = new Date())
-const systemTick = (s: System): System => {
-  t.setTime(t.getTime() + 10000)
+const getSystemAtDate = (s: System, date: Date): System => {
   return {
     ...s,
     planets: s.planets.map(
@@ -20,7 +18,7 @@ const systemTick = (s: System): System => {
         // Update planet orbit angle
         orbit: {
           ...p.orbit,
-          angle: getTrueAnomaly(p.orbit, t),
+          angle: getTrueAnomaly(p.orbit, date),
         },
       })
     ),
@@ -29,39 +27,34 @@ const systemTick = (s: System): System => {
 
 export const SystemProvider: React.FC = ({ children }) => {
   const [system, setSystem] = React.useState(generateSystem)
-  const [isPlay, setIsPlay] = React.useState(true)
+  const { currentDate, resetCurrentDate } = useDateContext()
 
   // Keyboard event listeners
   React.useEffect(() => {
     const listener = (e: KeyboardEvent) => {
       if (e.key === 'r') {
         setSystem(generateSystem())
-        resetT()
+        resetCurrentDate()
       }
       if (e.key === 'd') {
         setSystem(generateDebugSystem())
-        resetT()
+        resetCurrentDate()
       }
-      if (e.key === ' ') setIsPlay((p) => !p)
     }
     window.addEventListener('keypress', listener)
     return () => window.removeEventListener('keypress', listener)
-  }, [])
+  }, [resetCurrentDate])
 
-  const updateSystem = React.useCallback(() => {
-    setSystem(systemTick)
-  }, [])
-
-  useFrame(isPlay ? updateSystem : null)
+  const systemAtDate = React.useMemo(
+    () => getSystemAtDate(system, currentDate),
+    [system, currentDate]
+  )
 
   return (
-    <SystemContext.Provider value={system}>
-      <PlayPauseContext.Provider value={isPlay}>
-        {children}
-      </PlayPauseContext.Provider>
+    <SystemContext.Provider value={systemAtDate}>
+      {children}
     </SystemContext.Provider>
   )
 }
 
 export const useSystem = () => React.useContext(SystemContext)
-export const usePlayPause = () => React.useContext(PlayPauseContext)
