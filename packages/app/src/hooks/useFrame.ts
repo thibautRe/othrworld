@@ -9,11 +9,9 @@ const loopGlobalRaf = () => {
   frame = requestAnimationFrame(loopGlobalRaf)
 }
 const startGlobalRaf = () => {
-  console.info('[RAF] Starting global RAF')
   frame = requestAnimationFrame(loopGlobalRaf)
 }
 const stopGlobalRaf = () => {
-  console.info('[RAF] Stopping global RAF')
   cancelAnimationFrame(frame)
 }
 

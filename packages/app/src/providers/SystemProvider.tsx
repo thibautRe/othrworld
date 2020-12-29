@@ -8,9 +8,10 @@ import { getTrueAnomaly } from '@othrworld/orbital-mechanics'
 const SystemContext = React.createContext<System>(null)
 const PlayPauseContext = React.createContext<boolean>(true)
 
-let t = 0
+let t = new Date()
+const resetT = () => (t = new Date())
 const systemTick = (s: System): System => {
-  t+=1000
+  t.setTime(t.getTime() + 10000)
   return {
     ...s,
     planets: s.planets.map(
@@ -19,7 +20,7 @@ const systemTick = (s: System): System => {
         // Update planet orbit angle
         orbit: {
           ...p.orbit,
-          angle: getTrueAnomaly(p.orbit, 100000, t, 0),
+          angle: getTrueAnomaly(p.orbit, t),
         },
       })
     ),
@@ -33,8 +34,14 @@ export const SystemProvider: React.FC = ({ children }) => {
   // Keyboard event listeners
   React.useEffect(() => {
     const listener = (e: KeyboardEvent) => {
-      if (e.key === 'r') setSystem(generateSystem())
-      if (e.key === 'd') setSystem(generateDebugSystem())
+      if (e.key === 'r') {
+        setSystem(generateSystem())
+        resetT()
+      }
+      if (e.key === 'd') {
+        setSystem(generateDebugSystem())
+        resetT()
+      }
       if (e.key === ' ') setIsPlay((p) => !p)
     }
     window.addEventListener('keypress', listener)

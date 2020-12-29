@@ -11,7 +11,12 @@ export const generateSystem = (): System => {
   const planets = new Array(amtPlanets)
     .fill(null)
     .map(() =>
-      generatePlanet({ maxRadius: 10, minDistance: 60, maxDistance: 1000 })
+      generatePlanet({
+        parentMass: 100000,
+        maxRadius: 10,
+        minDistance: 60,
+        maxDistance: 1000,
+      })
     )
     .sort((p1, p2) => p1.orbit.a - p2.orbit.a)
 
@@ -21,6 +26,7 @@ export const generateSystem = (): System => {
         const parent = getRandomItemFromArray(planets)
         return generatePlanet({
           parentId: parent.id,
+          parentMass: 100,
           minDistance: parent.radius * 2,
           maxDistance: parent.orbit.a / 10,
           maxRadius: parent.radius / 10,
@@ -46,6 +52,8 @@ export const generateDebugSystem = (): System => {
         name: 'Planet ellipse',
         radius: 2,
         orbit: {
+          t0: new Date(),
+          parentMass: 100000,
           a: 100,
           e: 0.1,
           angle: 0,
@@ -58,6 +66,8 @@ export const generateDebugSystem = (): System => {
         name: 'Planet ellipse 2',
         radius: 2,
         orbit: {
+          t0: new Date(),
+          parentMass: 100000,
           a: 100,
           e: 0.5,
           angle: 0,
@@ -70,6 +80,8 @@ export const generateDebugSystem = (): System => {
         name: 'Planet ellipse 2',
         radius: 2,
         orbit: {
+          t0: new Date(),
+          parentMass: 100000,
           a: 100,
           e: 0.9,
           angle: 0,
@@ -82,6 +94,8 @@ export const generateDebugSystem = (): System => {
         name: 'Planet circle',
         radius: 2,
         orbit: {
+          t0: new Date(),
+          parentMass: 100000,
           a: 100,
           e: 0,
           angle: 0,
