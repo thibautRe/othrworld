@@ -6,10 +6,10 @@ export interface System {
   planets: Planet[]
 }
 
-/** Distances are in km */
+/** @unit km */
 type Distance = number
 
-/** Mass of an object, in kg */
+/** @unit kg */
 type Mass = number
 
 export interface Orbit {
@@ -37,4 +37,6 @@ export interface Planet {
   name: string
   radius: Distance
   orbit: Orbit
+  /** @unit kg/km^3 */
+  density: number
 }

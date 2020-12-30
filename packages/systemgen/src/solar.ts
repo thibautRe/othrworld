@@ -1,13 +1,14 @@
-import { createID, System } from '@othrworld/core'
+import { createID, getPlanetMass, Planet, System } from '@othrworld/core'
+
+// Density for planets that I don't know yet what they are
+// @TODO use the right values from Internet
+const dummyDensity = 5e12
 
 /** Generate the Solar System */
 export const generateSolarSystem = (): System => {
   const solMass = 1.98e30 // kg
   const solRadius = 696500 // km
-  const earthId = createID<'planet'>()
-  const earthMass = 5.972e24
-  const jupiterId = createID<'planet'>()
-  const jupiterMass = 1.898e27
+
   return {
     id: createID(),
     type: 'system',
@@ -17,6 +18,7 @@ export const generateSolarSystem = (): System => {
         name: 'Mercury',
         type: 'planet',
         radius: 2439,
+        density: dummyDensity,
         orbit: {
           a: 57909050,
           e: 0.20563,
@@ -30,6 +32,7 @@ export const generateSolarSystem = (): System => {
         name: 'Venus',
         type: 'planet',
         radius: 6051,
+        density: dummyDensity,
         orbit: {
           a: 108200800,
           e: 0.0067,
@@ -38,38 +41,15 @@ export const generateSolarSystem = (): System => {
           t0: new Date(),
         },
       },
-      {
-        id: earthId,
-        name: 'Earth',
-        type: 'planet',
-        radius: 6371,
-        orbit: {
-          a: 149598023,
-          e: 0.0167086,
-          parentMass: solMass,
-          phi: 0,
-          t0: new Date(),
-        },
-      },
-      {
-        id: createID(),
-        name: 'Moon',
-        type: 'planet',
-        radius: 1731,
-        parentId: earthId,
-        orbit: {
-          a: 384399,
-          e: 0.0549,
-          parentMass: earthMass,
-          phi: 0,
-          t0: new Date(),
-        },
-      },
+
+      ...createEarth({ solMass }),
+
       {
         id: createID(),
         name: 'Mars',
         type: 'planet',
         radius: 3389,
+        density: dummyDensity,
         orbit: {
           a: 227939200,
           e: 0.0934,
@@ -81,81 +61,14 @@ export const generateSolarSystem = (): System => {
 
       // ---- ASTEROIDS ---
 
-      {
-        id: jupiterId,
-        name: 'Jupiter',
-        type: 'planet',
-        radius: 69911,
-        orbit: {
-          a: 778570000,
-          e: 0.0489,
-          parentMass: solMass,
-          phi: 0,
-          t0: new Date(),
-        },
-      },
-      {
-        id: createID(),
-        name: 'Io',
-        type: 'planet',
-        radius: 3660 / 2,
-        parentId: jupiterId,
-        orbit: {
-          a: 421800,
-          e: 0.0041,
-          parentMass: jupiterMass,
-          phi: 0,
-          t0: new Date(),
-        },
-      },
-      {
-        id: createID(),
-        name: 'Europa',
-        type: 'planet',
-        radius: 3121 / 2,
-        parentId: jupiterId,
-        orbit: {
-          a: 671100,
-          e: 0.0094,
-          parentMass: jupiterMass,
-          phi: 0,
-          t0: new Date(),
-        },
-      },
-      {
-        id: createID(),
-        name: 'Ganymede',
-        type: 'planet',
-        radius: 5268 / 2,
-        parentId: jupiterId,
-        orbit: {
-          a: 1070400,
-          e: 0.0011,
-          parentMass: jupiterMass,
-          phi: 0,
-          t0: new Date(),
-        },
-      },
-      {
-        id: createID(),
-        name: 'Callisto',
-        type: 'planet',
-        radius: 4820 / 2,
-        parentId: jupiterId,
-        orbit: {
-          a: 1882700,
-          e: 0.0074,
-          parentMass: jupiterMass,
-          phi: 0,
-          t0: new Date(),
-        },
-      },
+      ...createJupiter({ solMass }),
 
       {
         id: createID(),
         name: 'Saturn',
         type: 'planet',
         radius: 58232,
+        density: dummyDensity,
         orbit: {
           a: 1443000000,
           e: 0.0565,
@@ -170,6 +83,7 @@ export const generateSolarSystem = (): System => {
         name: 'Uranus',
         type: 'planet',
         radius: 25360,
+        density: dummyDensity,
         orbit: {
           a: 2875000000,
           e: 0.046,
@@ -184,6 +98,7 @@ export const generateSolarSystem = (): System => {
         name: 'Neptune',
         type: 'planet',
         radius: 24620,
+        density: dummyDensity,
         orbit: {
           a: 4500000000,
           e: 0.0086,
@@ -198,14 +113,136 @@ export const generateSolarSystem = (): System => {
         name: 'Pluto',
         type: 'planet',
         radius: 1188,
+        density: dummyDensity,
         orbit: {
           a: 5906380000,
           e: 0.2488,
           parentMass: solMass,
           phi: 0,
-          t0: new Date(),
+          t0: new Date('2050-06-01'),
         },
       },
     ],
   }
+}
+
+interface CPProps {
+  solMass: number
+}
+type CP = (props: CPProps) => Planet[]
+
+const createEarth: CP = ({ solMass }) => {
+  const earth: Planet = {
+    id: createID(),
+    name: 'Earth',
+    type: 'planet',
+    radius: 6371,
+    density: 5.514e12,
+    orbit: {
+      a: 149598023,
+      e: 0.0167086,
+      parentMass: solMass,
+      phi: 0,
+      t0: new Date(),
+    },
+  }
+  return [
+    earth,
+    {
+      id: createID(),
+      name: 'Moon',
+      type: 'planet',
+      radius: 1731,
+      parentId: earth.id,
+      density: dummyDensity,
+      orbit: {
+        a: 384399,
+        e: 0.0549,
+        parentMass: getPlanetMass(earth),
+        phi: 0,
+        t0: new Date(),
+      },
+    },
+  ]
+}
+
+const createJupiter: CP = ({ solMass }) => {
+  const jupiter: Planet = {
+    id: createID(),
+    name: 'Jupiter',
+    type: 'planet',
+    radius: 69911,
+    density: dummyDensity,
+    orbit: {
+      a: 778570000,
+      e: 0.0489,
+      parentMass: solMass,
+      phi: 0,
+      t0: new Date(),
+    },
+  }
+
+  return [
+    jupiter,
+    {
+      id: createID(),
+      name: 'Io',
+      type: 'planet',
+      radius: 3660 / 2,
+      parentId: jupiter.id,
+      density: dummyDensity,
+      orbit: {
+        a: 421800,
+        e: 0.0041,
+        parentMass: getPlanetMass(jupiter),
+        phi: 0,
+        t0: new Date(),
+      },
+    },
+    {
+      id: createID(),
+      name: 'Europa',
+      type: 'planet',
+      radius: 3121 / 2,
+      parentId: jupiter.id,
+      density: dummyDensity,
+      orbit: {
+        a: 671100,
+        e: 0.0094,
+        parentMass: getPlanetMass(jupiter),
+        phi: 0,
+        t0: new Date(),
+      },
+    },
+    {
+      id: createID(),
+      name: 'Ganymede',
+      type: 'planet',
+      radius: 5268 / 2,
+      parentId: jupiter.id,
+      density: dummyDensity,
+      orbit: {
+        a: 1070400,
+        e: 0.0011,
+        parentMass: getPlanetMass(jupiter),
+        phi: 0,
+        t0: new Date(),
+      },
+    },
+    {
+      id: createID(),
+      name: 'Callisto',
+      type: 'planet',
+      radius: 4820 / 2,
+      parentId: jupiter.id,
+      density: dummyDensity,
+      orbit: {
+        a: 1882700,
+        e: 0.0074,
+        parentMass: getPlanetMass(jupiter),
+        phi: 0,
+        t0: new Date(),
+      },
+    },
+  ]
 }

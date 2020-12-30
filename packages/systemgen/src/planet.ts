@@ -20,6 +20,7 @@ export const generatePlanet = ({
   const name = generate()
   const radius = Math.max(minRadius, Math.random() * maxRadius)
   const a = Math.max(minDistance, Math.random() * maxDistance)
+  const density = Math.max(1e11, Math.random() * 1e13)
   const t0 = new Date()
   t0.setTime(Math.random() * 1000000)
 
@@ -29,6 +30,7 @@ export const generatePlanet = ({
     type: 'planet',
     name,
     radius,
+    density,
     orbit: {
       parentMass,
       a,

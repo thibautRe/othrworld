@@ -1,4 +1,4 @@
-import { createID, System } from '@othrworld/core'
+import { createID, getPlanetMass, System } from '@othrworld/core'
 import { getRandomItemFromArray } from '@othrworld/gen-core'
 
 import { generatePlanet } from './planet'
@@ -15,7 +15,7 @@ export const generateSystem = (): System => {
     .fill(null)
     .map(() =>
       generatePlanet({
-        parentMass: 1e30,
+        parentMass: 1e33,
         minRadius: 1e4,
         maxRadius: 1e7,
         minDistance: 1e7,
@@ -28,9 +28,10 @@ export const generateSystem = (): System => {
   const moons = planets.length
     ? new Array(amtMoons).fill(null).map(() => {
         const parent = getRandomItemFromArray(planets)
+        const parentMass = getPlanetMass(parent)
         return generatePlanet({
           parentId: parent.id,
-          parentMass: parent.radius ** 3,
+          parentMass,
           minRadius: parent.radius / 5000,
           maxRadius: parent.radius / 100,
           minDistance: parent.radius * 4,

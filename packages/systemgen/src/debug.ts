@@ -15,6 +15,7 @@ export const generateDebugSystem = (): System => {
         type: 'planet',
         name: 'Planet ellipse',
         radius,
+        density: 1e12,
         orbit: {
           t0,
           parentMass,
@@ -28,6 +29,7 @@ export const generateDebugSystem = (): System => {
         type: 'planet',
         name: 'Planet ellipse 2',
         radius,
+        density: 1e12,
         orbit: {
           t0,
           parentMass,
@@ -41,6 +43,7 @@ export const generateDebugSystem = (): System => {
         type: 'planet',
         name: 'Planet ellipse 3',
         radius,
+        density: 1e12,
         orbit: {
           t0,
           parentMass,
@@ -54,6 +57,7 @@ export const generateDebugSystem = (): System => {
         type: 'planet',
         name: 'Planet ellipse 4',
         radius,
+        density: 1e12,
         orbit: {
           t0,
           parentMass,
@@ -67,6 +71,7 @@ export const generateDebugSystem = (): System => {
         type: 'planet',
         name: 'Planet circle',
         radius,
+        density: 1e12,
         orbit: {
           t0,
           parentMass,
