@@ -1,5 +1,5 @@
 import React from 'react'
-import { Planet, Spacecraft } from '@othrworld/core'
+import { Spacecraft } from '@othrworld/core'
 import { styled } from '@othrworld/stitches-config'
 
 import { OrbitItem } from './OrbitItem'
@@ -18,25 +18,30 @@ const Text = styled.text({
 
 interface SpacecraftComponentProps {
   spacecraft: Spacecraft
-  parent: Planet
 }
 export const SpacecraftComponent = ({
   spacecraft,
-  parent,
 }: SpacecraftComponentProps) => {
   const { transform } = useCanvasView()
   const { k } = transform
   const fontSize = 10 / k
-  const opacity = adaptDistanceToSVG(spacecraft.orbit.a) * k > 50 ? 1 : 0
+  const visualRadius = adaptDistanceToSVG(spacecraft.orbit.a) * k
+
+  const textOpacity = visualRadius > 50 ? 1 : 0
+  const ellipseOpacity = visualRadius > 20 ? 1 : 0
+
   return (
-    <OrbitItem orbit={parent.orbit}>
+    <>
+      <OrbitEllipse
+        orbit={spacecraft.orbit}
+        style={{ strokeDasharray: `5 5`, opacity: ellipseOpacity }}
+      />
       <OrbitItem orbit={spacecraft.orbit}>
         <SpacecraftDot r={2 / k} />
-        <Text y={fontSize} fontSize={fontSize} style={{ opacity }}>
+        <Text y={fontSize} fontSize={fontSize} style={{ opacity: textOpacity }}>
           {spacecraft.name}
         </Text>
       </OrbitItem>
-      <OrbitEllipse orbit={spacecraft.orbit} />
-    </OrbitItem>
+    </>
   )
 }

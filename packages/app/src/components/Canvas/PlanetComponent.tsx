@@ -20,11 +20,13 @@ const PlanetText = styled.text({
   transition: 'opacity 200ms',
 })
 
-interface PlanetProps {
+interface PlanetComponentProps {
   planet: Planet
-  parent?: Planet
 }
-export const PlanetComponent = ({ planet, parent }: PlanetProps) => {
+export const PlanetComponent: React.FC<PlanetComponentProps> = ({
+  planet,
+  children,
+}) => {
   const { transform } = useCanvasView()
   const { k } = transform
 
@@ -33,8 +35,10 @@ export const PlanetComponent = ({ planet, parent }: PlanetProps) => {
   const textOpacity = adaptDistanceToSVG(planet.orbit.a) * k > 50 ? 1 : 0
 
   return (
-    <OrbitItem orbit={parent?.orbit}>
+    <>
+      <OrbitEllipse orbit={planet.orbit} />
       <OrbitItem orbit={planet.orbit}>
+        {children}
         <PlanetReal
           r={adaptDistanceToSVG(planet.radius)}
           data-dbg-r={planet.radius}
@@ -48,8 +52,6 @@ export const PlanetComponent = ({ planet, parent }: PlanetProps) => {
           {planet.name}
         </PlanetText>
       </OrbitItem>
-
-      <OrbitEllipse orbit={planet.orbit} />
-    </OrbitItem>
+    </>
   )
 }

@@ -7,10 +7,8 @@ export * from './debug'
 export * from './solar'
 
 export const generateSystem = (): System => {
-  const amtMoons = randInt(3)
-
   // Generate planets
-  const planets = new Array(randInt(10))
+  const rootPlanets = new Array(randInt(10))
     .fill(null)
     .map(() =>
       generatePlanet({
@@ -24,9 +22,9 @@ export const generateSystem = (): System => {
     .sort((p1, p2) => p1.orbit.a - p2.orbit.a)
 
   // Generate moons for random planets
-  const moons = planets.length
-    ? new Array(amtMoons).fill(null).map(() => {
-        const parent = getRandomItemFromArray(planets)
+  const moons = rootPlanets.length
+    ? new Array(randInt(10)).fill(null).map(() => {
+        const parent = getRandomItemFromArray(rootPlanets)
         const parentMass = getPlanetMass(parent)
         return generatePlanet({
           parentId: parent.id,
@@ -39,8 +37,9 @@ export const generateSystem = (): System => {
       })
     : []
 
+  const planets = [...rootPlanets, ...moons]
   const spacecrafts: Spacecraft[] = planets.length
-    ? new Array(randInt(5)).fill(null).map((_, i) => {
+    ? new Array(randInt(10)).fill(null).map((_, i) => {
         const parent = getRandomItemFromArray(planets)
         const parentMass = getPlanetMass(parent)
         return {
@@ -63,6 +62,6 @@ export const generateSystem = (): System => {
     id: createID(),
     type: 'system',
     spacecrafts,
-    planets: [...planets, ...moons],
+    planets,
   }
 }
