@@ -122,6 +122,36 @@ export const generateSolarSystem = (): System => {
           t0: new Date('2050-06-01'),
         },
       },
+
+      // Comets
+      {
+        id: createID(),
+        type: 'planet',
+        name: 'Hale–Bopp',
+        radius: 60,
+        density: dummyDensity,
+        orbit: {
+          a: 27825200000,
+          e: 0.995086,
+          parentMass: solMass,
+          phi: (130 * Math.PI) / 180,
+          t0: new Date('1997-03-30'),
+        },
+      },
+      {
+        id: createID(),
+        type: 'planet',
+        name: 'C/1844 N1 (Mauvais)',
+        radius: 10,
+        density: dummyDensity,
+        orbit: {
+          a: 526584500000,
+          e: 0.999757,
+          parentMass: solMass,
+          phi: (211 * Math.PI) / 180,
+          t0: new Date('1844-10-17'),
+        },
+      },
     ],
   }
 }
@@ -143,7 +173,7 @@ const createEarth: CP = ({ solMass }) => {
       e: 0.0167086,
       parentMass: solMass,
       phi: 0,
-      t0: new Date(),
+      t0: new Date('2021-01-02T13:59'),
     },
   }
   return [
