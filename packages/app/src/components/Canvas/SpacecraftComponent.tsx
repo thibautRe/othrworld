@@ -30,11 +30,16 @@ export const SpacecraftComponent = ({
   const textOpacity = visualRadius > 50 ? 1 : 0
   const ellipseOpacity = visualRadius > 20 ? 1 : 0
 
+  const orbitStrokeDash = adaptDistanceToSVG(spacecraft.orbit.a) / 30
+
   return (
     <>
       <OrbitEllipse
         orbit={spacecraft.orbit}
-        style={{ strokeDasharray: `5 5`, opacity: ellipseOpacity }}
+        style={{
+          strokeDasharray: `${orbitStrokeDash} ${orbitStrokeDash}`,
+          opacity: ellipseOpacity,
+        }}
       />
       <OrbitItem orbit={spacecraft.orbit}>
         <SpacecraftDot r={2 / k} />

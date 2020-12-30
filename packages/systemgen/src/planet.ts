@@ -1,4 +1,5 @@
 import { Planet, createID } from '@othrworld/core'
+import { randFloat } from '@othrworld/gen-core'
 import { generate } from '@othrworld/namegen-nobel'
 
 interface GeneratePlanetProps {
@@ -18,11 +19,11 @@ export const generatePlanet = ({
   maxDistance,
 }: GeneratePlanetProps): Planet => {
   const name = generate()
-  const radius = Math.max(minRadius, Math.random() * maxRadius)
-  const a = Math.max(minDistance, Math.random() * maxDistance)
-  const density = Math.max(1e11, Math.random() * 1e13)
+  const radius = randFloat(maxRadius, minRadius)
+  const a = randFloat(maxDistance, minDistance)
+  const density = randFloat(1e13, 1e11)
   const t0 = new Date()
-  t0.setTime(Math.random() * 1000000)
+  t0.setTime(Math.random() * 100000000)
 
   return {
     id: createID(),

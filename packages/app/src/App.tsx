@@ -3,7 +3,7 @@ import { styled } from '@othrworld/stitches-config'
 
 import { SvgRoot } from './components/Canvas/SvgRoot'
 import { SystemComponent } from './components/Canvas/SystemComponent'
-import { PlayPauseComponent } from './components/PlayPauseComponent'
+import { StatusBarComponent } from './components/StatusBarComponent'
 
 const AppRoot = styled.div({
   fontFamily: '$sansSerif',
@@ -16,7 +16,7 @@ export const App = () => {
       <SvgRoot>
         <SystemComponent />
       </SvgRoot>
-      <PlayPauseComponent />
+      <StatusBarComponent />
     </AppRoot>
   )
 }
