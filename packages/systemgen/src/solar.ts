@@ -12,6 +12,7 @@ export const generateSolarSystem = (): System => {
   return {
     id: createID(),
     type: 'system',
+    spacecrafts: [],
     planets: [
       {
         id: createID(),

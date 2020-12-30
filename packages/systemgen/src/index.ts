@@ -1,5 +1,5 @@
-import { createID, getPlanetMass, System } from '@othrworld/core'
-import { getRandomItemFromArray } from '@othrworld/gen-core'
+import { createID, getPlanetMass, Spacecraft, System } from '@othrworld/core'
+import { getRandomItemFromArray, randInt, randFloat } from '@othrworld/gen-core'
 
 import { generatePlanet } from './planet'
 
@@ -7,11 +7,10 @@ export * from './debug'
 export * from './solar'
 
 export const generateSystem = (): System => {
-  const amtPlanets = Math.floor(Math.random() * 10)
-  const amtMoons = Math.floor(Math.random() * 3)
+  const amtMoons = randInt(3)
 
   // Generate planets
-  const planets = new Array(amtPlanets)
+  const planets = new Array(randInt(10))
     .fill(null)
     .map(() =>
       generatePlanet({
@@ -40,9 +39,30 @@ export const generateSystem = (): System => {
       })
     : []
 
+  const spacecrafts: Spacecraft[] = planets.length
+    ? new Array(randInt(5)).fill(null).map((_, i) => {
+        const parent = getRandomItemFromArray(planets)
+        const parentMass = getPlanetMass(parent)
+        return {
+          id: createID(),
+          name: `Spacecraft ${i}`,
+          type: 'spacecraft',
+          parentId: parent.id,
+          orbit: {
+            a: parent.radius * randFloat(6, 1.4),
+            e: Math.random() * 0.1,
+            parentMass,
+            phi: 0,
+            t0: new Date(),
+          },
+        }
+      })
+    : []
+
   return {
     id: createID(),
     type: 'system',
+    spacecrafts,
     planets: [...planets, ...moons],
   }
 }

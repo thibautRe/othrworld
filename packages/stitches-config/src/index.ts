@@ -32,7 +32,7 @@ export const { styled, css } = createStyled({
     colors: {
       $sol: '#fcef99',
       $planet: '#5f5c59',
-      $planetorbit: '#c1beae',
+      $orbit: '#c1beae',
 
       $grey10: 'hsl(10, 12%, 12%)',
       $grey20: 'hsl(10, 12%, 23%)',

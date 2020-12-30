@@ -9,6 +9,7 @@ export const generateDebugSystem = (): System => {
   return {
     id: createID(),
     type: 'system',
+    spacecrafts: [],
     planets: [
       {
         id: createID(),

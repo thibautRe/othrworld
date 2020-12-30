@@ -4,6 +4,7 @@ export interface System {
   id: ID<'system'>
   type: 'system'
   planets: Planet[]
+  spacecrafts: Spacecraft[]
 }
 
 /** @unit km */
@@ -30,6 +31,7 @@ export interface Orbit {
   /** semi-major axis angle from horizontal (radians) */
   phi: number
 }
+
 export interface Planet {
   id: ID<'planet'>
   parentId?: ID<'planet'>
@@ -39,4 +41,12 @@ export interface Planet {
   orbit: Orbit
   /** @unit kg/km^3 */
   density: number
+}
+
+export interface Spacecraft {
+  id: ID<'spacecraft'>
+  parentId: ID<'planet'>
+  type: 'spacecraft'
+  name: string
+  orbit: Orbit
 }

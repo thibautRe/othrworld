@@ -18,3 +18,9 @@ export const createNameGenerator = (items: string[]) => (
     props?.suffix
   )(getRandomItemFromArray(items))
 }
+
+/** Returns a random number between max (excluded) and min */
+export const randFloat = (max: number, min = 0) =>
+  Math.random() * (max - min) + min
+/** Returns a random integer between max (excluded) and min (included) */
+export const randInt = (max: number, min = 0) => Math.floor(randFloat(max, min))
