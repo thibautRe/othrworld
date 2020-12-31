@@ -1,8 +1,23 @@
-import { createID, getPlanetMass, Planet, System } from '@othrworld/core'
+import {
+  Atmosphere,
+  createID,
+  getPlanetMass,
+  Planet,
+  System,
+} from '@othrworld/core'
 
 // Density for planets that I don't know yet what they are
 // @TODO use the right values from Internet
 const dummyDensity = 5e12
+
+// Atmosphere for planets that I don't know yet
+const dummyAtm: Atmosphere = {
+  density: 1,
+  altitudeHalf: 1,
+  composition: {
+    argon: 1,
+  },
+}
 
 /** Generate the Solar System */
 export const generateSolarSystem = (): System => {
@@ -27,6 +42,7 @@ export const generateSolarSystem = (): System => {
           phi: 0,
           t0: new Date(),
         },
+        atmosphere: dummyAtm,
       },
       {
         id: createID(),
@@ -41,6 +57,7 @@ export const generateSolarSystem = (): System => {
           phi: 0,
           t0: new Date(),
         },
+        atmosphere: dummyAtm,
       },
 
       ...createEarth({ solMass }),
@@ -58,6 +75,7 @@ export const generateSolarSystem = (): System => {
           phi: 0,
           t0: new Date(),
         },
+        atmosphere: dummyAtm,
       },
 
       // ---- ASTEROIDS ---
@@ -77,6 +95,7 @@ export const generateSolarSystem = (): System => {
           phi: 0,
           t0: new Date(),
         },
+        atmosphere: dummyAtm,
       },
 
       {
@@ -92,6 +111,7 @@ export const generateSolarSystem = (): System => {
           phi: 0,
           t0: new Date(),
         },
+        atmosphere: dummyAtm,
       },
 
       {
@@ -107,6 +127,7 @@ export const generateSolarSystem = (): System => {
           phi: 0,
           t0: new Date(),
         },
+        atmosphere: dummyAtm,
       },
 
       {
@@ -122,6 +143,7 @@ export const generateSolarSystem = (): System => {
           phi: 0,
           t0: new Date('2050-06-01'),
         },
+        atmosphere: dummyAtm,
       },
 
       // Comets
@@ -138,6 +160,7 @@ export const generateSolarSystem = (): System => {
           phi: (130 * Math.PI) / 180,
           t0: new Date('1997-03-30'),
         },
+        atmosphere: dummyAtm,
       },
       {
         id: createID(),
@@ -152,6 +175,7 @@ export const generateSolarSystem = (): System => {
           phi: (211 * Math.PI) / 180,
           t0: new Date('1844-10-17'),
         },
+        atmosphere: dummyAtm,
       },
     ],
   }
@@ -176,6 +200,15 @@ const createEarth: CP = ({ solMass }) => {
       phi: 0,
       t0: new Date('2021-01-02T13:59'),
     },
+    atmosphere: {
+      altitudeHalf: 5.6,
+      density: 1.2e9,
+      composition: {
+        nitrogen: 0.788,
+        oxygen: 0.2094,
+        argon: 0.0093,
+      },
+    },
   }
   return [
     earth,
@@ -193,6 +226,13 @@ const createEarth: CP = ({ solMass }) => {
         phi: 0,
         t0: new Date(),
       },
+      atmosphere: {
+        altitudeHalf: 0.1,
+        density: 6e-6,
+        composition: {
+          argon: 1,
+        },
+      },
     },
   ]
 }
@@ -204,6 +244,7 @@ const createJupiter: CP = ({ solMass }) => {
     type: 'planet',
     radius: 69911,
     density: dummyDensity,
+    atmosphere: dummyAtm,
     orbit: {
       a: 778570000,
       e: 0.0489,
@@ -222,6 +263,7 @@ const createJupiter: CP = ({ solMass }) => {
       radius: 3660 / 2,
       parentId: jupiter.id,
       density: dummyDensity,
+      atmosphere: dummyAtm,
       orbit: {
         a: 421800,
         e: 0.0041,
@@ -237,6 +279,7 @@ const createJupiter: CP = ({ solMass }) => {
       radius: 3121 / 2,
       parentId: jupiter.id,
       density: dummyDensity,
+      atmosphere: dummyAtm,
       orbit: {
         a: 671100,
         e: 0.0094,
@@ -252,6 +295,7 @@ const createJupiter: CP = ({ solMass }) => {
       radius: 5268 / 2,
       parentId: jupiter.id,
       density: dummyDensity,
+      atmosphere: dummyAtm,
       orbit: {
         a: 1070400,
         e: 0.0011,
@@ -267,6 +311,7 @@ const createJupiter: CP = ({ solMass }) => {
       radius: 4820 / 2,
       parentId: jupiter.id,
       density: dummyDensity,
+      atmosphere: dummyAtm,
       orbit: {
         a: 1882700,
         e: 0.0074,

@@ -39,5 +39,12 @@ export const generatePlanet = ({
       phi: Math.random() * 2 * Math.PI,
       t0,
     },
+    atmosphere: {
+      density: 1,
+      altitudeHalf: 5,
+      composition: {
+        argon: 1,
+      },
+    },
   }
 }

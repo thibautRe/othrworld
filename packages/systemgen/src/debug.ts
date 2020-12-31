@@ -1,4 +1,12 @@
-import { createID, System } from '@othrworld/core'
+import { Atmosphere, createID, System } from '@othrworld/core'
+
+const atmosphere: Atmosphere = {
+  altitudeHalf: 1,
+  density: 1,
+  composition: {
+    argon: 1,
+  },
+}
 
 export const generateDebugSystem = (): System => {
   const phi = Math.PI / 4
@@ -24,6 +32,7 @@ export const generateDebugSystem = (): System => {
           e: 0.1,
           phi,
         },
+        atmosphere,
       },
       {
         id: createID(),
@@ -38,6 +47,7 @@ export const generateDebugSystem = (): System => {
           e: 0.5,
           phi,
         },
+        atmosphere,
       },
       {
         id: createID(),
@@ -52,6 +62,7 @@ export const generateDebugSystem = (): System => {
           e: 0.9,
           phi,
         },
+        atmosphere,
       },
       {
         id: createID(),
@@ -66,6 +77,7 @@ export const generateDebugSystem = (): System => {
           e: 0.99,
           phi,
         },
+        atmosphere,
       },
       {
         id: createID(),
@@ -80,6 +92,7 @@ export const generateDebugSystem = (): System => {
           e: 0,
           phi,
         },
+        atmosphere,
       },
     ],
   }

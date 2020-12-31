@@ -41,6 +41,28 @@ export interface Planet {
   orbit: Orbit
   /** @unit kg/km^3 */
   density: number
+
+  atmosphere: Atmosphere
+}
+
+export interface Atmosphere {
+  /** Density at sea level
+   * @unit kg/km^3 */
+  density: number
+
+  /** Altitude at which the density dropped by half
+   * @unit km */
+  altitudeHalf: number
+
+  /** Assuming that the sum of all components equals 1 */
+  composition: AtmosphereComposition
+}
+
+export interface AtmosphereComposition {
+  argon?: number
+  hydrogen?: number
+  oxygen?: number
+  nitrogen?: number
 }
 
 export interface Spacecraft {
