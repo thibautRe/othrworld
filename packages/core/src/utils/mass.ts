@@ -1,4 +1,4 @@
-import { Planet } from '../types'
+import { Planet } from '../types/planet'
 import { getPlanetVolume } from './volume'
 
 export const getPlanetMass = (p: Planet): number => {
