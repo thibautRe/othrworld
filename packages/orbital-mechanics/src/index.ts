@@ -1,4 +1,4 @@
-import { Orbit } from '@othrworld/core'
+import { getPlanetMass, Orbit, Planet } from '@othrworld/core'
 import { CarthCoords, RadialCoords, radialToCarth } from './coords'
 
 export const G = 6.6743e-11
@@ -82,3 +82,22 @@ export const getCarthesianCoords = (orbit: Orbit, t: Date): CarthCoords => {
   rad.angle += orbit.phi
   return radialToCarth(rad)
 }
+
+// Solve GMp/R^2 = GMpar/(R1-R)^2 for R
+// (R1-R)/R = sqrt(Mpar/Mp) = a
+// R1-R = R*a <=> R = R1/(1+sqrt(Mpar/Mp))
+// https://en.wikipedia.org/wiki/Hill_sphere
+const getPlanetSOIRadiusAtDistance = (planet: Planet, r: number): number =>
+  r * Math.pow(getPlanetMass(planet) / (3 * planet.orbit.parentMass), 1 / 3)
+
+/** Radius of the SOI at a given date */
+export const getPlanetSOIRadius = (planet: Planet, t: Date): number => {
+  const { r } = getRadialCoords(planet.orbit, t)
+  return getPlanetSOIRadiusAtDistance(planet, r)
+}
+
+/** Return the bounds of the SOI sphere (smallest at perihelion, biggest at aphelion) */
+export const getPlanetSOIRadiusBounds = (planet: Planet): [number, number] => [
+  getPlanetSOIRadiusAtDistance(planet, getPeriapsis(planet.orbit)),
+  getPlanetSOIRadiusAtDistance(planet, getApoapsis(planet.orbit)),
+]

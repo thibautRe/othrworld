@@ -32,8 +32,8 @@ export const OrbitComponent: React.FC<OrbitComponentProps> = ({
           baseStrokeWidth={15}
           style={{ opacity: 0 }}
         />
+        <OrbitPoints isHovered={isHovered} orbit={orbit} />
       </g>
-      <OrbitPoints isHovered={isHovered} orbit={orbit} />
       <OrbitItem orbit={orbit}>{children}</OrbitItem>
     </>
   )
