@@ -25,7 +25,7 @@ export const mapSpace = <T>(iter: (s: SpaceKey) => T): Record<SpaceKey, T> => {
 }
 
 export const { styled, css } = createStyled({
-  prefix: '',
+  prefix: 'othrworld',
   showFriendlyClassnames: false,
   tokens: {
     space,

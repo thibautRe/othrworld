@@ -5,13 +5,14 @@ import { useCurrentDate } from '../../providers/DateProvider'
 import { useScaleAdapter } from '../../providers/SVGScaleProvider'
 
 /** Translation group for an orbit */
-export const OrbitItem: React.FC<{ orbit?: Orbit }> = ({ orbit, children }) => {
+interface OrbitItemProps extends React.SVGAttributes<SVGGElement> {
+  orbit: Orbit
+}
+export const OrbitItem: React.FC<OrbitItemProps> = ({ orbit, ...props }) => {
   const date = useCurrentDate()
   const adapter = useScaleAdapter()
-  if (!orbit) return <>{children}</>
-
   const { x, y } = getCarthesianCoords(orbit, date)
 
   // prettier-ignore
-  return <g transform={`translate(${adapter(x)} ${adapter(y)})`}>{children}</g>
+  return <g transform={`translate(${adapter(x)} ${adapter(y)})`} {...props} />
 }

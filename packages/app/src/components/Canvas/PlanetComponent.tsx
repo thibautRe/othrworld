@@ -3,10 +3,9 @@ import { Planet } from '@othrworld/core'
 import { styled } from '@othrworld/stitches-config'
 
 import { useCanvasView } from '../../providers/CanvasViewProvider'
-import { OrbitItem } from './OrbitItem'
-import { OrbitEllipse } from './OrbitEllipse'
-import { AtmosphereComponent } from './AtmosphereComponent'
 import { useScaleAdapter } from '../../providers/SVGScaleProvider'
+import { AtmosphereComponent } from './AtmosphereComponent'
+import { OrbitComponent } from './OrbitComponent'
 
 const PlanetReal = styled.circle({
   fill: '$planet',
@@ -37,21 +36,18 @@ export const PlanetComponent: React.FC<PlanetComponentProps> = ({
   const textOpacity = adapter(planet.orbit.a) * k > 50 ? 1 : 0
 
   return (
-    <>
-      <OrbitEllipse orbit={planet.orbit} />
-      <OrbitItem orbit={planet.orbit}>
-        {children}
-        <PlanetReal r={adapter(planet.radius)} data-dbg-r={planet.radius} />
-        <AtmosphereComponent planet={planet} />
-        <PlanetIcon r={5 / k} />
-        <PlanetText
-          y={adapter(planet.radius) + textFontSize}
-          fontSize={textFontSize}
-          style={{ opacity: textOpacity }}
-        >
-          {planet.name}
-        </PlanetText>
-      </OrbitItem>
-    </>
+    <OrbitComponent orbit={planet.orbit}>
+      {children}
+      <PlanetReal r={adapter(planet.radius)} data-dbg-r={planet.radius} />
+      <AtmosphereComponent planet={planet} />
+      <PlanetIcon r={5 / k} />
+      <PlanetText
+        y={adapter(planet.radius) + textFontSize}
+        fontSize={textFontSize}
+        style={{ opacity: textOpacity }}
+      >
+        {planet.name}
+      </PlanetText>
+    </OrbitComponent>
   )
 }

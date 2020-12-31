@@ -3,6 +3,7 @@ import {
   createID,
   getPlanetMass,
   Planet,
+  Spacecraft,
   System,
 } from '@othrworld/core'
 
@@ -24,10 +25,13 @@ export const generateSolarSystem = (): System => {
   const solMass = 1.98e30 // kg
   const solRadius = 696500 // km
 
+  const jupiter = createJupiter({ solMass })
+  const earth = createEarth({ solMass })
+
   return {
     id: createID(),
     type: 'system',
-    spacecrafts: [],
+    spacecrafts: [...earth.spacecrafts, ...jupiter.spacecrafts],
     planets: [
       {
         id: createID(),
@@ -60,7 +64,7 @@ export const generateSolarSystem = (): System => {
         atmosphere: dummyAtm,
       },
 
-      ...createEarth({ solMass }),
+      ...earth.planets,
 
       {
         id: createID(),
@@ -80,7 +84,7 @@ export const generateSolarSystem = (): System => {
 
       // ---- ASTEROIDS ---
 
-      ...createJupiter({ solMass }),
+      ...jupiter.planets,
 
       {
         id: createID(),
@@ -184,7 +188,7 @@ export const generateSolarSystem = (): System => {
 interface CPProps {
   solMass: number
 }
-type CP = (props: CPProps) => Planet[]
+type CP = (props: CPProps) => { planets: Planet[]; spacecrafts: Spacecraft[] }
 
 const createEarth: CP = ({ solMass }) => {
   const earth: Planet = {
@@ -210,31 +214,50 @@ const createEarth: CP = ({ solMass }) => {
       },
     },
   }
-  return [
-    earth,
-    {
-      id: createID(),
-      name: 'Moon',
-      type: 'planet',
-      radius: 1731,
-      parentId: earth.id,
-      density: dummyDensity,
-      orbit: {
-        a: 384399,
-        e: 0.0549,
-        parentMass: getPlanetMass(earth),
-        phi: 0,
-        t0: new Date(),
-      },
-      atmosphere: {
-        altitudeHalf: 0.1,
-        density: 6e-6,
-        composition: {
-          argon: 1,
+
+  const parentMass = getPlanetMass(earth)
+  return {
+    spacecrafts: [
+      {
+        id: createID(),
+        name: 'ISS',
+        parentId: earth.id,
+        type: 'spacecraft',
+        orbit: {
+          a: earth.radius + 450,
+          e: 0,
+          parentMass,
+          phi: 0,
+          t0: new Date(),
         },
       },
-    },
-  ]
+    ],
+    planets: [
+      earth,
+      {
+        id: createID(),
+        name: 'Moon',
+        type: 'planet',
+        radius: 1731,
+        parentId: earth.id,
+        density: dummyDensity,
+        orbit: {
+          a: 384399,
+          e: 0.0549,
+          parentMass,
+          phi: 0,
+          t0: new Date(),
+        },
+        atmosphere: {
+          altitudeHalf: 0.1,
+          density: 6e-6,
+          composition: {
+            argon: 1,
+          },
+        },
+      },
+    ],
+  }
 }
 
 const createJupiter: CP = ({ solMass }) => {
@@ -254,71 +277,74 @@ const createJupiter: CP = ({ solMass }) => {
     },
   }
 
-  return [
-    jupiter,
-    {
-      id: createID(),
-      name: 'Io',
-      type: 'planet',
-      radius: 3660 / 2,
-      parentId: jupiter.id,
-      density: dummyDensity,
-      atmosphere: dummyAtm,
-      orbit: {
-        a: 421800,
-        e: 0.0041,
-        parentMass: getPlanetMass(jupiter),
-        phi: 0,
-        t0: new Date(),
+  return {
+    spacecrafts: [],
+    planets: [
+      jupiter,
+      {
+        id: createID(),
+        name: 'Io',
+        type: 'planet',
+        radius: 3660 / 2,
+        parentId: jupiter.id,
+        density: dummyDensity,
+        atmosphere: dummyAtm,
+        orbit: {
+          a: 421800,
+          e: 0.0041,
+          parentMass: getPlanetMass(jupiter),
+          phi: 0,
+          t0: new Date(),
+        },
       },
-    },
-    {
-      id: createID(),
-      name: 'Europa',
-      type: 'planet',
-      radius: 3121 / 2,
-      parentId: jupiter.id,
-      density: dummyDensity,
-      atmosphere: dummyAtm,
-      orbit: {
-        a: 671100,
-        e: 0.0094,
-        parentMass: getPlanetMass(jupiter),
-        phi: 0,
-        t0: new Date(),
+      {
+        id: createID(),
+        name: 'Europa',
+        type: 'planet',
+        radius: 3121 / 2,
+        parentId: jupiter.id,
+        density: dummyDensity,
+        atmosphere: dummyAtm,
+        orbit: {
+          a: 671100,
+          e: 0.0094,
+          parentMass: getPlanetMass(jupiter),
+          phi: 0,
+          t0: new Date(),
+        },
       },
-    },
-    {
-      id: createID(),
-      name: 'Ganymede',
-      type: 'planet',
-      radius: 5268 / 2,
-      parentId: jupiter.id,
-      density: dummyDensity,
-      atmosphere: dummyAtm,
-      orbit: {
-        a: 1070400,
-        e: 0.0011,
-        parentMass: getPlanetMass(jupiter),
-        phi: 0,
-        t0: new Date(),
+      {
+        id: createID(),
+        name: 'Ganymede',
+        type: 'planet',
+        radius: 5268 / 2,
+        parentId: jupiter.id,
+        density: dummyDensity,
+        atmosphere: dummyAtm,
+        orbit: {
+          a: 1070400,
+          e: 0.0011,
+          parentMass: getPlanetMass(jupiter),
+          phi: 0,
+          t0: new Date(),
+        },
       },
-    },
-    {
-      id: createID(),
-      name: 'Callisto',
-      type: 'planet',
-      radius: 4820 / 2,
-      parentId: jupiter.id,
-      density: dummyDensity,
-      atmosphere: dummyAtm,
-      orbit: {
-        a: 1882700,
-        e: 0.0074,
-        parentMass: getPlanetMass(jupiter),
-        phi: 0,
-        t0: new Date(),
+      {
+        id: createID(),
+        name: 'Callisto',
+        type: 'planet',
+        radius: 4820 / 2,
+        parentId: jupiter.id,
+        density: dummyDensity,
+        atmosphere: dummyAtm,
+        orbit: {
+          a: 1882700,
+          e: 0.0074,
+          parentMass: getPlanetMass(jupiter),
+          phi: 0,
+          t0: new Date(),
+        },
       },
-    },
-  ]
+    ],
+  }
 }

@@ -8,11 +8,11 @@ import { useScaleAdapter } from '../../providers/SVGScaleProvider'
 
 const OrbitEll = styled.ellipse({
   stroke: '$orbit',
-  opacity: 0.5,
+  opacity: 0.2,
   transition: 'opacity .2s',
 })
 
-interface OrbitEllipseProps extends React.SVGAttributes<SVGEllipseElement> {
+export interface OrbitEllipseProps extends React.SVGAttributes<SVGEllipseElement> {
   orbit: Orbit
 }
 export const OrbitEllipse = ({ orbit, ...props }: OrbitEllipseProps) => {

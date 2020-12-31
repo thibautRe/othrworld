@@ -4,8 +4,7 @@ import { styled } from '@othrworld/stitches-config'
 
 import { useCanvasView } from '../../providers/CanvasViewProvider'
 import { useScaleAdapter } from '../../providers/SVGScaleProvider'
-import { OrbitItem } from './OrbitItem'
-import { OrbitEllipse } from './OrbitEllipse'
+import { OrbitComponent } from './OrbitComponent'
 
 const SpacecraftDot = styled.circle({
   fill: 'white',
@@ -34,20 +33,19 @@ export const SpacecraftComponent = ({
   const orbitStrokeDash = adapter(spacecraft.orbit.a) / 30
 
   return (
-    <>
-      <OrbitEllipse
-        orbit={spacecraft.orbit}
-        style={{
+    <OrbitComponent
+      orbit={spacecraft.orbit}
+      OrbitEllipseProps={{
+        style: {
           strokeDasharray: `${orbitStrokeDash} ${orbitStrokeDash}`,
           opacity: ellipseOpacity,
-        }}
-      />
-      <OrbitItem orbit={spacecraft.orbit}>
-        <SpacecraftDot r={2 / k} />
-        <Text y={fontSize} fontSize={fontSize} style={{ opacity: textOpacity }}>
-          {spacecraft.name}
-        </Text>
-      </OrbitItem>
-    </>
+        },
+      }}
+    >
+      <SpacecraftDot r={2 / k} />
+      <Text y={fontSize} fontSize={fontSize} style={{ opacity: textOpacity }}>
+        {spacecraft.name}
+      </Text>
+    </OrbitComponent>
   )
 }
