@@ -82,6 +82,25 @@ export const generateDebugSystem = (): System => {
       {
         id: createID(),
         type: 'planet',
+        name: 'Asteroid',
+        atmosphere: {
+          altitudeHalf: 0,
+          density: 0,
+          composition: {},
+        },
+        density: 1,
+        radius: 50,
+        orbit: {
+          a,
+          e: 1.2,
+          parentMass,
+          phi,
+          t0,
+        },
+      },
+      {
+        id: createID(),
+        type: 'planet',
         name: 'Planet circle',
         radius,
         density: 1e12,

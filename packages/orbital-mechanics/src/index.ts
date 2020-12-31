@@ -26,17 +26,6 @@ export const getMeanMotion = (orbit: Orbit) =>
 export const getOrbitPeriod = (orbit: Orbit) =>
   (2 * Math.PI) / getMeanMotion(orbit)
 
-console.log(
-  'Earth orbit period',
-  getOrbitPeriod({
-    a: 149598023,
-    e: 0.0167086,
-    parentMass: 1.98e30,
-    phi: 0,
-    t0: new Date(),
-  })
-)
-
 /**
  * Returns the mean anomaly at a given time
  * This function takes care of using the "modulo" operator on the period

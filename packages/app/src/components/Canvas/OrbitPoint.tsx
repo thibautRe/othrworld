@@ -6,6 +6,9 @@ import React from 'react'
 import { useCanvasView } from '../../providers/CanvasViewProvider'
 import { useScaleAdapter } from '../../providers/SVGScaleProvider'
 
+const OrbitPointsGroup = styled.g({
+  transition: 'opacity .2s',
+})
 const OrbitPointCircle = styled.circle({
   fill: '$orbit',
   opacity: 0.2,
@@ -13,8 +16,9 @@ const OrbitPointCircle = styled.circle({
 
 interface OrbitPointsProps {
   orbit: Orbit
+  isHovered: boolean
 }
-export const OrbitPoints = ({ orbit }: OrbitPointsProps) => {
+export const OrbitPoints = ({ orbit, isHovered }: OrbitPointsProps) => {
   const { transform } = useCanvasView()
   const adapter = useScaleAdapter()
   const { k } = transform
@@ -26,7 +30,7 @@ export const OrbitPoints = ({ orbit }: OrbitPointsProps) => {
   })
 
   return (
-    <>
+    <OrbitPointsGroup style={{ opacity: isHovered ? 1 : 0 }}>
       <OrbitPointCircle
         r={2 / k}
         cx={adapter(pericenter.x)}
@@ -37,6 +41,6 @@ export const OrbitPoints = ({ orbit }: OrbitPointsProps) => {
         cx={adapter(apocenter.x)}
         cy={adapter(apocenter.y)}
       />
-    </>
+    </OrbitPointsGroup>
   )
 }

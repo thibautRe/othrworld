@@ -8,14 +8,21 @@ import { useScaleAdapter } from '../../providers/SVGScaleProvider'
 
 const OrbitEll = styled.ellipse({
   stroke: '$orbit',
-  opacity: 0.2,
   transition: 'opacity .2s',
 })
 
-export interface OrbitEllipseProps extends React.SVGAttributes<SVGEllipseElement> {
+export interface OrbitEllipseProps
+  extends React.SVGAttributes<SVGEllipseElement> {
   orbit: Orbit
+  isHovered: boolean
+  baseStrokeWidth?: number
 }
-export const OrbitEllipse = ({ orbit, ...props }: OrbitEllipseProps) => {
+export const OrbitEllipse = ({
+  orbit,
+  isHovered,
+  baseStrokeWidth = 1,
+  ...props
+}: OrbitEllipseProps) => {
   const { transform } = useCanvasView()
   const { k } = transform
   const adapter = useScaleAdapter()
@@ -27,7 +34,12 @@ export const OrbitEllipse = ({ orbit, ...props }: OrbitEllipseProps) => {
         rotate(${(orbit.phi * 360) / (Math.PI * 2)})
         translate(${-adapter(orbit.a * orbit.e)} 0)
       `}
-      strokeWidth={1 / k}
+      strokeWidth={baseStrokeWidth / k}
+      style={{
+        opacity: isHovered ? 0.4 : 0.1,
+        transition: isHovered ? 'none' : undefined,
+        ...(props.style || {}),
+      }}
       {...props}
     />
   )
