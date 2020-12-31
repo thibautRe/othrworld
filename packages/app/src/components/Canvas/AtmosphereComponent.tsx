@@ -2,7 +2,7 @@ import React from 'react'
 import { Planet } from '@othrworld/core'
 import { styled } from '@othrworld/stitches-config'
 
-import { adaptDistanceToSVG } from '../../utils/distanceAdapter'
+import { useScaleAdapter } from '../../providers/SVGScaleProvider'
 
 const AtmosphereCircle = styled.circle({
   fill: '#a4e3fc',
@@ -14,9 +14,10 @@ interface AtmosphereComponentProps {
 export const AtmosphereComponent = ({
   planet: { radius, atmosphere },
 }: AtmosphereComponentProps) => {
+  const adapter = useScaleAdapter()
   return (
     <AtmosphereCircle
-      r={adaptDistanceToSVG(radius + atmosphere.altitudeHalf * 20)}
+      r={adapter(radius + atmosphere.altitudeHalf * 20)}
       style={{ opacity: (0.2 * atmosphere.density) / 1e9 }}
     />
   )

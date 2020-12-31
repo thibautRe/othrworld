@@ -2,9 +2,9 @@ import React from 'react'
 import { Spacecraft } from '@othrworld/core'
 import { styled } from '@othrworld/stitches-config'
 
-import { OrbitItem } from './OrbitItem'
 import { useCanvasView } from '../../providers/CanvasViewProvider'
-import { adaptDistanceToSVG } from '../../utils/distanceAdapter'
+import { useScaleAdapter } from '../../providers/SVGScaleProvider'
+import { OrbitItem } from './OrbitItem'
 import { OrbitEllipse } from './OrbitEllipse'
 
 const SpacecraftDot = styled.circle({
@@ -23,14 +23,15 @@ export const SpacecraftComponent = ({
   spacecraft,
 }: SpacecraftComponentProps) => {
   const { transform } = useCanvasView()
+  const adapter = useScaleAdapter()
   const { k } = transform
   const fontSize = 10 / k
-  const visualRadius = adaptDistanceToSVG(spacecraft.orbit.a) * k
+  const visualRadius = adapter(spacecraft.orbit.a) * k
 
   const textOpacity = visualRadius > 50 ? 1 : 0
   const ellipseOpacity = visualRadius > 20 ? 1 : 0
 
-  const orbitStrokeDash = adaptDistanceToSVG(spacecraft.orbit.a) / 30
+  const orbitStrokeDash = adapter(spacecraft.orbit.a) / 30
 
   return (
     <>

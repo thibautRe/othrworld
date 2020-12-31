@@ -1,9 +1,10 @@
 import React from 'react'
 import { styled } from '@othrworld/stitches-config'
 import { Orbit } from '@othrworld/core'
-import { adaptDistanceToSVG } from '../../utils/distanceAdapter'
-import { useCanvasView } from '../../providers/CanvasViewProvider'
 import { getSemiMinorAxis } from '@othrworld/orbital-mechanics'
+
+import { useCanvasView } from '../../providers/CanvasViewProvider'
+import { useScaleAdapter } from '../../providers/SVGScaleProvider'
 
 const OrbitEll = styled.ellipse({
   stroke: '$orbit',
@@ -17,13 +18,14 @@ interface OrbitEllipseProps extends React.SVGAttributes<SVGEllipseElement> {
 export const OrbitEllipse = ({ orbit, ...props }: OrbitEllipseProps) => {
   const { transform } = useCanvasView()
   const { k } = transform
+  const adapter = useScaleAdapter()
   return (
     <OrbitEll
-      rx={adaptDistanceToSVG(orbit.a)}
-      ry={adaptDistanceToSVG(getSemiMinorAxis(orbit))}
+      rx={adapter(orbit.a)}
+      ry={adapter(getSemiMinorAxis(orbit))}
       transform={`
         rotate(${(orbit.phi * 360) / (Math.PI * 2)})
-        translate(${-adaptDistanceToSVG(orbit.a * orbit.e)} 0)
+        translate(${-adapter(orbit.a * orbit.e)} 0)
       `}
       strokeWidth={1 / k}
       {...props}

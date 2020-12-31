@@ -2,6 +2,7 @@ import { styled } from '@othrworld/stitches-config'
 import React from 'react'
 
 import { useCanvasView } from '../../providers/CanvasViewProvider'
+import { SVGScaleProvider } from '../../providers/SVGScaleProvider'
 
 const SVG = styled.svg({
   display: 'block',
@@ -26,14 +27,16 @@ export const SvgRoot: React.FC = ({ children }) => {
 
   return (
     <SVG ref={svgRef}>
-      <g
-        transform={`
+      <SVGScaleProvider unit={1e5}>
+        <g
+          transform={`
           translate(${transform.x} ${transform.y})
           scale(${transform.k})
         `}
-      >
-        <CenterG>{children}</CenterG>
-      </g>
+        >
+          <CenterG>{children}</CenterG>
+        </g>
+      </SVGScaleProvider>
     </SVG>
   )
 }
