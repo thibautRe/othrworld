@@ -6,6 +6,7 @@ import { useCanvasView } from '../../providers/CanvasViewProvider'
 import { adaptDistanceToSVG } from '../../utils/distanceAdapter'
 import { OrbitItem } from './OrbitItem'
 import { OrbitEllipse } from './OrbitEllipse'
+import { AtmosphereComponent } from './AtmosphereComponent'
 
 const PlanetReal = styled.circle({
   fill: '$planet',
@@ -43,6 +44,7 @@ export const PlanetComponent: React.FC<PlanetComponentProps> = ({
           r={adaptDistanceToSVG(planet.radius)}
           data-dbg-r={planet.radius}
         />
+        <AtmosphereComponent planet={planet} />
         <PlanetIcon r={5 / k} />
         <PlanetText
           y={adaptDistanceToSVG(planet.radius) + textFontSize}
