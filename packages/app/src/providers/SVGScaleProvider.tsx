@@ -9,6 +9,13 @@ interface SVGScaleProviderProps {
   /** This represents the scale at which things should be drawn: 1px in the SVG equals that unit */
   unit: number
 }
+
+/**
+ * @fixme consider merging this with CanvasTransform Provider and context
+ * because they are only used together
+ * 
+ * @deprecated
+ */
 export const SVGScaleProvider: React.FC<SVGScaleProviderProps> = ({
   children,
   unit,

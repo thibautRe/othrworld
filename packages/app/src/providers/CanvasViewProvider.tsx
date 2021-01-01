@@ -6,8 +6,9 @@ interface CanvasViewTransform {
   x: number
   y: number
   k: number
+  globalK: number
 }
-const defaultTransform: CanvasViewTransform = { x: 0, y: 0, k: 1 }
+const defaultTransform: CanvasViewTransform = { x: 0, y: 0, k: 1, globalK: 1 }
 export interface CanvasViewContext {
   setTransform: (t: CanvasViewTransform) => void
   applyZoomEvents: (elt: SVGSVGElement) => void
@@ -31,9 +32,11 @@ export const CanvasViewProvider: React.FC = ({ children }) => {
     defaultTransform
   )
   const [zoomBehaviour] = React.useState(() =>
-    zoom<SVGSVGElement, unknown>().on('zoom', (e) =>
-      setTransformState(e.transform)
-    )
+    zoom<SVGSVGElement, unknown>()
+      .filter((e) => !e.ctrlKey)
+      .on('zoom', (e) =>
+        setTransformState({ ...e.transform, globalK: e.transform.k })
+      )
   )
 
   const d3SelectionRef = React.useRef<SVGSelection | null>(null)

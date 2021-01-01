@@ -67,6 +67,7 @@ export const PlanetComponent: React.FC<PlanetComponentProps> = ({
   planet,
   children,
 }) => {
+  const { k } = useCanvasTransform()
   const currentDate = useCurrentDate()
   const adapter = useScaleAdapter()
 
@@ -75,10 +76,7 @@ export const PlanetComponent: React.FC<PlanetComponentProps> = ({
   return (
     <OrbitComponent orbit={planet.orbit}>
       <SVGCanvasSpawnPortal>
-        <SVGView
-          scale={adapter(planet.radius / 10)}
-          center={{ x: adapter(pos.x), y: adapter(pos.y) }}
-        >
+        <SVGView scale={1e-3} center={{ x: adapter(pos.x), y: adapter(pos.y) }}>
           <PlanetRenderComponent planet={planet}>
             {children}
           </PlanetRenderComponent>
