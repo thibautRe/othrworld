@@ -8,6 +8,7 @@ import { useScaleAdapter } from '../../providers/SVGScaleProvider'
 import { AtmosphereComponent } from './AtmosphereComponent'
 import { OrbitComponent } from './OrbitComponent'
 import { useCurrentDate } from '../../providers/DateProvider'
+import { useCanvasTooltips } from '../../providers/CanvasTooltipProvider'
 
 const PlanetReal = styled.circle({
   fill: '$planet',
@@ -33,6 +34,7 @@ export const PlanetComponent: React.FC<PlanetComponentProps> = ({
   const currentDate = useCurrentDate()
   const { k } = transform
   const adapter = useScaleAdapter()
+  const { onOpenCanvasTooltip } = useCanvasTooltips()
 
   const iconRadius = 5 / k
   const textFontSize = 10 / k
@@ -42,14 +44,16 @@ export const PlanetComponent: React.FC<PlanetComponentProps> = ({
   return (
     <OrbitComponent orbit={planet.orbit}>
       {children}
-      <PlanetReal r={adapter(planet.radius)} data-dbg-r={planet.radius} />
-      <AtmosphereComponent planet={planet} />
+      <g onClick={(e) => onOpenCanvasTooltip(e, { type: 'planet', planet })}>
+        <PlanetReal r={adapter(planet.radius)} data-dbg-r={planet.radius} />
+        <AtmosphereComponent planet={planet} />
+        <PlanetIcon r={iconRadius} />
+      </g>
       <circle
         r={adapter(getPlanetSOIRadius(planet, currentDate))}
         strokeWidth={1 / k}
         stroke="yellow"
       />
-      <PlanetIcon r={iconRadius} />
       <PlanetText
         y={Math.max(adapter(planet.radius), iconRadius) + textFontSize}
         fontSize={textFontSize}
