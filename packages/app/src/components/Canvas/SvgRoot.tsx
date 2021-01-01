@@ -2,7 +2,7 @@ import { styled } from '@othrworld/stitches-config'
 import React from 'react'
 
 import { useCanvasView } from '../../providers/CanvasViewProvider'
-import { SVGScaleProvider } from '../../providers/SVGScaleProvider'
+import { SVGView } from './SVGView'
 
 const SVG = styled.svg({
   display: 'block',
@@ -11,14 +11,15 @@ const SVG = styled.svg({
   fill: 'none',
   userSelect: 'none',
   fontFamily: 'inherit',
-})
-const CenterG = styled.g({
-  transform: 'translate(50%,50%)',
+
+  '& g': {
+    outline: 'none',
+  },
 })
 
 export const SvgRoot: React.FC = ({ children }) => {
   const svgRef = React.useRef<SVGSVGElement>(null)
-  const { transform, applyZoomEvents } = useCanvasView()
+  const { applyZoomEvents } = useCanvasView()
 
   React.useEffect(() => {
     if (!svgRef.current) return
@@ -26,17 +27,8 @@ export const SvgRoot: React.FC = ({ children }) => {
   }, [applyZoomEvents])
 
   return (
-    <SVG ref={svgRef}>
-      <SVGScaleProvider unit={1e5}>
-        <g
-          transform={`
-          translate(${transform.x} ${transform.y})
-          scale(${transform.k})
-        `}
-        >
-          <CenterG>{children}</CenterG>
-        </g>
-      </SVGScaleProvider>
+    <SVG ref={svgRef} id="canvas">
+      <SVGView hideOnMinZoom={false}>{children}</SVGView>
     </SVG>
   )
 }

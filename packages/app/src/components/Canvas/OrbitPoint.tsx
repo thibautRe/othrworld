@@ -1,9 +1,10 @@
+import React from 'react'
 import { Orbit } from '@othrworld/core'
 import { getApoapsis, getPeriapsis } from '@othrworld/orbital-mechanics'
 import { radialToCarth } from '@othrworld/orbital-mechanics/dist/coords'
 import { styled } from '@othrworld/stitches-config'
-import React from 'react'
-import { useCanvasView } from '../../providers/CanvasViewProvider'
+
+import { useCanvasTransform } from '../../providers/CanvasViewProvider'
 import { useScaleAdapter } from '../../providers/SVGScaleProvider'
 
 const OrbitPointsGroup = styled.g({
@@ -19,9 +20,8 @@ interface OrbitPointsProps {
   isHovered: boolean
 }
 export const OrbitPoints = ({ orbit, isHovered }: OrbitPointsProps) => {
-  const { transform } = useCanvasView()
+  const { k } = useCanvasTransform()
   const adapter = useScaleAdapter()
-  const { k } = transform
 
   const pericenter = radialToCarth({ angle: orbit.phi, r: getPeriapsis(orbit) })
   const apocenter = radialToCarth({

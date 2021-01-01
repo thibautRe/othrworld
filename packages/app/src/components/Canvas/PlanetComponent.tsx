@@ -1,14 +1,19 @@
 import React from 'react'
 import { Planet } from '@othrworld/core'
-import { getPlanetSOIRadius } from '@othrworld/orbital-mechanics'
+import { getCarthesianCoords } from '@othrworld/orbital-mechanics'
 import { styled } from '@othrworld/stitches-config'
 
-import { useCanvasView } from '../../providers/CanvasViewProvider'
-import { useScaleAdapter } from '../../providers/SVGScaleProvider'
-import { AtmosphereComponent } from './AtmosphereComponent'
-import { OrbitComponent } from './OrbitComponent'
+import { useCanvasTransform } from '../../providers/CanvasViewProvider'
+import {
+  SVGScaleProvider,
+  useScaleAdapter,
+} from '../../providers/SVGScaleProvider'
 import { useCurrentDate } from '../../providers/DateProvider'
 import { useCanvasTooltips } from '../../providers/CanvasTooltipProvider'
+import { AtmosphereComponent } from './AtmosphereComponent'
+import { OrbitComponent } from './OrbitComponent'
+import { SVGCanvasSpawnPortal } from './SVGCanvasSpawnPortal'
+import { SVGView } from './SVGView'
 
 const PlanetReal = styled.circle({
   fill: '$planet',
@@ -23,16 +28,11 @@ const PlanetText = styled.text({
   transition: 'opacity 200ms',
 })
 
-interface PlanetComponentProps {
-  planet: Planet
-}
-export const PlanetComponent: React.FC<PlanetComponentProps> = ({
+const PlanetRenderComponent: React.FC<{ planet: Planet }> = ({
   planet,
   children,
 }) => {
-  const { transform } = useCanvasView()
-  const currentDate = useCurrentDate()
-  const { k } = transform
+  const { k } = useCanvasTransform()
   const adapter = useScaleAdapter()
   const { onOpenCanvasTooltip } = useCanvasTooltips()
 
@@ -42,18 +42,12 @@ export const PlanetComponent: React.FC<PlanetComponentProps> = ({
   const textOpacity = adapter(planet.orbit.a) * k > 50 ? 1 : 0
 
   return (
-    <OrbitComponent orbit={planet.orbit}>
-      {children}
+    <>
       <g onClick={(e) => onOpenCanvasTooltip(e, { type: 'planet', planet })}>
-        <PlanetReal r={adapter(planet.radius)} data-dbg-r={planet.radius} />
+        <PlanetReal r={adapter(planet.radius)} />
         <AtmosphereComponent planet={planet} />
         <PlanetIcon r={iconRadius} />
       </g>
-      <circle
-        r={adapter(getPlanetSOIRadius(planet, currentDate))}
-        strokeWidth={1 / k}
-        stroke="yellow"
-      />
       <PlanetText
         y={Math.max(adapter(planet.radius), iconRadius) + textFontSize}
         fontSize={textFontSize}
@@ -61,6 +55,36 @@ export const PlanetComponent: React.FC<PlanetComponentProps> = ({
       >
         {planet.name}
       </PlanetText>
+      {children}
+    </>
+  )
+}
+
+interface PlanetComponentProps {
+  planet: Planet
+}
+export const PlanetComponent: React.FC<PlanetComponentProps> = ({
+  planet,
+  children,
+}) => {
+  const currentDate = useCurrentDate()
+  const adapter = useScaleAdapter()
+
+  const pos = getCarthesianCoords(planet.orbit, currentDate)
+
+  return (
+    <OrbitComponent orbit={planet.orbit}>
+      <SVGCanvasSpawnPortal>
+        <SVGView
+          scale={adapter(planet.radius / 10)}
+          center={{ x: adapter(pos.x), y: adapter(pos.y) }}
+        >
+          <PlanetRenderComponent planet={planet}>
+            {children}
+          </PlanetRenderComponent>
+        </SVGView>
+      </SVGCanvasSpawnPortal>
+      <PlanetRenderComponent planet={planet} />
     </OrbitComponent>
   )
 }

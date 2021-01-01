@@ -7,6 +7,7 @@ import {
   usePlayPause,
 } from '../providers/DateProvider'
 import { useSystem } from '../providers/SystemProvider'
+import { useCanvasTransform } from '../providers/CanvasViewProvider'
 
 const Wrapper = styled.div({
   position: 'absolute',
@@ -24,6 +25,7 @@ export const StatusBarComponent = () => {
   const isPlay = usePlayPause()
   const currentDate = useCurrentDate()
   const currentTimeMult = useCurrentTimeMult()
+  const { k } = useCanvasTransform()
 
   return (
     <Wrapper>
@@ -32,9 +34,11 @@ export const StatusBarComponent = () => {
       </span>{' '}
       <span>
         Spacecrafts: <strong>{system.spacecrafts.length}</strong>
-      </span>{' - '}
+      </span>
+      {' - '}
       {currentDate.toLocaleString()} ({currentTimeMult}
       x) {!isPlay && '*PAUSED*'}
+      <span>Zoom: {k.toFixed(4)}</span>
     </Wrapper>
   )
 }

@@ -8,11 +8,18 @@ import { useScaleAdapter } from '../../providers/SVGScaleProvider'
 interface OrbitItemProps extends React.SVGAttributes<SVGGElement> {
   orbit: Orbit
 }
-export const OrbitItem: React.FC<OrbitItemProps> = ({ orbit, ...props }) => {
+export const OrbitItem: React.FC<OrbitItemProps> = ({
+  orbit,
+  children,
+  ...props
+}) => {
   const date = useCurrentDate()
   const adapter = useScaleAdapter()
   const { x, y } = getCarthesianCoords(orbit, date)
 
-  // prettier-ignore
-  return <g transform={`translate(${adapter(x)} ${adapter(y)})`} {...props} />
+  return (
+    <g transform={`translate(${adapter(x)} ${adapter(y)})`} {...props}>
+      {children}
+    </g>
+  )
 }

@@ -9,7 +9,6 @@ interface CanvasViewTransform {
 }
 const defaultTransform: CanvasViewTransform = { x: 0, y: 0, k: 1 }
 export interface CanvasViewContext {
-  transform: CanvasViewTransform
   setTransform: (t: CanvasViewTransform) => void
   applyZoomEvents: (elt: SVGSVGElement) => void
 }
@@ -18,10 +17,12 @@ const contextErrorFunction = () => {
   throw new Error('No CanvasViewProvider found')
 }
 const CanvasViewContext = React.createContext<CanvasViewContext>({
-  transform: defaultTransform,
   setTransform: contextErrorFunction,
   applyZoomEvents: contextErrorFunction,
 })
+const CanvasTransformContext = React.createContext<CanvasViewTransform>(
+  defaultTransform
+)
 
 type SVGSelection = Selection<SVGSVGElement, unknown, null, undefined>
 
@@ -57,12 +58,21 @@ export const CanvasViewProvider: React.FC = ({ children }) => {
   )
 
   return (
-    <CanvasViewContext.Provider
-      value={{ transform, setTransform, applyZoomEvents }}
-    >
-      {children}
+    <CanvasViewContext.Provider value={{ setTransform, applyZoomEvents }}>
+      <CanvasTransformProvider transform={transform}>
+        {children}
+      </CanvasTransformProvider>
     </CanvasViewContext.Provider>
   )
 }
 
+export const CanvasTransformProvider: React.FC<{
+  transform: CanvasViewTransform
+}> = ({ transform, children }) => (
+  <CanvasTransformContext.Provider value={transform}>
+    {children}
+  </CanvasTransformContext.Provider>
+)
+
 export const useCanvasView = () => React.useContext(CanvasViewContext)
+export const useCanvasTransform = () => React.useContext(CanvasTransformContext)

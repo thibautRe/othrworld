@@ -3,7 +3,7 @@ import { styled } from '@othrworld/stitches-config'
 import { Orbit } from '@othrworld/core'
 import { getSemiMinorAxis } from '@othrworld/orbital-mechanics'
 
-import { useCanvasView } from '../../providers/CanvasViewProvider'
+import { useCanvasTransform } from '../../providers/CanvasViewProvider'
 import { useScaleAdapter } from '../../providers/SVGScaleProvider'
 
 const OrbitEll = styled.ellipse({
@@ -23,8 +23,7 @@ export const OrbitEllipse = ({
   baseStrokeWidth = 1,
   ...props
 }: OrbitEllipseProps) => {
-  const { transform } = useCanvasView()
-  const { k } = transform
+  const { k } = useCanvasTransform()
   const adapter = useScaleAdapter()
   return (
     <OrbitEll

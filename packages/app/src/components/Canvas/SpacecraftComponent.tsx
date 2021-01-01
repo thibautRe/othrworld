@@ -2,7 +2,7 @@ import React from 'react'
 import { Spacecraft } from '@othrworld/core'
 import { styled } from '@othrworld/stitches-config'
 
-import { useCanvasView } from '../../providers/CanvasViewProvider'
+import { useCanvasTransform } from '../../providers/CanvasViewProvider'
 import { useScaleAdapter } from '../../providers/SVGScaleProvider'
 import { OrbitComponent } from './OrbitComponent'
 
@@ -21,9 +21,8 @@ interface SpacecraftComponentProps {
 export const SpacecraftComponent = ({
   spacecraft,
 }: SpacecraftComponentProps) => {
-  const { transform } = useCanvasView()
+  const { k } = useCanvasTransform()
   const adapter = useScaleAdapter()
-  const { k } = transform
   const fontSize = 10 / k
   const visualRadius = adapter(spacecraft.orbit.a) * k
 

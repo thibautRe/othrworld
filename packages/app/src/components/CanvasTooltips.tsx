@@ -10,6 +10,13 @@ export const CanvasTooltips = () => {
   return (
     <Popover position={canvasTooltip.position} onClose={onCloseCanvasTooltip}>
       {canvasTooltip.type}
+      {canvasTooltip.type === 'planet' && (
+        <>
+          <div>
+            Radius: <strong>{canvasTooltip.planet.radius.toFixed()}</strong>
+          </div>
+        </>
+      )}
     </Popover>
   )
 }

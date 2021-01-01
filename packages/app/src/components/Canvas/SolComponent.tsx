@@ -1,6 +1,6 @@
 import React from 'react'
 import { styled } from '@othrworld/stitches-config'
-import { useCanvasView } from '../../providers/CanvasViewProvider'
+import { useCanvasTransform } from '../../providers/CanvasViewProvider'
 
 const Sol = styled.circle({
   fill: '$sol',
@@ -14,8 +14,7 @@ interface SolComponentProps {
   radius: number
 }
 export const SolComponent = ({ radius }: SolComponentProps) => {
-  const { transform } = useCanvasView()
-  const { k } = transform
+  const { k } = useCanvasTransform()
   return (
     <>
       <Sol r={radius} />

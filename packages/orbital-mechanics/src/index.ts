@@ -39,7 +39,7 @@ const getMeanAnomaly = (orbit: Orbit, t: Date, M0 = 0) =>
     ((t.getTime() / 1000 - orbit.t0.getTime() / 1000) % getOrbitPeriod(orbit))
 
 const ε = 1e-4
-const maxIter = 10
+const maxIter = 11
 
 /** @link https://github.com/benelsen/orb/blob/master/src/position/keplerian.js source of the alg */
 const getEccentricAnomaly = (orbit: Orbit, t: Date) => {

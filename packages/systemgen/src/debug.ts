@@ -10,10 +10,10 @@ const atmosphere: Atmosphere = {
 
 export const generateDebugSystem = (): System => {
   const phi = Math.PI / 4
-  const a = 1e10
+  const a = 1e8
   const parentMass = 1e28
   const t0 = new Date()
-  const radius = 1e6
+  const radius = 1e5
   return {
     id: createID(),
     type: 'system',
@@ -79,25 +79,25 @@ export const generateDebugSystem = (): System => {
         },
         atmosphere,
       },
-      {
-        id: createID(),
-        type: 'planet',
-        name: 'Asteroid',
-        atmosphere: {
-          altitudeHalf: 0,
-          density: 0,
-          composition: {},
-        },
-        density: 1,
-        radius: 50,
-        orbit: {
-          a,
-          e: 1.2,
-          parentMass,
-          phi,
-          t0,
-        },
-      },
+      // {
+      //   id: createID(),
+      //   type: 'planet',
+      //   name: 'Asteroid',
+      //   atmosphere: {
+      //     altitudeHalf: 0,
+      //     density: 0,
+      //     composition: {},
+      //   },
+      //   density: 1,
+      //   radius: 50,
+      //   orbit: {
+      //     a,
+      //     e: 1.2,
+      //     parentMass,
+      //     phi,
+      //     t0,
+      //   },
+      // },
       {
         id: createID(),
         type: 'planet',
