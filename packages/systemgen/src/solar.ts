@@ -29,7 +29,7 @@ export const generateSolarSystem = (): System => {
     type: 'star',
     name: 'Sun',
     radius: 696500,
-    density: 0.255 * 5.514e12,
+    density: 1.408e12,
     orbit: {
       a: 0,
       e: 0,
@@ -51,6 +51,7 @@ export const generateSolarSystem = (): System => {
 
   const jupiter = createJupiter(sun)
   const earth = createEarth(sun)
+  const pluto = createPluto(sun)
 
   return {
     id: createID(),
@@ -165,22 +166,7 @@ export const generateSolarSystem = (): System => {
         atmosphere: dummyAtm,
       },
 
-      {
-        id: createID(),
-        parentId: sun.id,
-        name: 'Pluto',
-        type: 'planet',
-        radius: 1188,
-        density: dummyDensity,
-        orbit: {
-          a: 5906380000,
-          e: 0.2488,
-          parentMass: sunMass,
-          phi: 0,
-          t0: new Date('2050-06-01'),
-        },
-        atmosphere: dummyAtm,
-      },
+      ...pluto.bodies,
 
       // Comets
       {
@@ -389,6 +375,51 @@ const createJupiter: CP = (sun) => {
           parentMass: getBodyMass(jupiter),
           phi: 0,
           t0: new Date(),
+        },
+      },
+    ],
+  }
+}
+
+const createPluto: CP = (sun) => {
+  const pluto: Planet = {
+    id: createID(),
+    parentId: sun.id,
+    name: 'Pluto',
+    type: 'planet',
+    radius: 1188,
+    density: dummyDensity,
+    orbit: {
+      a: 5906380000,
+      e: 0.2488,
+      parentMass: getBodyMass(sun),
+      phi: 0,
+      t0: new Date('2050-06-01'),
+    },
+    atmosphere: dummyAtm,
+  }
+  return {
+    spacecrafts: [],
+    bodies: [
+      pluto,
+      {
+        id: createID(),
+        name: 'Charon',
+        type: 'planet',
+        density: 1.702e12,
+        parentId: pluto.id,
+        radius: 606,
+        orbit: {
+          a: 19591,
+          e: 0.0002,
+          parentMass: getBodyMass(pluto),
+          phi: 0,
+          t0: new Date('2002-11-22'),
+        },
+        atmosphere: {
+          altitudeHalf: 0,
+          composition: {},
+          density: 0,
         },
       },
     ],
