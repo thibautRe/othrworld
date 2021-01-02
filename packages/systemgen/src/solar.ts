@@ -214,8 +214,30 @@ const createEarth: CP = ({ solMass }) => {
       },
     },
   }
-
   const parentMass = getPlanetMass(earth)
+  const moon: Planet = {
+    id: createID(),
+    name: 'Moon',
+    type: 'planet',
+    radius: 1731,
+    parentId: earth.id,
+    density: dummyDensity,
+    orbit: {
+      a: 384399,
+      e: 0.0549,
+      parentMass,
+      phi: 0,
+      t0: new Date(),
+    },
+    atmosphere: {
+      altitudeHalf: 0.1,
+      density: 6e-6,
+      composition: {
+        argon: 1,
+      },
+    },
+  }
+
   return {
     spacecrafts: [
       {
@@ -231,32 +253,21 @@ const createEarth: CP = ({ solMass }) => {
           t0: new Date(),
         },
       },
-    ],
-    planets: [
-      earth,
       {
         id: createID(),
-        name: 'Moon',
-        type: 'planet',
-        radius: 1731,
-        parentId: earth.id,
-        density: dummyDensity,
+        name: 'Apollo 11',
+        type: 'spacecraft',
         orbit: {
-          a: 384399,
-          e: 0.0549,
-          parentMass,
-          phi: 0,
+          a: moon.radius + 1500,
+          e: 0.2,
+          parentMass: getPlanetMass(moon),
+          phi: Math.PI / 4,
           t0: new Date(),
         },
-        atmosphere: {
-          altitudeHalf: 0.1,
-          density: 6e-6,
-          composition: {
-            argon: 1,
-          },
-        },
+        parentId: moon.id,
       },
     ],
+    planets: [earth, moon],
   }
 }
 
