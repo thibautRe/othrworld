@@ -1,19 +1,19 @@
 import React from 'react'
-
-import { PlanetComponent } from './PlanetComponent'
-import { useSystem } from '../../providers/SystemProvider'
-import { SolComponent } from './SolComponent'
-import { SpacecraftComponent } from './SpacecraftComponent'
 import { Body, System } from '@othrworld/core'
+
+import { useSystem } from '../../providers/SystemProvider'
+import { PlanetComponent } from './PlanetComponent'
+import { StarComponent } from './StarComponent'
+import { SpacecraftComponent } from './SpacecraftComponent'
 
 const BodyComponent: React.FC<{ body: Body }> = ({ body, children }) => {
   switch (body.type) {
     case 'planet':
       return <PlanetComponent planet={body}>{children}</PlanetComponent>
-
-    // TODO: render stars and asteroids
     case 'star':
+      return <StarComponent star={body}>{children}</StarComponent>
     case 'asteroid':
+      // TODO
       return null
   }
 }
@@ -43,7 +43,6 @@ export const SystemComponent = () => {
 
   return (
     <>
-      <SolComponent radius={30} />
       {system.bodies
         .filter((b) => !b.parentId)
         .map((body) => (

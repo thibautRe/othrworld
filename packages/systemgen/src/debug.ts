@@ -1,4 +1,4 @@
-import { Atmosphere, createID, System } from '@othrworld/core'
+import { Atmosphere, createID, Star, System } from '@othrworld/core'
 
 const atmosphere: Atmosphere = {
   altitudeHalf: 1,
@@ -14,6 +14,30 @@ export const generateDebugSystem = (): System => {
   const parentMass = 1e28
   const t0 = new Date()
   const radius = 1e5
+
+  const star: Star = {
+    id: createID(),
+    type: 'star',
+    name: 'Star',
+    radius: 696500,
+    density: 0.255 * 5.514e12,
+    orbit: {
+      a: 0,
+      e: 0,
+      parentMass: 1,
+      phi: 0,
+      t0: new Date(),
+    },
+    atmosphere: {
+      altitudeHalf: 2000,
+      density: 1,
+      composition: {
+        hydrogen: 73,
+        helium: 25,
+        oxygen: 1,
+      },
+    },
+  }
   return {
     id: createID(),
     type: 'system',
@@ -21,6 +45,7 @@ export const generateDebugSystem = (): System => {
     bodies: [
       {
         id: createID(),
+        parentId: star.id,
         type: 'planet',
         name: 'Planet ellipse',
         radius,
@@ -36,6 +61,7 @@ export const generateDebugSystem = (): System => {
       },
       {
         id: createID(),
+        parentId: star.id,
         type: 'planet',
         name: 'Planet ellipse 2',
         radius,
@@ -51,6 +77,7 @@ export const generateDebugSystem = (): System => {
       },
       {
         id: createID(),
+        parentId: star.id,
         type: 'planet',
         name: 'Planet ellipse 3',
         radius,
@@ -66,6 +93,7 @@ export const generateDebugSystem = (): System => {
       },
       {
         id: createID(),
+        parentId: star.id,
         type: 'planet',
         name: 'Planet ellipse 4',
         radius,
@@ -81,6 +109,7 @@ export const generateDebugSystem = (): System => {
       },
       // {
       //   id: createID(),
+      //   parentId: star.id,
       //   type: 'planet',
       //   name: 'Asteroid',
       //   atmosphere: {
@@ -100,6 +129,7 @@ export const generateDebugSystem = (): System => {
       // },
       {
         id: createID(),
+        parentId: star.id,
         type: 'planet',
         name: 'Planet circle',
         radius,

@@ -1,4 +1,10 @@
-import { createID, getBodyMass, Spacecraft, System } from '@othrworld/core'
+import {
+  createID,
+  getBodyMass,
+  Spacecraft,
+  Star,
+  System,
+} from '@othrworld/core'
 import { getRandomItemFromArray, randInt, randFloat } from '@othrworld/gen-core'
 import { getBodySOIRadiusBounds } from '../../orbital-mechanics/dist'
 
@@ -8,12 +14,38 @@ export * from './debug'
 export * from './solar'
 
 export const generateSystem = (): System => {
+  // TODO: random star generation
+  const star: Star = {
+    id: createID(),
+    type: 'star',
+    name: 'Sun',
+    radius: 696500,
+    density: 0.255 * 5.514e12,
+    orbit: {
+      a: 0,
+      e: 0,
+      parentMass: 1,
+      phi: 0,
+      t0: new Date(),
+    },
+    atmosphere: {
+      altitudeHalf: 2000,
+      density: 1, // fixme
+      composition: {
+        hydrogen: 73,
+        helium: 25,
+        oxygen: 1,
+      },
+    },
+  }
+
   // Generate planets
   const rootPlanets = new Array(randInt(10))
     .fill(null)
     .map(() =>
       generatePlanet({
-        parentMass: 1e33,
+        parentId: star.id,
+        parentMass: getBodyMass(star),
         minRadius: 2e3,
         maxRadius: 1e5,
         minDistance: 1e7,
@@ -71,6 +103,6 @@ export const generateSystem = (): System => {
     id: createID(),
     type: 'system',
     spacecrafts,
-    bodies,
+    bodies: [star, ...bodies],
   }
 }

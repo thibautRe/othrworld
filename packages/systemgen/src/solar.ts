@@ -6,6 +6,7 @@ import {
   createID,
   getBodyMass,
   Planet,
+  Star,
 } from '@othrworld/core'
 
 // Density for planets that I don't know yet what they are
@@ -23,19 +24,43 @@ const dummyAtm: Atmosphere = {
 
 /** Generate the Solar System */
 export const generateSolarSystem = (): System => {
-  const solMass = 1.98e30 // kg
-  const solRadius = 696500 // km
+  const sun: Star = {
+    id: createID(),
+    type: 'star',
+    name: 'Sun',
+    radius: 696500,
+    density: 0.255 * 5.514e12,
+    orbit: {
+      a: 0,
+      e: 0,
+      parentMass: 1,
+      phi: 0,
+      t0: new Date(),
+    },
+    atmosphere: {
+      altitudeHalf: 2000,
+      density: 1, // fixme
+      composition: {
+        hydrogen: 73,
+        helium: 25,
+        oxygen: 1,
+      },
+    },
+  }
+  const sunMass = getBodyMass(sun)
 
-  const jupiter = createJupiter({ solMass })
-  const earth = createEarth({ solMass })
+  const jupiter = createJupiter(sun)
+  const earth = createEarth(sun)
 
   return {
     id: createID(),
     type: 'system',
     spacecrafts: [...earth.spacecrafts, ...jupiter.spacecrafts],
     bodies: [
+      sun,
       {
         id: createID(),
+        parentId: sun.id,
         name: 'Mercury',
         type: 'planet',
         radius: 2439,
@@ -43,7 +68,7 @@ export const generateSolarSystem = (): System => {
         orbit: {
           a: 57909050,
           e: 0.20563,
-          parentMass: solMass,
+          parentMass: sunMass,
           phi: 0,
           t0: new Date(),
         },
@@ -51,6 +76,7 @@ export const generateSolarSystem = (): System => {
       },
       {
         id: createID(),
+        parentId: sun.id,
         name: 'Venus',
         type: 'planet',
         radius: 6051,
@@ -58,7 +84,7 @@ export const generateSolarSystem = (): System => {
         orbit: {
           a: 108200800,
           e: 0.0067,
-          parentMass: solMass,
+          parentMass: sunMass,
           phi: 0,
           t0: new Date(),
         },
@@ -69,6 +95,7 @@ export const generateSolarSystem = (): System => {
 
       {
         id: createID(),
+        parentId: sun.id,
         name: 'Mars',
         type: 'planet',
         radius: 3389,
@@ -76,7 +103,7 @@ export const generateSolarSystem = (): System => {
         orbit: {
           a: 227939200,
           e: 0.0934,
-          parentMass: solMass,
+          parentMass: sunMass,
           phi: 0,
           t0: new Date(),
         },
@@ -89,6 +116,7 @@ export const generateSolarSystem = (): System => {
 
       {
         id: createID(),
+        parentId: sun.id,
         name: 'Saturn',
         type: 'planet',
         radius: 58232,
@@ -96,7 +124,7 @@ export const generateSolarSystem = (): System => {
         orbit: {
           a: 1443000000,
           e: 0.0565,
-          parentMass: solMass,
+          parentMass: sunMass,
           phi: 0,
           t0: new Date(),
         },
@@ -105,6 +133,7 @@ export const generateSolarSystem = (): System => {
 
       {
         id: createID(),
+        parentId: sun.id,
         name: 'Uranus',
         type: 'planet',
         radius: 25360,
@@ -112,7 +141,7 @@ export const generateSolarSystem = (): System => {
         orbit: {
           a: 2875000000,
           e: 0.046,
-          parentMass: solMass,
+          parentMass: sunMass,
           phi: 0,
           t0: new Date(),
         },
@@ -121,6 +150,7 @@ export const generateSolarSystem = (): System => {
 
       {
         id: createID(),
+        parentId: sun.id,
         name: 'Neptune',
         type: 'planet',
         radius: 24620,
@@ -128,7 +158,7 @@ export const generateSolarSystem = (): System => {
         orbit: {
           a: 4500000000,
           e: 0.0086,
-          parentMass: solMass,
+          parentMass: sunMass,
           phi: 0,
           t0: new Date(),
         },
@@ -137,6 +167,7 @@ export const generateSolarSystem = (): System => {
 
       {
         id: createID(),
+        parentId: sun.id,
         name: 'Pluto',
         type: 'planet',
         radius: 1188,
@@ -144,7 +175,7 @@ export const generateSolarSystem = (): System => {
         orbit: {
           a: 5906380000,
           e: 0.2488,
-          parentMass: solMass,
+          parentMass: sunMass,
           phi: 0,
           t0: new Date('2050-06-01'),
         },
@@ -154,6 +185,7 @@ export const generateSolarSystem = (): System => {
       // Comets
       {
         id: createID(),
+        parentId: sun.id,
         type: 'planet',
         name: 'Hale–Bopp',
         radius: 60,
@@ -161,7 +193,7 @@ export const generateSolarSystem = (): System => {
         orbit: {
           a: 27825200000,
           e: 0.995086,
-          parentMass: solMass,
+          parentMass: sunMass,
           phi: (130 * Math.PI) / 180,
           t0: new Date('1997-03-30'),
         },
@@ -169,6 +201,7 @@ export const generateSolarSystem = (): System => {
       },
       {
         id: createID(),
+        parentId: sun.id,
         type: 'planet',
         name: 'C/1844 N1 (Mauvais)',
         radius: 10,
@@ -176,7 +209,7 @@ export const generateSolarSystem = (): System => {
         orbit: {
           a: 526584500000,
           e: 0.999757,
-          parentMass: solMass,
+          parentMass: sunMass,
           phi: (211 * Math.PI) / 180,
           t0: new Date('1844-10-17'),
         },
@@ -186,14 +219,13 @@ export const generateSolarSystem = (): System => {
   }
 }
 
-interface CPProps {
-  solMass: number
-}
-type CP = (props: CPProps) => { bodies: Body[]; spacecrafts: Spacecraft[] }
+type CP = (sun: Star) => { bodies: Body[]; spacecrafts: Spacecraft[] }
 
-const createEarth: CP = ({ solMass }) => {
+const createEarth: CP = (sun) => {
+  const sunMass = getBodyMass(sun)
   const earth: Planet = {
     id: createID(),
+    parentId: sun.id,
     name: 'Earth',
     type: 'planet',
     radius: 6371,
@@ -201,7 +233,7 @@ const createEarth: CP = ({ solMass }) => {
     orbit: {
       a: 149598023,
       e: 0.0167086,
-      parentMass: solMass,
+      parentMass: sunMass,
       phi: 0,
       t0: new Date('2021-01-02T13:59'),
     },
@@ -272,9 +304,11 @@ const createEarth: CP = ({ solMass }) => {
   }
 }
 
-const createJupiter: CP = ({ solMass }) => {
+const createJupiter: CP = (sun) => {
+  const sunMass = getBodyMass(sun)
   const jupiter: Planet = {
     id: createID(),
+    parentId: sun.id,
     name: 'Jupiter',
     type: 'planet',
     radius: 69911,
@@ -283,7 +317,7 @@ const createJupiter: CP = ({ solMass }) => {
     orbit: {
       a: 778570000,
       e: 0.0489,
-      parentMass: solMass,
+      parentMass: sunMass,
       phi: 0,
       t0: new Date(),
     },

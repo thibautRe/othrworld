@@ -48,6 +48,7 @@ export interface Atmosphere {
 export interface AtmosphereComposition {
   argon?: number
   hydrogen?: number
+  helium?: number
   oxygen?: number
   nitrogen?: number
 }
