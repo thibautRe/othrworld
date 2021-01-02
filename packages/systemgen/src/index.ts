@@ -1,6 +1,6 @@
-import { createID, getPlanetMass, Spacecraft, System } from '@othrworld/core'
+import { createID, getBodyMass, Spacecraft, System } from '@othrworld/core'
 import { getRandomItemFromArray, randInt, randFloat } from '@othrworld/gen-core'
-import { getPlanetSOIRadiusBounds } from '../../orbital-mechanics/dist'
+import { getBodySOIRadiusBounds } from '../../orbital-mechanics/dist'
 
 import { generatePlanet } from './planet'
 
@@ -28,8 +28,8 @@ export const generateSystem = (): System => {
         .fill(null)
         .map(() => {
           const parent = getRandomItemFromArray(rootPlanets)
-          const parentMass = getPlanetMass(parent)
-          const [minR] = getPlanetSOIRadiusBounds(parent)
+          const parentMass = getBodyMass(parent)
+          const [minR] = getBodySOIRadiusBounds(parent)
           const minDistance = parent.radius * 1.1
           const maxDistance = minR * 0.8
 
@@ -46,11 +46,11 @@ export const generateSystem = (): System => {
         .filter(Boolean)
     : []
 
-  const planets = [...rootPlanets, ...moons]
-  const spacecrafts: Spacecraft[] = planets.length
+  const bodies = [...rootPlanets, ...moons]
+  const spacecrafts: Spacecraft[] = bodies.length
     ? new Array(randInt(10)).fill(null).map((_, i) => {
-        const parent = getRandomItemFromArray(planets)
-        const parentMass = getPlanetMass(parent)
+        const parent = getRandomItemFromArray(bodies)
+        const parentMass = getBodyMass(parent)
         return {
           id: createID(),
           name: `Spacecraft ${i}`,
@@ -71,6 +71,6 @@ export const generateSystem = (): System => {
     id: createID(),
     type: 'system',
     spacecrafts,
-    planets,
+    bodies,
   }
 }

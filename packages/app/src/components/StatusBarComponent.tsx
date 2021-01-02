@@ -30,7 +30,7 @@ export const StatusBarComponent = () => {
   return (
     <Wrapper>
       <span>
-        Planets: <strong>{system.planets.length}</strong>
+        Bodies: <strong>{system.bodies.length}</strong>
       </span>{' '}
       <span>
         Spacecrafts: <strong>{system.spacecrafts.length}</strong>

@@ -4,12 +4,9 @@ import { getCarthesianCoords } from '@othrworld/orbital-mechanics'
 import { styled } from '@othrworld/stitches-config'
 
 import { useCanvasTransform } from '../../providers/CanvasViewProvider'
-import {
-  SVGScaleProvider,
-  useScaleAdapter,
-} from '../../providers/SVGScaleProvider'
-import { useCurrentDate } from '../../providers/DateProvider'
 import { useCanvasTooltips } from '../../providers/CanvasTooltipProvider'
+import { useScaleAdapter } from '../../providers/SVGScaleProvider'
+import { useCurrentDate } from '../../providers/DateProvider'
 import { AtmosphereComponent } from './AtmosphereComponent'
 import { OrbitComponent } from './OrbitComponent'
 import { SVGCanvasSpawnPortal } from './SVGCanvasSpawnPortal'
@@ -67,7 +64,6 @@ export const PlanetComponent: React.FC<PlanetComponentProps> = ({
   planet,
   children,
 }) => {
-  const { k } = useCanvasTransform()
   const currentDate = useCurrentDate()
   const adapter = useScaleAdapter()
 

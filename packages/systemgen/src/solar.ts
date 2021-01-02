@@ -1,10 +1,11 @@
 import {
   Atmosphere,
-  createID,
-  getPlanetMass,
-  Planet,
+  Body,
   Spacecraft,
   System,
+  createID,
+  getBodyMass,
+  Planet,
 } from '@othrworld/core'
 
 // Density for planets that I don't know yet what they are
@@ -32,7 +33,7 @@ export const generateSolarSystem = (): System => {
     id: createID(),
     type: 'system',
     spacecrafts: [...earth.spacecrafts, ...jupiter.spacecrafts],
-    planets: [
+    bodies: [
       {
         id: createID(),
         name: 'Mercury',
@@ -64,7 +65,7 @@ export const generateSolarSystem = (): System => {
         atmosphere: dummyAtm,
       },
 
-      ...earth.planets,
+      ...earth.bodies,
 
       {
         id: createID(),
@@ -84,7 +85,7 @@ export const generateSolarSystem = (): System => {
 
       // ---- ASTEROIDS ---
 
-      ...jupiter.planets,
+      ...jupiter.bodies,
 
       {
         id: createID(),
@@ -188,7 +189,7 @@ export const generateSolarSystem = (): System => {
 interface CPProps {
   solMass: number
 }
-type CP = (props: CPProps) => { planets: Planet[]; spacecrafts: Spacecraft[] }
+type CP = (props: CPProps) => { bodies: Body[]; spacecrafts: Spacecraft[] }
 
 const createEarth: CP = ({ solMass }) => {
   const earth: Planet = {
@@ -214,7 +215,7 @@ const createEarth: CP = ({ solMass }) => {
       },
     },
   }
-  const parentMass = getPlanetMass(earth)
+  const parentMass = getBodyMass(earth)
   const moon: Planet = {
     id: createID(),
     name: 'Moon',
@@ -260,14 +261,14 @@ const createEarth: CP = ({ solMass }) => {
         orbit: {
           a: moon.radius + 1500,
           e: 0.2,
-          parentMass: getPlanetMass(moon),
+          parentMass: getBodyMass(moon),
           phi: Math.PI / 4,
           t0: new Date(),
         },
         parentId: moon.id,
       },
     ],
-    planets: [earth, moon],
+    bodies: [earth, moon],
   }
 }
 
@@ -290,7 +291,7 @@ const createJupiter: CP = ({ solMass }) => {
 
   return {
     spacecrafts: [],
-    planets: [
+    bodies: [
       jupiter,
       {
         id: createID(),
@@ -303,7 +304,7 @@ const createJupiter: CP = ({ solMass }) => {
         orbit: {
           a: 421800,
           e: 0.0041,
-          parentMass: getPlanetMass(jupiter),
+          parentMass: getBodyMass(jupiter),
           phi: 0,
           t0: new Date(),
         },
@@ -319,7 +320,7 @@ const createJupiter: CP = ({ solMass }) => {
         orbit: {
           a: 671100,
           e: 0.0094,
-          parentMass: getPlanetMass(jupiter),
+          parentMass: getBodyMass(jupiter),
           phi: 0,
           t0: new Date(),
         },
@@ -335,7 +336,7 @@ const createJupiter: CP = ({ solMass }) => {
         orbit: {
           a: 1070400,
           e: 0.0011,
-          parentMass: getPlanetMass(jupiter),
+          parentMass: getBodyMass(jupiter),
           phi: 0,
           t0: new Date(),
         },
@@ -351,7 +352,7 @@ const createJupiter: CP = ({ solMass }) => {
         orbit: {
           a: 1882700,
           e: 0.0074,
-          parentMass: getPlanetMass(jupiter),
+          parentMass: getBodyMass(jupiter),
           phi: 0,
           t0: new Date(),
         },

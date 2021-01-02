@@ -1,10 +1,10 @@
 import { ID } from './id'
-import { Planet } from './planet'
+import { Body } from './body'
 import { Spacecraft } from './spacecraft'
 
 export interface System {
   id: ID<'system'>
   type: 'system'
-  planets: Planet[]
+  bodies: Body[]
   spacecrafts: Spacecraft[]
 }

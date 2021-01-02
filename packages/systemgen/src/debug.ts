@@ -18,7 +18,7 @@ export const generateDebugSystem = (): System => {
     id: createID(),
     type: 'system',
     spacecrafts: [],
-    planets: [
+    bodies: [
       {
         id: createID(),
         type: 'planet',

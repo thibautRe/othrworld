@@ -2,18 +2,35 @@ import { ID } from './id'
 import { Orbit } from './orbit'
 import { Distance } from './units'
 
-export interface Planet {
-  id: ID<'planet'>
-  parentId?: ID<'planet'>
-  type: 'planet'
+interface BodyBase {
+  id: ID<'body'>
+  parentId?: ID<'body'>
   name: string
-  radius: Distance
-  orbit: Orbit
   /** @unit kg/km^3 */
   density: number
+  radius: Distance
+  orbit: Orbit
+}
 
+export interface Planet extends BodyBase {
+  type: 'planet'
   atmosphere: Atmosphere
 }
+
+export interface Asteroid extends BodyBase {
+  type: 'asteroid'
+}
+
+export interface Star extends BodyBase {
+  type: 'star'
+  atmosphere: Atmosphere
+
+  // Possible fields listed below:
+  // energy: number
+  // luminosity: number
+}
+
+export type Body = Planet | Star | Asteroid
 
 export interface Atmosphere {
   /** Density at sea level

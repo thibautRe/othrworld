@@ -1,4 +1,4 @@
-import { Planet } from '../types/planet'
+import { Body } from '../types/body'
 
 /** @unit km^3 */
-export const getPlanetVolume = (p: Planet) => (4 / 3) * Math.PI * p.radius ** 3
+export const getBodyVolume = (b: Body) => (4 / 3) * Math.PI * b.radius ** 3

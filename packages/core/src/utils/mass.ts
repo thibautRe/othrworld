@@ -1,6 +1,6 @@
-import { Planet } from '../types/planet'
-import { getPlanetVolume } from './volume'
+import { Body } from '../types/body'
+import { getBodyVolume } from './volume'
 
-export const getPlanetMass = (p: Planet): number => {
-  return p.density * getPlanetVolume(p)
+export const getBodyMass = (b: Body): number => {
+  return b.density * getBodyVolume(b)
 }
