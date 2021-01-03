@@ -18,10 +18,34 @@ const SVG = styled.svg({
   },
 })
 
+const useMesureInfo = () => {
+  const [mesureInfo, setMesureInfo] = React.useState<MesureInfo | null>(null)
+  React.useEffect(() => {
+    const list = (e: KeyboardEvent) =>
+      e.key === 'Control' && setMesureInfo(null)
+    window.addEventListener('keyup', list)
+    return () => window.removeEventListener('keyup', list)
+  }, [])
+
+  const onMouseMove = React.useCallback((e: React.MouseEvent) => {
+    if (!e.ctrlKey) return
+    setMesureInfo((mi) => {
+      const currentPoint = { x: e.clientX, y: e.clientY }
+      if (!mi) return { from: currentPoint, to: currentPoint }
+      else return { ...mi, to: currentPoint }
+    })
+  }, [])
+
+  return {
+    mesureInfo,
+    eventHandlers: { onMouseMove },
+  }
+}
+
 export const SvgRoot: React.FC = ({ children }) => {
   const svgRef = React.useRef<SVGSVGElement>(null)
   const { applyZoomEvents } = useCanvasView()
-  const [mesureInfo, setMesureInfo] = React.useState<MesureInfo | null>(null)
+  const { mesureInfo, eventHandlers } = useMesureInfo()
 
   React.useEffect(() => {
     if (!svgRef.current) return
@@ -29,18 +53,7 @@ export const SvgRoot: React.FC = ({ children }) => {
   }, [applyZoomEvents])
 
   return (
-    <SVG
-      ref={svgRef}
-      id="canvas"
-      onMouseMove={(e) => {
-        if (!e.ctrlKey) return setMesureInfo(null)
-        setMesureInfo((mi) => {
-          const currentPoint = { x: e.clientX, y: e.clientY }
-          if (!mi) return { from: currentPoint, to: currentPoint }
-          else return { ...mi, to: currentPoint }
-        })
-      }}
-    >
+    <SVG ref={svgRef} id="canvas" {...eventHandlers}>
       <SVGView hideOnMinZoom={false}>{children}</SVGView>
       {mesureInfo && <SVGMesure info={mesureInfo} />}
     </SVG>

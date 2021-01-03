@@ -158,68 +158,13 @@ export const recalculateOrbitForPosAndSpeed = (
   const EquadrantAdjust = -ey * pos.x + ex * pos.y > 0
   const E = Math.acos((1 - r / a) / e) * (EquadrantAdjust ? -1 : 1)
   const tDelta = Math.sqrt(Math.pow(a, 3) / mu) * (E - e * Math.sin(E))
-  const t0 = new Date()
-  t0.setTime(t.getTime() - tDelta * 1000)
+  const t0 = new Date(t.getTime() - tDelta * 1000)
 
-  const newOrbit: Orbit = {
+  return {
     a,
     e,
     parentMass: orbit.parentMass,
     phi,
     t0,
   }
-
-  console.log({ phi, ex, ey })
-
-  return newOrbit
-}
-
-export const recalculateOrbitForPosAndSpeed2 = (
-  orbit: Orbit,
-  pos: CarthCoords,
-  speed: CarthCoords,
-  t: Date
-): Orbit => {
-  const mu = G * orbit.parentMass
-
-  const p = (pos.x * speed.y - pos.y * speed.x) ** 2 / mu
-
-  const speedLen = Math.hypot(speed.x, speed.y)
-
-  const posDotSpeed = pos.x * speed.x + pos.y * speed.y
-
-  const e = Math.sqrt(
-    (p / mu) * Math.pow(posDotSpeed / speedLen, 2) +
-      Math.pow(p / speedLen - 1, 2)
-  )
-
-  const phi = -Math.atan2(Math.sqrt(p / mu) * posDotSpeed, p - speedLen)
-
-  // Below is only if e < 1
-  const a = p / (1 - Math.pow(e, 2))
-  const E = 2 * Math.atan(Math.sqrt((1 - e) / (1 + e)) * Math.tan(-phi / 2))
-  const t0 = new Date()
-  t0.setTime(
-    t.getTime() - Math.sqrt(Math.pow(a, 3) / mu) * (E - e * Math.sin(E))
-  )
-
-  const newOrbit: Orbit = {
-    a,
-    e,
-    parentMass: orbit.parentMass,
-    phi,
-    t0,
-  }
-  console.log(newOrbit)
-
-  return newOrbit
-  // else if (e > 1) {
-  //   let a = p / (Math.pow(e, 2) - 1)
-
-  //   let H = 2 * Math.atanh(Math.sqrt((1 - e) / (1 + e)) * Math.tan(ν / 2))
-
-  //   let T0 = t + Math.sqrt(Math.pow(a, 3) / mu) * (H - e * Math.sinh(H))
-
-  //   return [a, e, i, Ω, ω, T0]
-  // }
 }
