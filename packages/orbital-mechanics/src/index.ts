@@ -1,14 +1,15 @@
 import { Body, getBodyMass, Orbit } from '@othrworld/core'
 import {
   CarthCoords,
-  carthToRadial,
   RadialCoords,
+  carthToRadial,
   radialToCarth,
+  rotateCarth,
 } from './coords'
 
 // 6.6743e-11 using kg and m as unit
 // Here we use kg and km as base units
-export const G = 6.6743e-20
+const G = 6.6743e-20
 
 // JS `%` operation is not the one expected for negative values.
 // @see https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/Remainder
@@ -30,12 +31,11 @@ const getDistanceForTrueAnomaly = (orbit: Orbit, trueAnomaly: number) =>
   (orbit.a * (1 - orbit.e ** 2)) / (1 + orbit.e * Math.cos(trueAnomaly))
 
 /** Returns the angular speed for a circular orbit to complete an orbit */
-export const getMeanMotion = (orbit: Orbit) =>
+const getMeanMotion = (orbit: Orbit) =>
   Math.sqrt((G * orbit.parentMass) / orbit.a ** 3)
 
 /** Returns the period */
-export const getOrbitPeriod = (orbit: Orbit) =>
-  (2 * Math.PI) / getMeanMotion(orbit)
+const getOrbitPeriod = (orbit: Orbit) => (2 * Math.PI) / getMeanMotion(orbit)
 
 /**
  * Returns the mean anomaly at a given time
@@ -78,7 +78,7 @@ const getEccentricAnomaly = (orbit: Orbit, t: Date) => {
 }
 
 /** Returns the True Anomaly at a given Date */
-export const getTrueAnomaly = (orbit: Orbit, t: Date) =>
+const getTrueAnomaly = (orbit: Orbit, t: Date) =>
   2 *
   Math.atan(
     Math.sqrt((1 + orbit.e) / (1 - orbit.e)) *
@@ -116,7 +116,7 @@ export const getBodySOIRadiusBounds = (body: Body): [number, number] => [
   getBodySOIRadiusAtDistance(body, getApoapsis(body.orbit)),
 ]
 
-export const getSpeedAtDistance = (orbit: Orbit, r: number): number =>
+const getSpeedAtDistance = (orbit: Orbit, r: number): number =>
   Math.sqrt(G * orbit.parentMass * (2 / r - 1 / orbit.a))
 
 export const getSpeed = (orbit: Orbit, t: Date): number =>
@@ -127,14 +127,13 @@ export const getSpeedVector = (orbit: Orbit, t: Date): CarthCoords => {
   const { angle } = getRadialCoords(orbit, t)
   const p = orbit.a * (1 - orbit.e * orbit.e)
 
-  const carthSpeed = {
-    x: -Math.sqrt((G * orbit.parentMass) / p) * Math.sin(angle),
-    y: Math.sqrt((G * orbit.parentMass) / p) * (orbit.e + Math.cos(angle)),
-  }
-
-  const radSpeed = carthToRadial(carthSpeed)
-  radSpeed.angle += orbit.phi
-  return radialToCarth(radSpeed)
+  return rotateCarth(
+    {
+      x: -Math.sqrt((G * orbit.parentMass) / p) * Math.sin(angle),
+      y: Math.sqrt((G * orbit.parentMass) / p) * (orbit.e + Math.cos(angle)),
+    },
+    orbit.phi
+  )
 }
 
 export const recalculateOrbitForPosAndSpeed = (
