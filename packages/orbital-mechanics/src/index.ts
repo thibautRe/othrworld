@@ -10,6 +10,11 @@ import {
 // Here we use kg and km as base units
 export const G = 6.6743e-20
 
+// JS `%` operation is not the one expected for negative values.
+// @see https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/Remainder
+const realModulo = (val: number, modulo: number): number =>
+  ((val % modulo) + modulo) % modulo
+
 /** Returns the periapsis of a given orbit */
 export const getPeriapsis = (orbit: Orbit) => (1 - orbit.e) * orbit.a
 
@@ -42,7 +47,10 @@ export const getOrbitPeriod = (orbit: Orbit) =>
 const getMeanAnomaly = (orbit: Orbit, t: Date, M0 = 0) =>
   M0 +
   getMeanMotion(orbit) *
-    ((t.getTime() / 1000 - orbit.t0.getTime() / 1000) % getOrbitPeriod(orbit))
+    realModulo(
+      t.getTime() / 1000 - orbit.t0.getTime() / 1000,
+      getOrbitPeriod(orbit)
+    )
 
 const ε = 1e-4
 const maxIter = 11
