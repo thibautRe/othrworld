@@ -4,6 +4,8 @@ import { useKeyListener } from '../hooks/useKeyListener'
 
 interface DateContext {
   currentDate: Date
+  /** Useful for some callbacks that don't want to depend on a mutating date */
+  currentDateRef: { readonly current: Date }
   /** Represents the time multiplication */
   currentTimeMult: number
 
@@ -11,6 +13,7 @@ interface DateContext {
 }
 const DateContext = React.createContext<DateContext>({
   currentDate: new Date(),
+  currentDateRef: { current: new Date() },
   currentTimeMult: 1,
   resetCurrentDate: () => {},
 })
@@ -18,6 +21,7 @@ const PlayPauseContext = React.createContext(true)
 
 export const DateProvider: React.FC = ({ children }) => {
   const [currentDate, setCurrentDate] = React.useState(() => new Date())
+  const currentDateRef = React.useRef(currentDate)
   const [currentTimeMult, setCurrentTimeMult] = React.useState(1000)
   const [isPlay, setIsPlay] = React.useState(true)
 
@@ -40,6 +44,9 @@ export const DateProvider: React.FC = ({ children }) => {
           setCurrentDate((cd) => {
             const nd = new Date()
             nd.setTime(cd.getTime() + currentTimeMult)
+
+            // Update the ref
+            currentDateRef.current = nd
             return nd
           })
         }
@@ -52,7 +59,7 @@ export const DateProvider: React.FC = ({ children }) => {
 
   return (
     <DateContext.Provider
-      value={{ currentDate, currentTimeMult, resetCurrentDate }}
+      value={{ currentDate, currentDateRef, currentTimeMult, resetCurrentDate }}
     >
       <PlayPauseContext.Provider value={isPlay}>
         {children}

@@ -1,4 +1,11 @@
-import { Atmosphere, createID, Star, System } from '@othrworld/core'
+import {
+  Atmosphere,
+  createID,
+  getBodyMass,
+  Planet,
+  Star,
+  System,
+} from '@othrworld/core'
 
 const atmosphere: Atmosphere = {
   altitudeHalf: 1,
@@ -9,17 +16,11 @@ const atmosphere: Atmosphere = {
 }
 
 export const generateDebugSystem = (): System => {
-  const phi = Math.PI / 4
-  const a = 1e8
-  const parentMass = 1e28
-  const t0 = new Date()
-  const radius = 1e5
-
   const star: Star = {
     id: createID(),
     type: 'star',
     name: 'Star',
-    radius: 696500,
+    radius: 69650,
     density: 0.255 * 5.514e12,
     orbit: {
       a: 0,
@@ -38,111 +39,54 @@ export const generateDebugSystem = (): System => {
       },
     },
   }
+
+  const planet1: Planet = {
+    id: createID(),
+    parentId: star.id,
+    name: 'Planet 1',
+    type: 'planet',
+    radius: 3300,
+    density: 1e13,
+    orbit: {
+      a: 579090500,
+      e: 0.20563,
+      parentMass: getBodyMass(star),
+      phi: 0,
+      t0: new Date(),
+    },
+    atmosphere,
+  }
   return {
     id: createID(),
     type: 'system',
-    spacecrafts: [],
-    bodies: [
-      {
-        id: createID(),
-        parentId: star.id,
-        type: 'planet',
-        name: 'Planet ellipse',
-        radius,
-        density: 1e12,
-        orbit: {
-          t0,
-          parentMass,
-          a,
-          e: 0.1,
-          phi,
-        },
-        atmosphere,
-      },
-      {
-        id: createID(),
-        parentId: star.id,
-        type: 'planet',
-        name: 'Planet ellipse 2',
-        radius,
-        density: 1e12,
-        orbit: {
-          t0,
-          parentMass,
-          a,
-          e: 0.5,
-          phi,
-        },
-        atmosphere,
-      },
-      {
-        id: createID(),
-        parentId: star.id,
-        type: 'planet',
-        name: 'Planet ellipse 3',
-        radius,
-        density: 1e12,
-        orbit: {
-          t0,
-          parentMass,
-          a,
-          e: 0.9,
-          phi,
-        },
-        atmosphere,
-      },
-      {
-        id: createID(),
-        parentId: star.id,
-        type: 'planet',
-        name: 'Planet ellipse 4',
-        radius,
-        density: 1e12,
-        orbit: {
-          t0,
-          parentMass,
-          a,
-          e: 0.99,
-          phi,
-        },
-        atmosphere,
-      },
+    spacecrafts: [
       // {
       //   id: createID(),
-      //   parentId: star.id,
-      //   type: 'planet',
-      //   name: 'Asteroid',
-      //   atmosphere: {
-      //     altitudeHalf: 0,
-      //     density: 0,
-      //     composition: {},
-      //   },
-      //   density: 1,
-      //   radius: 50,
+      //   type: 'spacecraft',
+      //   name: 'Spacecraft',
+      //   parentId: planet1.id,
       //   orbit: {
-      //     a,
-      //     e: 1.2,
-      //     parentMass,
-      //     phi,
-      //     t0,
+      //     a: 7000,
+      //     e: 0.2,
+      //     parentMass: getBodyMass(planet1),
+      //     phi: 0,
+      //     t0: new Date(),
       //   },
       // },
       {
         id: createID(),
-        parentId: star.id,
-        type: 'planet',
-        name: 'Planet circle',
-        radius,
-        density: 1e12,
+        type: 'spacecraft',
+        name: 'Spacecraft 2',
+        parentId: planet1.id,
         orbit: {
-          t0,
-          parentMass,
-          a,
-          e: 0,
-          phi,
+          a: 12988.130764995913,
+          e: 0.5218040697377503,
+          parentMass: getBodyMass(planet1),
+          phi: 1.2709399140597246,
+          t0: new Date(),
         },
-        atmosphere,
       },
     ],
+    bodies: [star, planet1],
   }
 }

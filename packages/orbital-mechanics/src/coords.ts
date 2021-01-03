@@ -14,8 +14,8 @@ export const radialToCarth = ({ angle, r }: RadialCoords): CarthCoords => ({
 
 // unused
 export const carthToRadial = ({ x, y }: CarthCoords): RadialCoords => ({
-  r: Math.sqrt(x ** 2 + y ** 2),
-  angle: Math.atan(y / x),
+  r: Math.hypot(x, y),
+  angle: Math.atan2(y, x),
 })
 
 // unused

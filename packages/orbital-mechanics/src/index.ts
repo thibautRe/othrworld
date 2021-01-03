@@ -1,7 +1,14 @@
 import { Body, getBodyMass, Orbit } from '@othrworld/core'
-import { CarthCoords, RadialCoords, radialToCarth } from './coords'
+import {
+  CarthCoords,
+  carthToRadial,
+  RadialCoords,
+  radialToCarth,
+} from './coords'
 
-export const G = 6.6743e-11
+// 6.6743e-11 using kg and m as unit
+// Here we use kg and km as base units
+export const G = 6.6743e-20
 
 /** Returns the periapsis of a given orbit */
 export const getPeriapsis = (orbit: Orbit) => (1 - orbit.e) * orbit.a
@@ -19,8 +26,7 @@ const getDistanceForTrueAnomaly = (orbit: Orbit, trueAnomaly: number) =>
 
 /** Returns the angular speed for a circular orbit to complete an orbit */
 export const getMeanMotion = (orbit: Orbit) =>
-  // Unit hack: G needs meter, not KM
-  Math.sqrt((G * orbit.parentMass) / (orbit.a * 1e3) ** 3)
+  Math.sqrt((G * orbit.parentMass) / orbit.a ** 3)
 
 /** Returns the period */
 export const getOrbitPeriod = (orbit: Orbit) =>
@@ -101,3 +107,111 @@ export const getBodySOIRadiusBounds = (body: Body): [number, number] => [
   getBodySOIRadiusAtDistance(body, getPeriapsis(body.orbit)),
   getBodySOIRadiusAtDistance(body, getApoapsis(body.orbit)),
 ]
+
+export const getSpeedAtDistance = (orbit: Orbit, r: number): number =>
+  Math.sqrt(G * orbit.parentMass * (2 / r - 1 / orbit.a))
+
+export const getSpeed = (orbit: Orbit, t: Date): number =>
+  getSpeedAtDistance(orbit, getRadialCoords(orbit, t).r)
+
+/** Returns a carthesian vector describing the speed item on the orbit */
+export const getSpeedVector = (orbit: Orbit, t: Date): CarthCoords => {
+  const { angle } = getRadialCoords(orbit, t)
+  const p = orbit.a * (1 - orbit.e * orbit.e)
+
+  const carthSpeed = {
+    x: -Math.sqrt((G * orbit.parentMass) / p) * Math.sin(angle),
+    y: Math.sqrt((G * orbit.parentMass) / p) * (orbit.e + Math.cos(angle)),
+  }
+
+  const radSpeed = carthToRadial(carthSpeed)
+  radSpeed.angle += orbit.phi
+  return radialToCarth(radSpeed)
+}
+
+export const recalculateOrbitForPosAndSpeed = (
+  orbit: Orbit,
+  pos: CarthCoords,
+  speed: CarthCoords,
+  t: Date
+): Orbit => {
+  const mu = G * orbit.parentMass
+  const r = Math.hypot(pos.x, pos.y)
+  const a = (mu * r) / (2 * mu - r * (speed.x ** 2 + speed.y ** 2))
+
+  const h = pos.x * speed.y - pos.y * speed.x
+  const ex = pos.x / r - (h * speed.y) / mu
+  const ey = pos.y / r + (h * speed.x) / mu
+  const e = Math.hypot(ex, ey)
+
+  const PhiQuadrantAdjust = ex > 0
+  const phi = Math.atan(ey / ex) + (PhiQuadrantAdjust ? Math.PI : 0)
+
+  const EquadrantAdjust = -ey * pos.x + ex * pos.y > 0
+  const E = Math.acos((1 - r / a) / e) * (EquadrantAdjust ? -1 : 1)
+  const tDelta = Math.sqrt(Math.pow(a, 3) / mu) * (E - e * Math.sin(E))
+  const t0 = new Date()
+  t0.setTime(t.getTime() - tDelta * 1000)
+
+  const newOrbit: Orbit = {
+    a,
+    e,
+    parentMass: orbit.parentMass,
+    phi,
+    t0,
+  }
+
+  console.log({ phi, ex, ey })
+
+  return newOrbit
+}
+
+export const recalculateOrbitForPosAndSpeed2 = (
+  orbit: Orbit,
+  pos: CarthCoords,
+  speed: CarthCoords,
+  t: Date
+): Orbit => {
+  const mu = G * orbit.parentMass
+
+  const p = (pos.x * speed.y - pos.y * speed.x) ** 2 / mu
+
+  const speedLen = Math.hypot(speed.x, speed.y)
+
+  const posDotSpeed = pos.x * speed.x + pos.y * speed.y
+
+  const e = Math.sqrt(
+    (p / mu) * Math.pow(posDotSpeed / speedLen, 2) +
+      Math.pow(p / speedLen - 1, 2)
+  )
+
+  const phi = -Math.atan2(Math.sqrt(p / mu) * posDotSpeed, p - speedLen)
+
+  // Below is only if e < 1
+  const a = p / (1 - Math.pow(e, 2))
+  const E = 2 * Math.atan(Math.sqrt((1 - e) / (1 + e)) * Math.tan(-phi / 2))
+  const t0 = new Date()
+  t0.setTime(
+    t.getTime() - Math.sqrt(Math.pow(a, 3) / mu) * (E - e * Math.sin(E))
+  )
+
+  const newOrbit: Orbit = {
+    a,
+    e,
+    parentMass: orbit.parentMass,
+    phi,
+    t0,
+  }
+  console.log(newOrbit)
+
+  return newOrbit
+  // else if (e > 1) {
+  //   let a = p / (Math.pow(e, 2) - 1)
+
+  //   let H = 2 * Math.atanh(Math.sqrt((1 - e) / (1 + e)) * Math.tan(ν / 2))
+
+  //   let T0 = t + Math.sqrt(Math.pow(a, 3) / mu) * (H - e * Math.sinh(H))
+
+  //   return [a, e, i, Ω, ω, T0]
+  // }
+}
