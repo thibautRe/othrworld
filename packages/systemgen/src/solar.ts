@@ -264,6 +264,10 @@ const createEarth: CP = (sun) => {
         name: 'ISS',
         parentId: earth.id,
         type: 'spacecraft',
+        dryMass: 2000,
+        parts: [
+          { type: 'engine', mass: 2, name: 'Engine 1', specificImpulse: 1 },
+        ],
         orbit: {
           a: earth.radius + 450,
           e: 0,
@@ -276,6 +280,8 @@ const createEarth: CP = (sun) => {
         id: createID(),
         name: 'Apollo 11',
         type: 'spacecraft',
+        dryMass: 1000,
+        parts: [],
         orbit: {
           a: moon.radius + 1500,
           e: 0.2,
