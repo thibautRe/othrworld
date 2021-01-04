@@ -9,12 +9,15 @@ interface DateContext {
   /** Represents the time multiplication */
   currentTimeMult: number
 
+  registerDateAction: (t: Date, action: () => void) => void
+
   resetCurrentDate: () => void
 }
 const DateContext = React.createContext<DateContext>({
   currentDate: new Date(),
   currentDateRef: { current: new Date() },
   currentTimeMult: 1,
+  registerDateAction: () => {},
   resetCurrentDate: () => {},
 })
 const PlayPauseContext = React.createContext(true)
@@ -24,6 +27,8 @@ export const DateProvider: React.FC = ({ children }) => {
   const currentDateRef = React.useRef(currentDate)
   const [currentTimeMult, setCurrentTimeMult] = React.useState(1000)
   const [isPlay, setIsPlay] = React.useState(true)
+
+  const dateActionsRef = React.useRef(new Map<Date, () => void>())
 
   useKeyListener(
     ' ',
@@ -38,19 +43,47 @@ export const DateProvider: React.FC = ({ children }) => {
     React.useCallback(() => setCurrentTimeMult((tm) => tm / 2), [])
   )
 
-  useFrame(
-    isPlay
-      ? () => {
-          setCurrentDate((cd) => {
-            const nd = new Date()
-            nd.setTime(cd.getTime() + currentTimeMult)
+  const frameRun = React.useCallback(() => {
+    setCurrentDate((cd) => {
+      const nd = new Date()
+      const newTimeTentative = cd.getTime() + currentTimeMult
 
-            // Update the ref
-            currentDateRef.current = nd
-            return nd
-          })
-        }
-      : null
+      const runnableActions = Array.from(dateActionsRef.current.keys())
+        .filter((d) => d.getTime() <= newTimeTentative)
+        .sort((a, b) => a.getTime() - b.getTime())
+      if (runnableActions.length) {
+        nd.setTime(runnableActions[0].getTime())
+        const action = dateActionsRef.current.get(runnableActions[0])!
+        action()
+        dateActionsRef.current.delete(runnableActions[0])
+      } else {
+        nd.setTime(newTimeTentative)
+      }
+
+      // Update the ref
+      currentDateRef.current = nd
+      return nd
+    })
+  }, [currentTimeMult])
+
+  useFrame(isPlay ? frameRun : null)
+
+  const registerDateAction = React.useCallback(
+    (t: Date, action: () => void) => {
+      if (t.getTime() < currentDateRef.current.getTime()) {
+        throw new Error('Cannot register an action for a date in the past')
+      }
+      // If there was already an action registered, run both of these action
+      if (dateActionsRef.current.has(t)) {
+        const prevAction = dateActionsRef.current.get(t)!
+        dateActionsRef.current.set(t, () => {
+          prevAction()
+          action()
+        })
+      }
+      dateActionsRef.current.set(t, action)
+    },
+    []
   )
 
   const resetCurrentDate = React.useCallback(() => {
@@ -59,7 +92,13 @@ export const DateProvider: React.FC = ({ children }) => {
 
   return (
     <DateContext.Provider
-      value={{ currentDate, currentDateRef, currentTimeMult, resetCurrentDate }}
+      value={{
+        currentDate,
+        currentDateRef,
+        currentTimeMult,
+        registerDateAction,
+        resetCurrentDate,
+      }}
     >
       <PlayPauseContext.Provider value={isPlay}>
         {children}
