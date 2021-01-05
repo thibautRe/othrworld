@@ -6,8 +6,8 @@ import {
 } from '@othrworld/orbital-mechanics'
 
 import { useCanvasTooltips } from '../providers/CanvasTooltipProvider'
-import { useCurrentDate } from '../providers/DateProvider'
 import { Popover } from './Popover'
+import { useCurrentDate, useDateStore } from '../stores/date'
 
 export const CanvasTooltips = () => {
   const { canvasTooltip, onCloseCanvasTooltip } = useCanvasTooltips()

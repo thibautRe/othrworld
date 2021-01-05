@@ -12,8 +12,9 @@ import { SystemComponent } from './components/Canvas/SystemComponent'
 import { StatusBarComponent } from './components/StatusBarComponent'
 import { CanvasTooltips } from './components/CanvasTooltips'
 import { useKeyListener } from './hooks/useKeyListener'
-import { useDateContext } from './providers/DateProvider'
 import { useSystemStore } from './stores/system'
+import { useDateStore, useIsPaused } from './stores/date'
+import { useFrame } from './hooks/useFrame'
 
 css.global({
   body: {
@@ -22,32 +23,44 @@ css.global({
 })
 
 export const App = () => {
-  const { resetCurrentDate } = useDateContext()
-
-  const resetSystem = React.useCallback(
-    (system: System) => {
-      useSystemStore.getState().setSystem(system)
-      resetCurrentDate()
-    },
-    [resetCurrentDate]
-  )
+  const resetSystem = React.useCallback((system: System) => {
+    useSystemStore.getState().setSystem(system)
+    useDateStore.getState().resetCurrentDate()
+  }, [])
 
   useKeyListener(
     'r',
-    React.useCallback(() => void resetSystem(generateSystem()), [resetSystem])
+    React.useCallback(() => resetSystem(generateSystem()), [resetSystem])
   )
   useKeyListener(
     'd',
-    React.useCallback(() => void resetSystem(generateDebugSystem()), [
-      resetSystem,
-    ])
+    React.useCallback(() => resetSystem(generateDebugSystem()), [resetSystem])
   )
   useKeyListener(
     's',
-    React.useCallback(() => void resetSystem(generateSolarSystem()), [
-      resetSystem,
-    ])
+    React.useCallback(() => resetSystem(generateSolarSystem()), [resetSystem])
   )
+  useKeyListener(
+    ' ',
+    React.useCallback(() => useDateStore.getState().toggleIsPaused(), [])
+  )
+  useKeyListener(
+    '+',
+    React.useCallback(
+      () => useDateStore.setState((s) => ({ timeMult: s.timeMult * 2 })),
+      []
+    )
+  )
+  useKeyListener(
+    '-',
+    React.useCallback(
+      () => useDateStore.setState((s) => ({ timeMult: s.timeMult / 2 })),
+      []
+    )
+  )
+
+  const isPaused = useIsPaused()
+  useFrame(!isPaused ? useDateStore.getState().runFrame : null)
   return (
     <>
       <SvgRoot>

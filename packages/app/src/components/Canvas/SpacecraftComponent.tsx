@@ -2,6 +2,7 @@ import React from 'react'
 import { Spacecraft } from '@othrworld/core'
 import { styled } from '@othrworld/stitches-config'
 import {
+  getApoapsis,
   getCarthesianCoords,
   getNextApoapsisPassage,
   getSpeedVector,
@@ -11,9 +12,9 @@ import {
 import { useCanvasTransform } from '../../providers/CanvasViewProvider'
 import { useScaleAdapter } from '../../providers/SVGScaleProvider'
 import { OrbitComponent } from './OrbitComponent'
-import { useDateContext } from '../../providers/DateProvider'
 import { useKeyListener } from '../../hooks/useKeyListener'
 import { useSystemStore } from '../../stores/system'
+import { useDateStore } from '../../stores/date'
 
 const SpacecraftDot = styled.circle({
   fill: 'white',
@@ -40,33 +41,32 @@ export const SpacecraftComponent = ({
 
   const orbitStrokeDash = adapter(spacecraft.orbit.a) / 30
 
-  const { currentDateRef, registerDateAction } = useDateContext()
-
   useKeyListener(
     'u',
     React.useCallback(() => {
       const runOrbitChangePhase1 = () => {
         const systemStore = useSystemStore.getState()
+        const { currentDate, registerDateAction } = useDateStore.getState()
         const s = systemStore.system.spacecrafts.find(
           ({ id }) => id === spacecraft.id
         )!
 
-        const currentS = getSpeedVector(s.orbit, currentDateRef.current)
+        const currentS = getSpeedVector(s.orbit, currentDate)
         const orbit = recalculateOrbitForPosAndSpeed(
           s.orbit,
-          getCarthesianCoords(s.orbit, currentDateRef.current),
+          getCarthesianCoords(s.orbit, currentDate),
           { x: currentS.x * 1.0005, y: currentS.y * 1.0005 },
-          currentDateRef.current
+          currentDate
         )
 
-        if (orbit.a < 50000) {
+        if (getApoapsis(orbit) < 50000) {
           registerDateAction(
-            new Date(currentDateRef.current.getTime() + 1000),
+            new Date(currentDate.getTime() + 1000),
             runOrbitChangePhase1
           )
         } else {
           registerDateAction(
-            getNextApoapsisPassage(s.orbit, currentDateRef.current),
+            getNextApoapsisPassage(s.orbit, currentDate),
             runOrbitChangePhase2
           )
         }
@@ -76,34 +76,37 @@ export const SpacecraftComponent = ({
 
       const runOrbitChangePhase2 = () => {
         const systemStore = useSystemStore.getState()
+        const { currentDate, registerDateAction } = useDateStore.getState()
+
         const s = systemStore.system.spacecrafts.find(
           ({ id }) => id === spacecraft.id
         )!
         const prevE = s.orbit.e
 
-        const currentS = getSpeedVector(s.orbit, currentDateRef.current)
+        const currentS = getSpeedVector(s.orbit, currentDate)
         const orbit = recalculateOrbitForPosAndSpeed(
           s.orbit,
-          getCarthesianCoords(s.orbit, currentDateRef.current),
+          getCarthesianCoords(s.orbit, currentDate),
           { x: currentS.x * 1.005, y: currentS.y * 1.005 },
-          currentDateRef.current
+          currentDate
         )
 
         // As long as the eccentricity is decreasing
         if (prevE > orbit.e) {
           registerDateAction(
-            new Date(currentDateRef.current.getTime() + 1000),
+            new Date(currentDate.getTime() + 1000),
             runOrbitChangePhase2
           )
         }
         systemStore.setSpacecraft(spacecraft.id, { ...s, orbit })
       }
 
+      const { currentDate, registerDateAction } = useDateStore.getState()
       registerDateAction(
-        new Date(currentDateRef.current.getTime() + 40000),
+        new Date(currentDate.getTime() + 40000),
         runOrbitChangePhase1
       )
-    }, [registerDateAction, currentDateRef, spacecraft.id])
+    }, [spacecraft.id])
   )
 
   return (

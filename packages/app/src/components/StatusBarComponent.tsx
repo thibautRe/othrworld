@@ -1,13 +1,10 @@
 import React from 'react'
+import shallow from 'zustand/shallow'
 import { styled } from '@othrworld/stitches-config'
 
-import {
-  useCurrentDate,
-  useCurrentTimeMult,
-  usePlayPause,
-} from '../providers/DateProvider'
 import { useCanvasTransform } from '../providers/CanvasViewProvider'
 import { useSystemStore } from '../stores/system'
+import { useDateStore } from '../stores/date'
 
 const Wrapper = styled.div({
   position: 'absolute',
@@ -22,9 +19,10 @@ const Wrapper = styled.div({
 
 export const StatusBarComponent = () => {
   const system = useSystemStore(React.useCallback((s) => s.system, []))
-  const isPlay = usePlayPause()
-  const currentDate = useCurrentDate()
-  const currentTimeMult = useCurrentTimeMult()
+  const [isPaused, currentDate, currentTimeMult] = useDateStore(
+    React.useCallback((s) => [s.isPaused, s.currentDate, s.timeMult], []),
+    shallow
+  )
   const { k } = useCanvasTransform()
 
   return (
@@ -37,7 +35,7 @@ export const StatusBarComponent = () => {
       </span>
       {' - '}
       {currentDate.toLocaleString()} ({currentTimeMult}
-      x) {!isPlay && '*PAUSED*'}
+      x) {isPaused && '*PAUSED*'}
       <span>Zoom: {k.toFixed(4)}</span>
     </Wrapper>
   )

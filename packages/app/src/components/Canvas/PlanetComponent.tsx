@@ -6,11 +6,11 @@ import { styled } from '@othrworld/stitches-config'
 import { useCanvasTransform } from '../../providers/CanvasViewProvider'
 import { useCanvasTooltips } from '../../providers/CanvasTooltipProvider'
 import { useScaleAdapter } from '../../providers/SVGScaleProvider'
-import { useCurrentDate } from '../../providers/DateProvider'
 import { AtmosphereComponent } from './AtmosphereComponent'
 import { OrbitComponent } from './OrbitComponent'
 import { SVGCanvasSpawnPortal } from './SVGCanvasSpawnPortal'
 import { SVGView } from './SVGView'
+import { useCurrentDate } from '../../stores/date'
 
 const PlanetReal = styled.circle({
   fill: '$planet',

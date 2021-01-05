@@ -2,7 +2,7 @@ import { Orbit } from '@othrworld/core'
 import { getSpeedVector } from '@othrworld/orbital-mechanics'
 import React from 'react'
 import { useCanvasTransform } from '../../providers/CanvasViewProvider'
-import { useCurrentDate } from '../../providers/DateProvider'
+import { useCurrentDate } from '../../stores/date'
 import { OrbitEllipse, OrbitEllipseProps } from './OrbitEllipse'
 import { OrbitItem } from './OrbitItem'
 import { OrbitPoints } from './OrbitPoint'
@@ -17,7 +17,8 @@ export const OrbitComponent: React.FC<OrbitComponentProps> = ({
   children,
 }) => {
   const [isHovered, setIsHovered] = React.useState(false)
-  const speedVec = getSpeedVector(orbit, useCurrentDate())
+  const currentDate = useCurrentDate()
+  const speedVec = getSpeedVector(orbit, currentDate)
   const { k } = useCanvasTransform()
   return (
     <>
@@ -45,8 +46,8 @@ export const OrbitComponent: React.FC<OrbitComponentProps> = ({
           <line
             x1={0}
             y1={0}
-            x2={speedVec.x*10 / k}
-            y2={speedVec.y*10 / k}
+            x2={(speedVec.x * 10) / k}
+            y2={(speedVec.y * 10) / k}
             strokeWidth={2 / k}
             stroke="yellow"
           />
