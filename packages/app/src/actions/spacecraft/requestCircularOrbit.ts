@@ -50,6 +50,7 @@ export const requestCircularOrbit = (sId: Spacecraft['id'], radius: number) => {
         new Date(currentDate.getTime() + 1000),
         runEccentricityChange
       )
+    } else {
       return
     }
     setSpacecraft(sId, { ...s, orbit })
