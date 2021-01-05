@@ -79,16 +79,18 @@ export const SpacecraftComponent = ({
         const s = systemStore.system.spacecrafts.find(
           ({ id }) => id === spacecraft.id
         )!
+        const prevE = s.orbit.e
 
         const currentS = getSpeedVector(s.orbit, currentDateRef.current)
         const orbit = recalculateOrbitForPosAndSpeed(
           s.orbit,
           getCarthesianCoords(s.orbit, currentDateRef.current),
-          { x: currentS.x * 1.0005, y: currentS.y * 1.0005 },
+          { x: currentS.x * 1.005, y: currentS.y * 1.005 },
           currentDateRef.current
         )
 
-        if (orbit.e > 0.05) {
+        // As long as the eccentricity is decreasing
+        if (prevE > orbit.e) {
           registerDateAction(
             new Date(currentDateRef.current.getTime() + 1000),
             runOrbitChangePhase2

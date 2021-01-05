@@ -60,21 +60,21 @@ export const generateDebugSystem = (): System => {
     id: createID(),
     type: 'system',
     spacecrafts: [
-      // {
-      //   id: createID(),
-      //   type: 'spacecraft',
-      //   name: 'Spacecraft',
-      //   parentId: planet1.id,
-      //   dryMass: 1000,
-      //   parts: [],
-      //   orbit: {
-      //     a: 7000,
-      //     e: 0.2,
-      //     parentMass: getBodyMass(planet1),
-      //     phi: 0,
-      //     t0: new Date(),
-      //   },
-      // },
+      {
+        id: createID(),
+        type: 'spacecraft',
+        name: 'Spacecraft',
+        parentId: planet1.id,
+        dryMass: 1000,
+        parts: [],
+        orbit: {
+          a: 7000,
+          e: 0.2,
+          parentMass: getBodyMass(planet1),
+          phi: 0,
+          t0: new Date(),
+        },
+      },
       {
         id: createID(),
         type: 'spacecraft',

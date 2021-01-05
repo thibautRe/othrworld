@@ -22,17 +22,6 @@ const DateContext = React.createContext<DateContext>({
 })
 const PlayPauseContext = React.createContext(true)
 
-type Action = () => void
-const bundledAction = (prevAction: Action, action: Action): Action => {
-  console.log('registering bundled action')
-
-  return () => {
-    console.log('run bundled action')
-    prevAction()
-    action()
-  }
-}
-
 export const DateProvider: React.FC = ({ children }) => {
   const [currentDate, setCurrentDate] = React.useState(() => new Date())
   const currentDateRef = React.useRef(currentDate)
@@ -63,7 +52,6 @@ export const DateProvider: React.FC = ({ children }) => {
 
     if (runnableActionsTimestamps.length) {
       const timestamp = runnableActionsTimestamps[0]
-      console.log('Run action', timestamp)
       currentDateRef.current = new Date(timestamp)
       const action = dateActionsRef.current.get(timestamp)!
       action()
@@ -80,8 +68,6 @@ export const DateProvider: React.FC = ({ children }) => {
   const registerDateAction = React.useCallback(
     (t: Date, action: () => void) => {
       const time = t.getTime()
-      console.log('[DateProvider] Register action called', time, dateActionsRef)
-
       if (time <= currentDateRef.current.getTime()) {
         console.error(
           '[DateProvider] Cannot register an action for a date in the past'
@@ -94,12 +80,13 @@ export const DateProvider: React.FC = ({ children }) => {
           '[DateProvider] Registering a second action for the same date',
           time
         )
-        debugger
         const prevAction = dateActionsRef.current.get(time)!
-        dateActionsRef.current.set(time, bundledAction(prevAction, action))
+        dateActionsRef.current.set(time, () => {
+          prevAction()
+          action()
+        })
         return
       }
-      console.info('[DateProvider] Register action', time)
       dateActionsRef.current.set(time, action)
     },
     []
