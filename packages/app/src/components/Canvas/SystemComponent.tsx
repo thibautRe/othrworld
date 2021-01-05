@@ -1,10 +1,10 @@
 import React from 'react'
 import { Body, System } from '@othrworld/core'
 
-import { useSystem } from '../../providers/SystemProvider'
 import { PlanetComponent } from './PlanetComponent'
 import { StarComponent } from './StarComponent'
 import { SpacecraftComponent } from './SpacecraftComponent'
+import { useSystemStore } from '../../stores/system'
 
 const BodyComponent: React.FC<{ body: Body }> = ({ body, children }) => {
   switch (body.type) {
@@ -39,7 +39,7 @@ const BodyTree = ({ body, system }: BodyTreeProps) => (
 )
 
 export const SystemComponent = () => {
-  const system = useSystem()
+  const system = useSystemStore((s) => s.system)
 
   return (
     <>

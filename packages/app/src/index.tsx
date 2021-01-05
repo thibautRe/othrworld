@@ -5,17 +5,14 @@ import { App } from './App'
 import { CanvasTooltipProvider } from './providers/CanvasTooltipProvider'
 import { CanvasViewProvider } from './providers/CanvasViewProvider'
 import { DateProvider } from './providers/DateProvider'
-import { SystemProvider } from './providers/SystemProvider'
 
 ReactDOM.render(
   <React.StrictMode>
     <CanvasViewProvider>
       <DateProvider>
-        <SystemProvider>
-          <CanvasTooltipProvider>
-            <App />
-          </CanvasTooltipProvider>
-        </SystemProvider>
+        <CanvasTooltipProvider>
+          <App />
+        </CanvasTooltipProvider>
       </DateProvider>
     </CanvasViewProvider>
   </React.StrictMode>,

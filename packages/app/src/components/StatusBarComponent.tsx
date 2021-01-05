@@ -6,8 +6,8 @@ import {
   useCurrentTimeMult,
   usePlayPause,
 } from '../providers/DateProvider'
-import { useSystem } from '../providers/SystemProvider'
 import { useCanvasTransform } from '../providers/CanvasViewProvider'
+import { useSystemStore } from '../stores/system'
 
 const Wrapper = styled.div({
   position: 'absolute',
@@ -21,7 +21,7 @@ const Wrapper = styled.div({
 })
 
 export const StatusBarComponent = () => {
-  const system = useSystem()
+  const system = useSystemStore(React.useCallback((s) => s.system, []))
   const isPlay = usePlayPause()
   const currentDate = useCurrentDate()
   const currentTimeMult = useCurrentTimeMult()

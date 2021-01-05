@@ -88,6 +88,8 @@ export const generateSystem = (): System => {
           name: `Spacecraft ${i}`,
           type: 'spacecraft',
           parentId: parent.id,
+          dryMass: 1000,
+          parts: [],
           orbit: {
             a: parent.radius * randFloat(6, 1.4),
             e: Math.random() * 0.1,
