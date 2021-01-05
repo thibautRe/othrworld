@@ -4,13 +4,13 @@ import { getCarthesianCoords } from '@othrworld/orbital-mechanics'
 import { styled } from '@othrworld/stitches-config'
 
 import { useCanvasTransform } from '../../providers/CanvasViewProvider'
-import { useCanvasTooltips } from '../../providers/CanvasTooltipProvider'
 import { useScaleAdapter } from '../../providers/SVGScaleProvider'
 import { AtmosphereComponent } from './AtmosphereComponent'
 import { OrbitComponent } from './OrbitComponent'
 import { SVGCanvasSpawnPortal } from './SVGCanvasSpawnPortal'
 import { SVGView } from './SVGView'
 import { useCurrentDate } from '../../stores/date'
+import { useCanvasTooltipStore } from '../../stores/canvasTooltips'
 
 const PlanetReal = styled.circle({
   fill: '$planet',
@@ -31,7 +31,6 @@ const PlanetRenderComponent: React.FC<{ planet: Planet }> = ({
 }) => {
   const { k } = useCanvasTransform()
   const adapter = useScaleAdapter()
-  const { onOpenCanvasTooltip } = useCanvasTooltips()
 
   const iconRadius = 5 / k
   const textFontSize = 10 / k
@@ -42,7 +41,9 @@ const PlanetRenderComponent: React.FC<{ planet: Planet }> = ({
     <>
       <g
         onClick={(e) =>
-          onOpenCanvasTooltip(e, { type: 'planet', id: planet.id })
+          useCanvasTooltipStore
+            .getState()
+            .open(e, { type: 'planet', id: planet.id })
         }
       >
         <PlanetReal r={adapter(planet.radius)} />

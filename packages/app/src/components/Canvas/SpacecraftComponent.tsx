@@ -5,7 +5,7 @@ import { styled } from '@othrworld/stitches-config'
 import { useCanvasTransform } from '../../providers/CanvasViewProvider'
 import { useScaleAdapter } from '../../providers/SVGScaleProvider'
 import { OrbitComponent } from './OrbitComponent'
-import { useCanvasTooltips } from '../../providers/CanvasTooltipProvider'
+import { useCanvasTooltipStore } from '../../stores/canvasTooltips'
 
 const SpacecraftDot = styled.circle({
   fill: 'white',
@@ -27,7 +27,6 @@ export const SpacecraftComponent = ({
 }: SpacecraftComponentProps) => {
   const { k } = useCanvasTransform()
   const adapter = useScaleAdapter()
-  const { onOpenCanvasTooltip } = useCanvasTooltips()
   const fontSize = 10 / k
   const visualRadius = adapter(spacecraft.orbit.a) * k
 
@@ -48,7 +47,9 @@ export const SpacecraftComponent = ({
     >
       <g
         onClick={(e) =>
-          onOpenCanvasTooltip(e, { type: 'spacecraft', id: spacecraft.id })
+          useCanvasTooltipStore
+            .getState()
+            .open(e, { type: 'spacecraft', id: spacecraft.id })
         }
       >
         <SpacecraftGuardDot r={15 / k} />

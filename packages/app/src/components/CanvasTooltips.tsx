@@ -5,12 +5,15 @@ import {
   getSpeed,
 } from '@othrworld/orbital-mechanics'
 
-import { useCanvasTooltips } from '../providers/CanvasTooltipProvider'
 import { Popover } from './Popover'
 import { useCurrentDate } from '../stores/date'
 import { requestCircularOrbit } from '../actions/spacecraft/requestCircularOrbit'
 import { Orbit, Planet, Spacecraft } from '@othrworld/core'
 import { useSystemStore } from '../stores/system'
+import {
+  useCanvasTooltip,
+  useCanvasTooltipStore,
+} from '../stores/canvasTooltips'
 
 const CanvasTooltipOrbitInfo = ({ orbit }: { orbit: Orbit }) => {
   const currentDate = useCurrentDate()
@@ -65,12 +68,14 @@ const CanvasTooltipSpacecraft = ({ id }: { id: Spacecraft['id'] }) => {
 }
 
 export const CanvasTooltips = () => {
-  const { canvasTooltip, onCloseCanvasTooltip } = useCanvasTooltips()
-
+  const canvasTooltip = useCanvasTooltip()
   if (!canvasTooltip) return null
 
   return (
-    <Popover position={canvasTooltip.position} onClose={onCloseCanvasTooltip}>
+    <Popover
+      position={canvasTooltip.position}
+      onClose={useCanvasTooltipStore.getState().close}
+    >
       {canvasTooltip.type}
       {canvasTooltip.type === 'planet' && (
         <CanvasTooltipPlanet id={canvasTooltip.id} />
