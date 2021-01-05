@@ -13,7 +13,8 @@ type DateState = {
   setTimeMult: (timeMult: number) => void
 
   dateActions: Map<number, DateAction>
-  registerDateAction: (t: Date, action: () => void) => void
+  registerDateAction: (t: Date, action: DateAction) => void
+  registerImmediateDateAction: (action: DateAction) => void
 
   runFrame: () => void
 }
@@ -47,6 +48,10 @@ export const useDateStore = create<DateState>((set, get) => ({
       return
     }
     dateActions.set(time, action)
+  },
+  registerImmediateDateAction: (action) => {
+    const { currentDate, registerDateAction } = get()
+    registerDateAction(new Date(currentDate.getTime() + 1), action)
   },
 
   runFrame: () => {

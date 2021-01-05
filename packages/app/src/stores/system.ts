@@ -5,6 +5,7 @@ import { generateSystem } from '@othrworld/systemgen'
 type SystemState = {
   system: System
   setSystem: (s: System) => void
+  getSpacecraft: (spacecraftId: Spacecraft['id']) => Spacecraft | undefined
   setSpacecraft: (
     spacecraftId: Spacecraft['id'],
     spacecraft: Spacecraft
@@ -28,4 +29,6 @@ export const useSystemStore = create<SystemState>((set, get) => ({
       },
     })
   },
+
+  getSpacecraft: (sId) => get().system.spacecrafts.find(({ id }) => id === sId),
 }))
