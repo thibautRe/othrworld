@@ -6,11 +6,11 @@ interface BaseCanvasTooltip {
 }
 interface PlanetCanvasTooltip {
   type: 'planet'
-  planet: Planet
+  id: Planet['id']
 }
 interface SpacecraftCanvasTooltip {
   type: 'spacecraft'
-  spacecraft: Spacecraft
+  id: Spacecraft['id']
 }
 
 type CanvasTooltip = PlanetCanvasTooltip | SpacecraftCanvasTooltip

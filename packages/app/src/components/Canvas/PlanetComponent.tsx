@@ -40,7 +40,11 @@ const PlanetRenderComponent: React.FC<{ planet: Planet }> = ({
 
   return (
     <>
-      <g onClick={(e) => onOpenCanvasTooltip(e, { type: 'planet', planet })}>
+      <g
+        onClick={(e) =>
+          onOpenCanvasTooltip(e, { type: 'planet', id: planet.id })
+        }
+      >
         <PlanetReal r={adapter(planet.radius)} />
         <AtmosphereComponent planet={planet} />
         <PlanetIcon r={iconRadius} />

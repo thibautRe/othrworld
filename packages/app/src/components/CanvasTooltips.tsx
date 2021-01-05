@@ -7,11 +7,65 @@ import {
 
 import { useCanvasTooltips } from '../providers/CanvasTooltipProvider'
 import { Popover } from './Popover'
-import { useCurrentDate, useDateStore } from '../stores/date'
+import { useCurrentDate } from '../stores/date'
+import { requestCircularOrbit } from '../actions/spacecraft/requestCircularOrbit'
+import { Orbit, Planet, Spacecraft } from '@othrworld/core'
+import { useSystemStore } from '../stores/system'
+
+const CanvasTooltipOrbitInfo = ({ orbit }: { orbit: Orbit }) => {
+  const currentDate = useCurrentDate()
+  return (
+    <>
+      <div>
+        Speed: <strong>{getSpeed(orbit, currentDate).toFixed(1)}km/s</strong>
+      </div>
+      <div>
+        Next passage at periapsis:{' '}
+        {getNextPeriapsisPassage(orbit, currentDate).toLocaleDateString()}
+      </div>
+      <div>
+        Next passage at apoapsis:{' '}
+        {getNextApoapsisPassage(orbit, currentDate).toLocaleDateString()}
+      </div>
+    </>
+  )
+}
+
+const CanvasTooltipPlanet = ({ id }: { id: Planet['id'] }) => {
+  const planet = useSystemStore(
+    React.useCallback((s) => s.system.bodies.find((b) => b.id === id)!, [id])
+  )
+
+  return (
+    <>
+      <div>
+        Radius: <strong>{planet.radius.toFixed()}</strong>
+      </div>
+
+      <CanvasTooltipOrbitInfo orbit={planet.orbit} />
+    </>
+  )
+}
+
+const CanvasTooltipSpacecraft = ({ id }: { id: Spacecraft['id'] }) => {
+  const spacecraft = useSystemStore(
+    React.useCallback((s) => s.system.spacecrafts.find((s) => s.id === id)!, [
+      id,
+    ])
+  )
+
+  return (
+    <>
+      <CanvasTooltipOrbitInfo orbit={spacecraft.orbit} />
+      <button onClick={() => requestCircularOrbit(spacecraft.id, 50000)}>
+        Request circular orbit
+      </button>
+    </>
+  )
+}
 
 export const CanvasTooltips = () => {
   const { canvasTooltip, onCloseCanvasTooltip } = useCanvasTooltips()
-  const currentDate = useCurrentDate()
 
   if (!canvasTooltip) return null
 
@@ -19,31 +73,10 @@ export const CanvasTooltips = () => {
     <Popover position={canvasTooltip.position} onClose={onCloseCanvasTooltip}>
       {canvasTooltip.type}
       {canvasTooltip.type === 'planet' && (
-        <>
-          <div>
-            Radius: <strong>{canvasTooltip.planet.radius.toFixed()}</strong>
-          </div>
-          <div>
-            Speed:{' '}
-            <strong>
-              {getSpeed(canvasTooltip.planet.orbit, currentDate).toFixed(1)}km/s
-            </strong>
-          </div>
-          <div>
-            Next passage at periapsis:{' '}
-            {getNextPeriapsisPassage(
-              canvasTooltip.planet.orbit,
-              currentDate
-            ).toLocaleDateString()}
-          </div>
-          <div>
-            Next passage at apoapsis:{' '}
-            {getNextApoapsisPassage(
-              canvasTooltip.planet.orbit,
-              currentDate
-            ).toLocaleDateString()}
-          </div>
-        </>
+        <CanvasTooltipPlanet id={canvasTooltip.id} />
+      )}
+      {canvasTooltip.type === 'spacecraft' && (
+        <CanvasTooltipSpacecraft id={canvasTooltip.id} />
       )}
     </Popover>
   )
