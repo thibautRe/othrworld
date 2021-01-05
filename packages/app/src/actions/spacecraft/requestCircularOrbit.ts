@@ -2,27 +2,21 @@ import { Spacecraft } from '@othrworld/core'
 import {
   applySpeedChange,
   getApoapsis,
-  getCarthesianCoords,
   getNextApoapsisPassage,
-  getSpeedVector,
-  recalculateOrbitForPosAndSpeed,
 } from '@othrworld/orbital-mechanics'
 import { useDateStore } from '../../stores/date'
 import { useSystemStore } from '../../stores/system'
 
 export const requestCircularOrbit = (sId: Spacecraft['id'], radius: number) => {
+  // Phase 1: accelerate in order to reach a certain apoapsis defined by the radius
   const runOrbitChangePhase1 = () => {
     const systemStore = useSystemStore.getState()
     const { currentDate, registerDateAction } = useDateStore.getState()
     const s = systemStore.system.spacecrafts.find(({ id }) => id === sId)!
-
-    const currentS = getSpeedVector(s.orbit, currentDate)
-    const orbit = recalculateOrbitForPosAndSpeed(
-      s.orbit,
-      getCarthesianCoords(s.orbit, currentDate),
-      { x: currentS.x * 1.0005, y: currentS.y * 1.0005 },
-      currentDate
-    )
+    const orbit = applySpeedChange(s.orbit, currentDate, {
+      prograde: 0.01,
+      normal: 0,
+    })
 
     if (getApoapsis(orbit) < radius) {
       registerDateAction(
@@ -39,6 +33,7 @@ export const requestCircularOrbit = (sId: Spacecraft['id'], radius: number) => {
     systemStore.setSpacecraft(sId, { ...s, orbit })
   }
 
+  // Phase 2: accelerate prograde at the apoapsis as long as the eccentricity decreases
   const runOrbitChangePhase2 = () => {
     const systemStore = useSystemStore.getState()
     const { currentDate, registerDateAction } = useDateStore.getState()
@@ -49,7 +44,6 @@ export const requestCircularOrbit = (sId: Spacecraft['id'], radius: number) => {
       normal: 0,
     })
 
-    // As long as the eccentricity is decreasing
     if (s.orbit.e > orbit.e) {
       registerDateAction(
         new Date(currentDate.getTime() + 1000),
@@ -59,9 +53,5 @@ export const requestCircularOrbit = (sId: Spacecraft['id'], radius: number) => {
     systemStore.setSpacecraft(sId, { ...s, orbit })
   }
 
-  const { currentDate, registerDateAction } = useDateStore.getState()
-  registerDateAction(
-    new Date(currentDate.getTime() + 1000),
-    runOrbitChangePhase1
-  )
+  runOrbitChangePhase1()
 }

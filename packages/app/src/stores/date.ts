@@ -35,17 +35,10 @@ export const useDateStore = create<DateState>((set, get) => ({
     const time = t.getTime()
     const { currentDate, dateActions } = get()
     if (time <= currentDate.getTime()) {
-      console.error(
-        '[DateStore] Cannot register an action for a date in the past'
-      )
-      return
+      throw new Error('Cannot register an action for a date in the past')
     }
     // If there was already an action registered, run both of these action
     if (dateActions.has(time)) {
-      console.warn(
-        '[DateStore] Registering a second action for the same date',
-        time
-      )
       const prevAction = dateActions.get(time)!
       dateActions.set(time, () => {
         prevAction()
