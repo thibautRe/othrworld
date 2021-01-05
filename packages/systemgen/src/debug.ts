@@ -65,6 +65,8 @@ export const generateDebugSystem = (): System => {
       //   type: 'spacecraft',
       //   name: 'Spacecraft',
       //   parentId: planet1.id,
+      //   dryMass: 1000,
+      //   parts: [],
       //   orbit: {
       //     a: 7000,
       //     e: 0.2,

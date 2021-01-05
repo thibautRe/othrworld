@@ -1,5 +1,9 @@
 import React from 'react'
-import { getSpeed } from '@othrworld/orbital-mechanics'
+import {
+  getNextApoapsisPassage,
+  getNextPeriapsisPassage,
+  getSpeed,
+} from '@othrworld/orbital-mechanics'
 
 import { useCanvasTooltips } from '../providers/CanvasTooltipProvider'
 import { useCurrentDate } from '../providers/DateProvider'
@@ -24,6 +28,20 @@ export const CanvasTooltips = () => {
             <strong>
               {getSpeed(canvasTooltip.planet.orbit, currentDate).toFixed(1)}km/s
             </strong>
+          </div>
+          <div>
+            Next passage at periapsis:{' '}
+            {getNextPeriapsisPassage(
+              canvasTooltip.planet.orbit,
+              currentDate
+            ).toLocaleDateString()}
+          </div>
+          <div>
+            Next passage at apoapsis:{' '}
+            {getNextApoapsisPassage(
+              canvasTooltip.planet.orbit,
+              currentDate
+            ).toLocaleDateString()}
           </div>
         </>
       )}

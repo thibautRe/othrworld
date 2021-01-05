@@ -4,14 +4,19 @@ import React from 'react'
 const callbacks: Array<() => void> = []
 
 let frame = -1
+let isPaused = false
 const loopGlobalRaf = () => {
   callbacks.forEach((c) => c())
+
+  if (isPaused) return
   frame = requestAnimationFrame(loopGlobalRaf)
 }
 const startGlobalRaf = () => {
+  isPaused = false
   frame = requestAnimationFrame(loopGlobalRaf)
 }
 const stopGlobalRaf = () => {
+  isPaused = true
   cancelAnimationFrame(frame)
 }
 

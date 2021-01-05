@@ -22,13 +22,24 @@ const DateContext = React.createContext<DateContext>({
 })
 const PlayPauseContext = React.createContext(true)
 
+type Action = () => void
+const bundledAction = (prevAction: Action, action: Action): Action => {
+  console.log('registering bundled action')
+
+  return () => {
+    console.log('run bundled action')
+    prevAction()
+    action()
+  }
+}
+
 export const DateProvider: React.FC = ({ children }) => {
   const [currentDate, setCurrentDate] = React.useState(() => new Date())
   const currentDateRef = React.useRef(currentDate)
   const [currentTimeMult, setCurrentTimeMult] = React.useState(1000)
   const [isPlay, setIsPlay] = React.useState(true)
 
-  const dateActionsRef = React.useRef(new Map<Date, () => void>())
+  const dateActionsRef = React.useRef(new Map<number, () => void>())
 
   useKeyListener(
     ' ',
@@ -44,44 +55,52 @@ export const DateProvider: React.FC = ({ children }) => {
   )
 
   const frameRun = React.useCallback(() => {
-    setCurrentDate((cd) => {
-      const nd = new Date()
-      const newTimeTentative = cd.getTime() + currentTimeMult
+    let newTimeTarget = currentDateRef.current.getTime() + currentTimeMult
 
-      const runnableActions = Array.from(dateActionsRef.current.keys())
-        .filter((d) => d.getTime() <= newTimeTentative)
-        .sort((a, b) => a.getTime() - b.getTime())
-      if (runnableActions.length) {
-        nd.setTime(runnableActions[0].getTime())
-        const action = dateActionsRef.current.get(runnableActions[0])!
-        action()
-        dateActionsRef.current.delete(runnableActions[0])
-      } else {
-        nd.setTime(newTimeTentative)
-      }
+    const runnableActionsTimestamps = Array.from(dateActionsRef.current.keys())
+      .filter((d) => d <= newTimeTarget)
+      .sort((a, b) => a - b)
 
-      // Update the ref
-      currentDateRef.current = nd
-      return nd
-    })
+    if (runnableActionsTimestamps.length) {
+      const timestamp = runnableActionsTimestamps[0]
+      console.log('Run action', timestamp)
+      currentDateRef.current = new Date(timestamp)
+      const action = dateActionsRef.current.get(timestamp)!
+      action()
+      dateActionsRef.current.delete(timestamp)
+    } else {
+      currentDateRef.current = new Date(newTimeTarget)
+    }
+
+    setCurrentDate(currentDateRef.current)
   }, [currentTimeMult])
 
   useFrame(isPlay ? frameRun : null)
 
   const registerDateAction = React.useCallback(
     (t: Date, action: () => void) => {
-      if (t.getTime() < currentDateRef.current.getTime()) {
-        throw new Error('Cannot register an action for a date in the past')
+      const time = t.getTime()
+      console.log('[DateProvider] Register action called', time, dateActionsRef)
+
+      if (time <= currentDateRef.current.getTime()) {
+        console.error(
+          '[DateProvider] Cannot register an action for a date in the past'
+        )
+        return
       }
       // If there was already an action registered, run both of these action
-      if (dateActionsRef.current.has(t)) {
-        const prevAction = dateActionsRef.current.get(t)!
-        dateActionsRef.current.set(t, () => {
-          prevAction()
-          action()
-        })
+      if (dateActionsRef.current.has(time)) {
+        console.warn(
+          '[DateProvider] Registering a second action for the same date',
+          time
+        )
+        debugger
+        const prevAction = dateActionsRef.current.get(time)!
+        dateActionsRef.current.set(time, bundledAction(prevAction, action))
+        return
       }
-      dateActionsRef.current.set(t, action)
+      console.info('[DateProvider] Register action', time)
+      dateActionsRef.current.set(time, action)
     },
     []
   )

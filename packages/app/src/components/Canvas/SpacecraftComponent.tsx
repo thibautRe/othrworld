@@ -3,6 +3,7 @@ import { Spacecraft } from '@othrworld/core'
 import { styled } from '@othrworld/stitches-config'
 import {
   getCarthesianCoords,
+  getNextApoapsisPassage,
   getSpeedVector,
   recalculateOrbitForPosAndSpeed,
 } from '@othrworld/orbital-mechanics'
@@ -12,6 +13,7 @@ import { useScaleAdapter } from '../../providers/SVGScaleProvider'
 import { OrbitComponent } from './OrbitComponent'
 import { useSystemContext } from '../../providers/SystemProvider'
 import { useDateContext } from '../../providers/DateProvider'
+import { useKeyListener } from '../../hooks/useKeyListener'
 
 const SpacecraftDot = styled.circle({
   fill: 'white',
@@ -39,7 +41,62 @@ export const SpacecraftComponent = ({
   const orbitStrokeDash = adapter(spacecraft.orbit.a) / 30
 
   const { setSpacecraft } = useSystemContext()
-  const { currentDateRef } = useDateContext()
+  const { currentDateRef, registerDateAction } = useDateContext()
+
+  useKeyListener(
+    'u',
+    React.useCallback(() => {
+      const runOrbitChangePhase1 = () => {
+        setSpacecraft(spacecraft.id, (s) => {
+          const currentS = getSpeedVector(s.orbit, currentDateRef.current)
+          const orbit = recalculateOrbitForPosAndSpeed(
+            s.orbit,
+            getCarthesianCoords(s.orbit, currentDateRef.current),
+            { x: currentS.x * 1.0005, y: currentS.y * 1.0005 },
+            currentDateRef.current
+          )
+
+          if (orbit.a < 50000) {
+            registerDateAction(
+              new Date(currentDateRef.current.getTime() + 1000),
+              runOrbitChangePhase1
+            )
+          } else {
+            registerDateAction(
+              getNextApoapsisPassage(s.orbit, currentDateRef.current),
+              runOrbitChangePhase2
+            )
+          }
+          return { ...s, orbit }
+        })
+      }
+
+      const runOrbitChangePhase2 = () => {
+        setSpacecraft(spacecraft.id, (s) => {
+          const currentS = getSpeedVector(s.orbit, currentDateRef.current)
+          const orbit = recalculateOrbitForPosAndSpeed(
+            s.orbit,
+            getCarthesianCoords(s.orbit, currentDateRef.current),
+            { x: currentS.x * 1.0005, y: currentS.y * 1.0005 },
+            currentDateRef.current
+          )
+
+          if (orbit.e > 0.1) {
+            registerDateAction(
+              new Date(currentDateRef.current.getTime() + 1000),
+              runOrbitChangePhase2
+            )
+          }
+          return { ...s, orbit }
+        })
+      }
+
+      registerDateAction(
+        new Date(currentDateRef.current.getTime() + 40000),
+        runOrbitChangePhase1
+      )
+    }, [registerDateAction, currentDateRef, setSpacecraft, spacecraft.id])
+  )
 
   React.useEffect(() => {
     const list = (e: KeyboardEvent) => {
