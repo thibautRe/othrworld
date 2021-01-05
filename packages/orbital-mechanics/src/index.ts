@@ -5,6 +5,7 @@ import {
   carthToRadial,
   radialToCarth,
   rotateCarth,
+  unitVector,
 } from './coords'
 
 // 6.6743e-11 using kg and m as unit
@@ -179,5 +180,31 @@ export const getNextApoapsisPassage = (orbit: Orbit, t: Date): Date => {
   return new Date(
     realModulo(orbit.t0.getTime() + period / 2 - t.getTime(), period) +
       t.getTime()
+  )
+}
+
+interface SpeedCoords {
+  /** Positive for prograde, negative for retrograde */
+  prograde: number
+  /** Positive for outside, negative for inside */
+  normal: number
+}
+export const applySpeedChange = (
+  orbit: Orbit,
+  t: Date,
+  { prograde, normal }: SpeedCoords
+): Orbit => {
+  const currentS = getSpeedVector(orbit, t)
+  const currentP = getCarthesianCoords(orbit, t)
+
+  const unitS = unitVector(currentS)
+  return recalculateOrbitForPosAndSpeed(
+    orbit,
+    currentP,
+    {
+      x: currentS.x + unitS.x * prograde - unitS.y * normal,
+      y: currentS.y + unitS.y * prograde + unitS.x * normal,
+    },
+    t
   )
 }

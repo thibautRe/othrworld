@@ -1,5 +1,6 @@
 import { Spacecraft } from '@othrworld/core'
 import {
+  applySpeedChange,
   getApoapsis,
   getCarthesianCoords,
   getNextApoapsisPassage,
@@ -43,18 +44,13 @@ export const requestCircularOrbit = (sId: Spacecraft['id'], radius: number) => {
     const { currentDate, registerDateAction } = useDateStore.getState()
 
     const s = systemStore.system.spacecrafts.find(({ id }) => id === sId)!
-    const prevE = s.orbit.e
-
-    const currentS = getSpeedVector(s.orbit, currentDate)
-    const orbit = recalculateOrbitForPosAndSpeed(
-      s.orbit,
-      getCarthesianCoords(s.orbit, currentDate),
-      { x: currentS.x * 1.005, y: currentS.y * 1.005 },
-      currentDate
-    )
+    const orbit = applySpeedChange(s.orbit, currentDate, {
+      prograde: 0.01,
+      normal: 0,
+    })
 
     // As long as the eccentricity is decreasing
-    if (prevE > orbit.e) {
+    if (s.orbit.e > orbit.e) {
       registerDateAction(
         new Date(currentDate.getTime() + 1000),
         runOrbitChangePhase2

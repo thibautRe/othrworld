@@ -27,3 +27,10 @@ export const rotateCarth = (
   radial.angle += angle
   return radialToCarth(radial)
 }
+
+export const getLen = (vec: CarthCoords) => Math.hypot(vec.x, vec.y)
+
+export const unitVector = (vec: CarthCoords): CarthCoords => {
+  const len = getLen(vec)
+  return { x: vec.x / len, y: vec.y / len }
+}
