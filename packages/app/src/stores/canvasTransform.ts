@@ -46,6 +46,6 @@ const transformExtractor = ({ x, y, k }: CanvasTransformState) => ({ x, y, k })
 export const useCanvasTransform = () =>
   useCanvasTransformStore(transformExtractor, shallow)
 
-const zoomExtractor = ({ k }: CanvasTransformState) => ({ k })
+const zoomExtractor = ({ k }: CanvasTransformState) => k
 export const useCanvasTransformZoom = () =>
-  useCanvasTransformStore(zoomExtractor).k
+  useCanvasTransformStore(zoomExtractor)

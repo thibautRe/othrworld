@@ -1,12 +1,9 @@
 import React from 'react'
 import { Orbit } from '@othrworld/core'
-import { getSpeedVector } from '@othrworld/orbital-mechanics'
 
-import { useCurrentDate } from '../../stores/date'
 import { OrbitEllipse, OrbitEllipseProps } from './OrbitEllipse'
 import { OrbitItem } from './OrbitItem'
 import { OrbitPoints } from './OrbitPoint'
-import { useFixedSizeAdapter } from './SVGView'
 
 interface OrbitComponentProps {
   orbit: Orbit
@@ -18,9 +15,6 @@ export const OrbitComponent: React.FC<OrbitComponentProps> = ({
   children,
 }) => {
   const [isHovered, setIsHovered] = React.useState(false)
-  const currentDate = useCurrentDate()
-  const speedVec = getSpeedVector(orbit, currentDate)
-  const fixed = useFixedSizeAdapter()
   return (
     <>
       <g
@@ -41,19 +35,7 @@ export const OrbitComponent: React.FC<OrbitComponentProps> = ({
         />
         <OrbitPoints isHovered={isHovered} orbit={orbit} />
       </g>
-      <OrbitItem orbit={orbit}>
-        {children}
-        {speedVec.x && speedVec.y && (
-          <line
-            x1={0}
-            y1={0}
-            x2={fixed(speedVec.x * 10)}
-            y2={fixed(speedVec.y * 10)}
-            strokeWidth={fixed(2)}
-            stroke="yellow"
-          />
-        )}
-      </OrbitItem>
+      <OrbitItem orbit={orbit}>{children}</OrbitItem>
     </>
   )
 }
