@@ -4,7 +4,6 @@ import {
   CanvasTransformProvider,
   useCanvasTransform,
 } from '../../providers/CanvasViewProvider'
-import { SVGScaleProvider } from '../../providers/SVGScaleProvider'
 
 interface SVGViewProps {
   center?: { x: number; y: number }
@@ -36,20 +35,11 @@ export const SVGView: React.FC<SVGViewProps> = ({
     <g
       transform={`translate(${tx} ${ty}) scale(${s})`}
       style={{ display: shouldHide ? 'none' : 'initial' }}
-      data-dbg-s={s}
-      data-dbg-scale={scale}
-      data-dbg-k={transform.k}
-      data-dbg-tx={tx}
-      data-dbg-ty={ty}
     >
       <CanvasTransformProvider
         transform={{ x: tx, y: ty, k: s, globalK: transform.globalK }}
       >
-        <SVGScaleProvider
-          unit={(scale * 1e5 * transform.k) / transform.globalK}
-        >
-          {children}
-        </SVGScaleProvider>
+        {children}
       </CanvasTransformProvider>
     </g>
   )

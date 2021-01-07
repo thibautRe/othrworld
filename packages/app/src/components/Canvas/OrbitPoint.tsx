@@ -4,8 +4,10 @@ import { getApoapsis, getPeriapsis } from '@othrworld/orbital-mechanics'
 import { radialToCarth } from '@othrworld/orbital-mechanics/dist/coords'
 import { styled } from '@othrworld/stitches-config'
 
-import { useCanvasTransform } from '../../providers/CanvasViewProvider'
-import { useScaleAdapter } from '../../providers/SVGScaleProvider'
+import {
+  useCanvasTransform,
+  useScaleAdapter,
+} from '../../providers/CanvasViewProvider'
 
 const OrbitPointsGroup = styled.g({
   transition: 'opacity .2s',

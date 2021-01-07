@@ -3,8 +3,10 @@ import { Planet } from '@othrworld/core'
 import { getCarthesianCoords } from '@othrworld/orbital-mechanics'
 import { styled } from '@othrworld/stitches-config'
 
-import { useCanvasTransform } from '../../providers/CanvasViewProvider'
-import { useScaleAdapter } from '../../providers/SVGScaleProvider'
+import {
+  useCanvasTransform,
+  useScaleAdapter,
+} from '../../providers/CanvasViewProvider'
 import { AtmosphereComponent } from './AtmosphereComponent'
 import { OrbitComponent } from './OrbitComponent'
 import { SVGCanvasSpawnPortal } from './SVGCanvasSpawnPortal'

@@ -2,8 +2,7 @@ import React from 'react'
 import { Spacecraft } from '@othrworld/core'
 import { styled } from '@othrworld/stitches-config'
 
-import { useCanvasTransform } from '../../providers/CanvasViewProvider'
-import { useScaleAdapter } from '../../providers/SVGScaleProvider'
+import { useCanvasTransform, useScaleAdapter } from '../../providers/CanvasViewProvider'
 import { OrbitComponent } from './OrbitComponent'
 import { useCanvasTooltipStore } from '../../stores/canvasTooltips'
 

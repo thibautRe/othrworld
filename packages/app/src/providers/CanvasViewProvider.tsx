@@ -79,3 +79,8 @@ export const CanvasTransformProvider: React.FC<{
 
 export const useCanvasView = () => React.useContext(CanvasViewContext)
 export const useCanvasTransform = () => React.useContext(CanvasTransformContext)
+export const useScaleAdapter = () => {
+  const transform = useCanvasTransform()
+  const scale = (transform.k / transform.globalK) * 1e5
+  return (size: number) => size / scale
+}

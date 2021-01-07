@@ -1,8 +1,7 @@
 import React from 'react'
 import { Planet } from '@othrworld/core'
 import { styled } from '@othrworld/stitches-config'
-
-import { useScaleAdapter } from '../../providers/SVGScaleProvider'
+import { useScaleAdapter } from '../../providers/CanvasViewProvider'
 
 const AtmosphereCircle = styled.circle({
   fill: '#a4e3fc',

@@ -3,8 +3,10 @@ import { styled } from '@othrworld/stitches-config'
 import { Orbit } from '@othrworld/core'
 import { getSemiMinorAxis } from '@othrworld/orbital-mechanics'
 
-import { useCanvasTransform } from '../../providers/CanvasViewProvider'
-import { useScaleAdapter } from '../../providers/SVGScaleProvider'
+import {
+  useCanvasTransform,
+  useScaleAdapter,
+} from '../../providers/CanvasViewProvider'
 
 const OrbitEll = styled.ellipse({
   stroke: '$orbit',

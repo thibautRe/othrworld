@@ -1,8 +1,11 @@
 import React from 'react'
 import { styled } from '@othrworld/stitches-config'
-import { useCanvasTransform } from '../../providers/CanvasViewProvider'
 import { Star } from '@othrworld/core'
-import { useScaleAdapter } from '../../providers/SVGScaleProvider'
+
+import {
+  useCanvasTransform,
+  useScaleAdapter,
+} from '../../providers/CanvasViewProvider'
 import { OrbitComponent } from './OrbitComponent'
 
 const StarReal = styled.circle({
