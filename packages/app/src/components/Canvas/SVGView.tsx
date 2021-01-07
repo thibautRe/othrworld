@@ -53,7 +53,7 @@ export const SVGView: React.FC<SVGViewProps> = ({
 }
 
 /** Returns a helper function to call when trying to draw to-scale values (distances, radius, ...) */
-export const useScaleAdapter = () => {
+export const useToScaleAdapter = () => {
   const { k } = useViewContext()
   const globalK = useCanvasTransformZoom()
   const scale = (k / globalK) * 1e5

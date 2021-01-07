@@ -3,7 +3,7 @@ import { Orbit } from '@othrworld/core'
 import { getCarthesianCoords } from '@othrworld/orbital-mechanics'
 
 import { useCurrentDate } from '../../stores/date'
-import { useScaleAdapter } from './SVGView'
+import { useToScaleAdapter } from './SVGView'
 
 /** Translation group for an orbit */
 interface OrbitItemProps extends React.SVGAttributes<SVGGElement> {
@@ -15,11 +15,11 @@ export const OrbitItem: React.FC<OrbitItemProps> = ({
   ...props
 }) => {
   const currentDate = useCurrentDate()
-  const adapter = useScaleAdapter()
+  const toScale = useToScaleAdapter()
   const { x, y } = getCarthesianCoords(orbit, currentDate)
 
   return (
-    <g transform={`translate(${adapter(x)} ${adapter(y)})`} {...props}>
+    <g transform={`translate(${toScale(x)} ${toScale(y)})`} {...props}>
       {children}
     </g>
   )

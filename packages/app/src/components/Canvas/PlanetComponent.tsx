@@ -6,7 +6,7 @@ import { styled } from '@othrworld/stitches-config'
 import { AtmosphereComponent } from './AtmosphereComponent'
 import { OrbitComponent } from './OrbitComponent'
 import { SVGCanvasSpawnPortal } from './SVGCanvasSpawnPortal'
-import { SVGView, useFixedSizeAdapter, useScaleAdapter } from './SVGView'
+import { SVGView, useFixedSizeAdapter, useToScaleAdapter } from './SVGView'
 import { useCurrentDate } from '../../stores/date'
 import { useCanvasTooltipStore } from '../../stores/canvasTooltips'
 
@@ -28,12 +28,12 @@ const PlanetRenderComponent: React.FC<{ planet: Planet }> = ({
   children,
 }) => {
   const fixed = useFixedSizeAdapter()
-  const adapter = useScaleAdapter()
+  const toScale = useToScaleAdapter()
 
   const iconRadius = fixed(5)
   const textFontSize = fixed(10)
   // If the planet's visual radius is above N px, show the name
-  const textOpacity = adapter(planet.orbit.a) > fixed(50) ? 1 : 0
+  const textOpacity = toScale(planet.orbit.a) > fixed(50) ? 1 : 0
 
   return (
     <>
@@ -44,12 +44,12 @@ const PlanetRenderComponent: React.FC<{ planet: Planet }> = ({
             .open(e, { type: 'planet', id: planet.id })
         }
       >
-        <PlanetReal r={adapter(planet.radius)} />
+        <PlanetReal r={toScale(planet.radius)} />
         <AtmosphereComponent planet={planet} />
         <PlanetIcon r={iconRadius} />
       </g>
       <PlanetText
-        y={Math.max(adapter(planet.radius), iconRadius) + textFontSize}
+        y={Math.max(toScale(planet.radius), iconRadius) + textFontSize}
         fontSize={textFontSize}
         style={{ opacity: textOpacity }}
       >
@@ -68,14 +68,14 @@ export const PlanetComponent: React.FC<PlanetComponentProps> = ({
   children,
 }) => {
   const currentDate = useCurrentDate()
-  const adapter = useScaleAdapter()
+  const toScale = useToScaleAdapter()
 
   const pos = getCarthesianCoords(planet.orbit, currentDate)
 
   return (
     <OrbitComponent orbit={planet.orbit}>
       <SVGCanvasSpawnPortal>
-        <SVGView scale={1e-3} center={{ x: adapter(pos.x), y: adapter(pos.y) }}>
+        <SVGView scale={1e-3} center={{ x: toScale(pos.x), y: toScale(pos.y) }}>
           <PlanetRenderComponent planet={planet}>
             {children}
           </PlanetRenderComponent>

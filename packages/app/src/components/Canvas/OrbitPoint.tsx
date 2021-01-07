@@ -4,7 +4,7 @@ import { getApoapsis, getPeriapsis } from '@othrworld/orbital-mechanics'
 import { radialToCarth } from '@othrworld/orbital-mechanics/dist/coords'
 import { styled } from '@othrworld/stitches-config'
 
-import { useFixedSizeAdapter, useScaleAdapter } from './SVGView'
+import { useFixedSizeAdapter, useToScaleAdapter } from './SVGView'
 
 const OrbitPointsGroup = styled.g({
   transition: 'opacity .2s',
@@ -20,7 +20,7 @@ interface OrbitPointsProps {
 }
 export const OrbitPoints = ({ orbit, isHovered }: OrbitPointsProps) => {
   const fixed = useFixedSizeAdapter()
-  const adapter = useScaleAdapter()
+  const toScale = useToScaleAdapter()
 
   const pericenter = radialToCarth({ angle: orbit.phi, r: getPeriapsis(orbit) })
   const apocenter = radialToCarth({
@@ -32,13 +32,13 @@ export const OrbitPoints = ({ orbit, isHovered }: OrbitPointsProps) => {
     <OrbitPointsGroup style={{ opacity: isHovered ? 1 : 0 }}>
       <OrbitPointCircle
         r={fixed(2)}
-        cx={adapter(pericenter.x)}
-        cy={adapter(pericenter.y)}
+        cx={toScale(pericenter.x)}
+        cy={toScale(pericenter.y)}
       />
       <OrbitPointCircle
         r={fixed(2)}
-        cx={adapter(apocenter.x)}
-        cy={adapter(apocenter.y)}
+        cx={toScale(apocenter.x)}
+        cy={toScale(apocenter.y)}
       />
     </OrbitPointsGroup>
   )

@@ -3,7 +3,7 @@ import { styled } from '@othrworld/stitches-config'
 import { Orbit } from '@othrworld/core'
 import { getSemiMinorAxis } from '@othrworld/orbital-mechanics'
 
-import { useFixedSizeAdapter, useScaleAdapter } from './SVGView'
+import { useFixedSizeAdapter, useToScaleAdapter } from './SVGView'
 
 const OrbitEll = styled.ellipse({
   stroke: '$orbit',
@@ -23,14 +23,14 @@ export const OrbitEllipse = ({
   ...props
 }: OrbitEllipseProps) => {
   const fixed = useFixedSizeAdapter()
-  const adapter = useScaleAdapter()
+  const toScale = useToScaleAdapter()
   return (
     <OrbitEll
-      rx={adapter(orbit.a)}
-      ry={adapter(getSemiMinorAxis(orbit))}
+      rx={toScale(orbit.a)}
+      ry={toScale(getSemiMinorAxis(orbit))}
       transform={`
         rotate(${(orbit.phi * 360) / (Math.PI * 2)})
-        translate(${-adapter(orbit.a * orbit.e)} 0)
+        translate(${-toScale(orbit.a * orbit.e)} 0)
       `}
       strokeWidth={fixed(baseStrokeWidth)}
       style={{

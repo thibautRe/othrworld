@@ -4,7 +4,7 @@ import { styled } from '@othrworld/stitches-config'
 
 import { OrbitComponent } from './OrbitComponent'
 import { useCanvasTooltipStore } from '../../stores/canvasTooltips'
-import { useFixedSizeAdapter, useScaleAdapter } from './SVGView'
+import { useFixedSizeAdapter, useToScaleAdapter } from './SVGView'
 
 const SpacecraftDot = styled.circle({
   fill: 'white',
@@ -25,14 +25,14 @@ export const SpacecraftComponent = ({
   spacecraft,
 }: SpacecraftComponentProps) => {
   const fixed = useFixedSizeAdapter()
-  const adapter = useScaleAdapter()
+  const toScale = useToScaleAdapter()
   const fontSize = fixed(10)
 
-  const visualRadius = adapter(spacecraft.orbit.a)
+  const visualRadius = toScale(spacecraft.orbit.a)
   const textOpacity = visualRadius > fixed(50) ? 1 : 0
   const ellipseOpacity = visualRadius > fixed(20) ? 1 : 0
 
-  const orbitStrokeDash = adapter(spacecraft.orbit.a) / 30
+  const orbitStrokeDash = toScale(spacecraft.orbit.a) / 30
 
   return (
     <OrbitComponent
