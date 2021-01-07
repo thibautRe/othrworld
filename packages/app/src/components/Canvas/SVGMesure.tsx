@@ -1,5 +1,5 @@
 import React from 'react'
-import { useCanvasTransform } from '../../stores/canvasTransform'
+import { useCanvasTransformZoom } from '../../stores/canvasTransform'
 
 export interface MesureInfo {
   from: { x: number; y: number }
@@ -9,7 +9,7 @@ interface SVGMesureProps {
   info: MesureInfo
 }
 export const SVGMesure = ({ info }: SVGMesureProps) => {
-  const { k } = useCanvasTransform()
+  const k = useCanvasTransformZoom()
   const dist = Math.sqrt(
     (info.to.x - info.from.x) ** 2 + (info.to.y - info.from.y) ** 2
   )

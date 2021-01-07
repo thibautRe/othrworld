@@ -58,7 +58,12 @@ export const SvgRoot: React.FC = ({ children }) => {
 
   return (
     <SVG ref={svgRef} id="canvas" {...eventHandlers}>
-      <SVGView center={{ x, y }} scale={k} hideOnMinZoom={false}>
+      <SVGView
+        center={{ x, y }}
+        scale={k}
+        hideOnMinZoom={false}
+        hideOnFar={false}
+      >
         {children}
       </SVGView>
       {mesureInfo && <SVGMesure info={mesureInfo} />}

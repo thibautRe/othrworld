@@ -13,7 +13,6 @@ type CanvasTransformState = {
   x: number
   y: number
   k: number
-  globalK: number
   zoomBehaviour: ZoomBehavior<SVGSVGElement, unknown>
   selection: SVGSelection | null
 
@@ -26,10 +25,9 @@ export const useCanvasTransformStore = create<CanvasTransformState>(
     x: 0,
     y: 0,
     k: 1,
-    globalK: 1,
     zoomBehaviour: zoom<SVGSVGElement, unknown>()
       .filter((e) => !e.ctrlKey)
-      .on('zoom', ({ transform: { x, y, k } }) => set({ x, y, k, globalK: k })),
+      .on('zoom', ({ transform: { x, y, k } }) => set({ x, y, k })),
     selection: null,
     setTransform: ({ x, y, k }) => {
       const { selection, zoomBehaviour } = get()
@@ -44,7 +42,10 @@ export const useCanvasTransformStore = create<CanvasTransformState>(
   })
 )
 
-const transformExtracter = ({ x, y, k }: CanvasTransformState) => ({ x, y, k })
-
+const transformExtractor = ({ x, y, k }: CanvasTransformState) => ({ x, y, k })
 export const useCanvasTransform = () =>
-  useCanvasTransformStore(transformExtracter, shallow)
+  useCanvasTransformStore(transformExtractor, shallow)
+
+const zoomExtractor = ({ k }: CanvasTransformState) => ({ k })
+export const useCanvasTransformZoom = () =>
+  useCanvasTransformStore(zoomExtractor).k

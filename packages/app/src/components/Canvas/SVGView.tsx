@@ -1,5 +1,6 @@
 import React from 'react'
-import { useCanvasTransformStore } from '../../stores/canvasTransform'
+
+import { useCanvasTransformZoom } from '../../stores/canvasTransform'
 
 interface ViewContext {
   x: number
@@ -14,12 +15,15 @@ interface SVGViewProps {
   scale: number
   /** If the view should hide its content on low zoom levels (global view) */
   hideOnMinZoom?: boolean
+  /** If the view should hide its content on high lateral transforms */
+  hideOnFar?: boolean
 }
 
 export const SVGView: React.FC<SVGViewProps> = ({
   center,
   scale,
   hideOnMinZoom = true,
+  hideOnFar = true,
   children,
 }) => {
   const viewContext = useViewContext()
@@ -30,11 +34,11 @@ export const SVGView: React.FC<SVGViewProps> = ({
   const shouldHide =
     (hideOnMinZoom && s < 1e-3) ||
     s > 200 ||
-    // FIXME: the `scale!==1` is a hack in order to allow the top-level system pass to
+    // FIXME: this is a hack in order to allow the top-level system pass to
     // draw orbits that are far away from the center when being zoomed in.
     // Potentially, a kind of "bounding box" calculation is needed in order to fix some
     // edge cases
-    (scale !== 1 && (Math.abs(tx) > 1e8 || Math.abs(ty) > 1e8))
+    (hideOnFar && (Math.abs(tx) > 1e8 || Math.abs(ty) > 1e8))
 
   return (
     <g
@@ -51,9 +55,7 @@ export const SVGView: React.FC<SVGViewProps> = ({
 /** Returns a helper function to call when trying to draw to-scale values (distances, radius, ...) */
 export const useScaleAdapter = () => {
   const { k } = useViewContext()
-  const globalK = useCanvasTransformStore(
-    React.useCallback((s) => s.globalK, [])
-  )
+  const globalK = useCanvasTransformZoom()
   const scale = (k / globalK) * 1e5
   return (distance: number) => distance / scale
 }

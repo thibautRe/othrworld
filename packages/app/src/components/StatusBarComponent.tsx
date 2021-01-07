@@ -4,7 +4,7 @@ import { styled } from '@othrworld/stitches-config'
 
 import { useSystemStore } from '../stores/system'
 import { useDateStore } from '../stores/date'
-import { useCanvasTransform } from '../stores/canvasTransform'
+import { useCanvasTransformZoom } from '../stores/canvasTransform'
 
 const Wrapper = styled.div({
   position: 'absolute',
@@ -23,7 +23,7 @@ export const StatusBarComponent = () => {
     React.useCallback((s) => [s.isPaused, s.currentDate, s.timeMult], []),
     shallow
   )
-  const { k } = useCanvasTransform()
+  const k = useCanvasTransformZoom()
 
   return (
     <Wrapper>
@@ -35,8 +35,7 @@ export const StatusBarComponent = () => {
       </span>
       {' - '}
       {currentDate.toLocaleString()} ({currentTimeMult}
-      x) {isPaused && '*PAUSED*'}
-      <span>Zoom: {k.toFixed(4)}</span>
+      x) {isPaused && '*PAUSED*'} <span>Zoom: {k.toFixed(4)}</span>
     </Wrapper>
   )
 }
