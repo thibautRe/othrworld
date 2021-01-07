@@ -3,14 +3,10 @@ import { Planet } from '@othrworld/core'
 import { getCarthesianCoords } from '@othrworld/orbital-mechanics'
 import { styled } from '@othrworld/stitches-config'
 
-import {
-  useCanvasTransform,
-  useScaleAdapter,
-} from '../../providers/CanvasViewProvider'
 import { AtmosphereComponent } from './AtmosphereComponent'
 import { OrbitComponent } from './OrbitComponent'
 import { SVGCanvasSpawnPortal } from './SVGCanvasSpawnPortal'
-import { SVGView } from './SVGView'
+import { SVGView, useFixedSizeAdapter, useScaleAdapter } from './SVGView'
 import { useCurrentDate } from '../../stores/date'
 import { useCanvasTooltipStore } from '../../stores/canvasTooltips'
 
@@ -31,13 +27,13 @@ const PlanetRenderComponent: React.FC<{ planet: Planet }> = ({
   planet,
   children,
 }) => {
-  const { k } = useCanvasTransform()
+  const fixed = useFixedSizeAdapter()
   const adapter = useScaleAdapter()
 
-  const iconRadius = 5 / k
-  const textFontSize = 10 / k
+  const iconRadius = fixed(5)
+  const textFontSize = fixed(10)
   // If the planet's visual radius is above N px, show the name
-  const textOpacity = adapter(planet.orbit.a) * k > 50 ? 1 : 0
+  const textOpacity = adapter(planet.orbit.a) > fixed(50) ? 1 : 0
 
   return (
     <>

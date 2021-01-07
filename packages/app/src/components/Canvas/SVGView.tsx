@@ -1,26 +1,31 @@
 import React from 'react'
+import { useCanvasTransformStore } from '../../stores/canvasTransform'
 
-import {
-  CanvasTransformProvider,
-  useCanvasTransform,
-} from '../../providers/CanvasViewProvider'
+interface ViewContext {
+  x: number
+  y: number
+  k: number
+}
+const ViewContext = React.createContext<ViewContext>({ x: 0, y: 0, k: 1 })
+const useViewContext = () => React.useContext(ViewContext)
 
 interface SVGViewProps {
-  center?: { x: number; y: number }
-  scale?: number
+  center: { x: number; y: number }
+  scale: number
   /** If the view should hide its content on low zoom levels (global view) */
   hideOnMinZoom?: boolean
 }
+
 export const SVGView: React.FC<SVGViewProps> = ({
-  center = { x: 0, y: 0 },
-  scale = 1,
+  center,
+  scale,
   hideOnMinZoom = true,
   children,
 }) => {
-  const transform = useCanvasTransform()
-  const tx = transform.x + center.x * transform.k
-  const ty = transform.y + center.y * transform.k
-  const s = transform.k * scale
+  const viewContext = useViewContext()
+  const tx = viewContext.x + center.x * viewContext.k
+  const ty = viewContext.y + center.y * viewContext.k
+  const s = viewContext.k * scale
 
   const shouldHide =
     (hideOnMinZoom && s < 1e-3) ||
@@ -36,11 +41,24 @@ export const SVGView: React.FC<SVGViewProps> = ({
       transform={`translate(${tx} ${ty}) scale(${s})`}
       style={{ display: shouldHide ? 'none' : 'initial' }}
     >
-      <CanvasTransformProvider
-        transform={{ x: tx, y: ty, k: s, globalK: transform.globalK }}
-      >
+      <ViewContext.Provider value={{ x: tx, y: ty, k: s }}>
         {children}
-      </CanvasTransformProvider>
+      </ViewContext.Provider>
     </g>
   )
+}
+
+/** Returns a helper function to call when trying to draw to-scale values (distances, radius, ...) */
+export const useScaleAdapter = () => {
+  const { k } = useViewContext()
+  const globalK = useCanvasTransformStore(
+    React.useCallback((s) => s.globalK, [])
+  )
+  const scale = (k / globalK) * 1e5
+  return (distance: number) => distance / scale
+}
+
+export const useFixedSizeAdapter = () => {
+  const { k } = useViewContext()
+  return (size: number) => size / k
 }

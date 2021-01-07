@@ -1,11 +1,12 @@
+import React from 'react'
 import { Orbit } from '@othrworld/core'
 import { getSpeedVector } from '@othrworld/orbital-mechanics'
-import React from 'react'
-import { useCanvasTransform } from '../../providers/CanvasViewProvider'
+
 import { useCurrentDate } from '../../stores/date'
 import { OrbitEllipse, OrbitEllipseProps } from './OrbitEllipse'
 import { OrbitItem } from './OrbitItem'
 import { OrbitPoints } from './OrbitPoint'
+import { useFixedSizeAdapter } from './SVGView'
 
 interface OrbitComponentProps {
   orbit: Orbit
@@ -19,7 +20,7 @@ export const OrbitComponent: React.FC<OrbitComponentProps> = ({
   const [isHovered, setIsHovered] = React.useState(false)
   const currentDate = useCurrentDate()
   const speedVec = getSpeedVector(orbit, currentDate)
-  const { k } = useCanvasTransform()
+  const fixed = useFixedSizeAdapter()
   return (
     <>
       <g
@@ -46,9 +47,9 @@ export const OrbitComponent: React.FC<OrbitComponentProps> = ({
           <line
             x1={0}
             y1={0}
-            x2={(speedVec.x * 10) / k}
-            y2={(speedVec.y * 10) / k}
-            strokeWidth={2 / k}
+            x2={fixed(speedVec.x * 10)}
+            y2={fixed(speedVec.y * 10)}
+            strokeWidth={fixed(2)}
             stroke="yellow"
           />
         )}

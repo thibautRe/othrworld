@@ -3,7 +3,7 @@ import { Orbit } from '@othrworld/core'
 import { getCarthesianCoords } from '@othrworld/orbital-mechanics'
 
 import { useCurrentDate } from '../../stores/date'
-import { useScaleAdapter } from '../../providers/CanvasViewProvider'
+import { useScaleAdapter } from './SVGView'
 
 /** Translation group for an orbit */
 interface OrbitItemProps extends React.SVGAttributes<SVGGElement> {

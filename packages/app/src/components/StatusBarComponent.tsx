@@ -2,9 +2,9 @@ import React from 'react'
 import shallow from 'zustand/shallow'
 import { styled } from '@othrworld/stitches-config'
 
-import { useCanvasTransform } from '../providers/CanvasViewProvider'
 import { useSystemStore } from '../stores/system'
 import { useDateStore } from '../stores/date'
+import { useCanvasTransform } from '../stores/canvasTransform'
 
 const Wrapper = styled.div({
   position: 'absolute',

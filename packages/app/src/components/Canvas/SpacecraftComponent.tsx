@@ -2,9 +2,9 @@ import React from 'react'
 import { Spacecraft } from '@othrworld/core'
 import { styled } from '@othrworld/stitches-config'
 
-import { useCanvasTransform, useScaleAdapter } from '../../providers/CanvasViewProvider'
 import { OrbitComponent } from './OrbitComponent'
 import { useCanvasTooltipStore } from '../../stores/canvasTooltips'
+import { useFixedSizeAdapter, useScaleAdapter } from './SVGView'
 
 const SpacecraftDot = styled.circle({
   fill: 'white',
@@ -24,13 +24,13 @@ interface SpacecraftComponentProps {
 export const SpacecraftComponent = ({
   spacecraft,
 }: SpacecraftComponentProps) => {
-  const { k } = useCanvasTransform()
+  const fixed = useFixedSizeAdapter()
   const adapter = useScaleAdapter()
-  const fontSize = 10 / k
-  const visualRadius = adapter(spacecraft.orbit.a) * k
+  const fontSize = fixed(10)
 
-  const textOpacity = visualRadius > 50 ? 1 : 0
-  const ellipseOpacity = visualRadius > 20 ? 1 : 0
+  const visualRadius = adapter(spacecraft.orbit.a)
+  const textOpacity = visualRadius > fixed(50) ? 1 : 0
+  const ellipseOpacity = visualRadius > fixed(20) ? 1 : 0
 
   const orbitStrokeDash = adapter(spacecraft.orbit.a) / 30
 
@@ -51,8 +51,8 @@ export const SpacecraftComponent = ({
             .open(e, { type: 'spacecraft', id: spacecraft.id })
         }
       >
-        <SpacecraftGuardDot r={15 / k} />
-        <SpacecraftDot r={2 / k} />
+        <SpacecraftGuardDot r={fixed(15)} />
+        <SpacecraftDot r={fixed(2)} />
         <Text y={fontSize} fontSize={fontSize} style={{ opacity: textOpacity }}>
           {spacecraft.name}
         </Text>

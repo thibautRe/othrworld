@@ -1,7 +1,10 @@
 import { styled } from '@othrworld/stitches-config'
 import React from 'react'
 
-import { useCanvasView } from '../../providers/CanvasViewProvider'
+import {
+  useCanvasTransform,
+  useCanvasTransformStore,
+} from '../../stores/canvasTransform'
 import { MesureInfo, SVGMesure } from './SVGMesure'
 import { SVGView } from './SVGView'
 
@@ -44,7 +47,8 @@ const useMesureInfo = () => {
 
 export const SvgRoot: React.FC = ({ children }) => {
   const svgRef = React.useRef<SVGSVGElement>(null)
-  const { applyZoomEvents } = useCanvasView()
+  const { x, y, k } = useCanvasTransform()
+  const applyZoomEvents = useCanvasTransformStore((s) => s.applyZoomEvents)
   const { mesureInfo, eventHandlers } = useMesureInfo()
 
   React.useEffect(() => {
@@ -54,7 +58,9 @@ export const SvgRoot: React.FC = ({ children }) => {
 
   return (
     <SVG ref={svgRef} id="canvas" {...eventHandlers}>
-      <SVGView hideOnMinZoom={false}>{children}</SVGView>
+      <SVGView center={{ x, y }} scale={k} hideOnMinZoom={false}>
+        {children}
+      </SVGView>
       {mesureInfo && <SVGMesure info={mesureInfo} />}
     </SVG>
   )

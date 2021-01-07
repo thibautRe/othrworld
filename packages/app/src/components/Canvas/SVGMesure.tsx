@@ -1,5 +1,5 @@
 import React from 'react'
-import { useCanvasTransform } from '../../providers/CanvasViewProvider'
+import { useCanvasTransform } from '../../stores/canvasTransform'
 
 export interface MesureInfo {
   from: { x: number; y: number }
