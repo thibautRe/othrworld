@@ -4,7 +4,7 @@ import {
   getNextPeriapsisPassage,
   getSpeed,
 } from '@othrworld/orbital-mechanics'
-import { Orbit, OrbitalElement, Planet, Spacecraft } from '@othrworld/core'
+import { Body, Orbit, Planet, Spacecraft } from '@othrworld/core'
 
 import { Popover } from './Popover'
 import { useCurrentDate } from '../stores/date'
@@ -35,7 +35,7 @@ const CanvasTooltipOrbitInfo = ({ orbit }: { orbit: Orbit }) => {
   )
 }
 
-const CanvasTooltipFollow = ({ item }: { item: OrbitalElement }) => (
+const CanvasTooltipFollow = ({ item }: { item: Body | Spacecraft }) => (
   <button onClick={() => useCanvasTransformStore.getState().setTarget(item)}>
     Follow
   </button>

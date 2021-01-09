@@ -7,7 +7,7 @@ import { useDateStore } from '../stores/date'
 import {
   useCanvasTransformZoom,
   useCanvasTransformStore,
-  useCanvasTransformTarget,
+  useCanvasTransformTargetId,
 } from '../stores/canvasTransform'
 
 const Wrapper = styled.div({
@@ -28,7 +28,7 @@ export const StatusBarComponent = () => {
     shallow
   )
   const k = useCanvasTransformZoom()
-  const target = useCanvasTransformTarget()
+  const targetId = useCanvasTransformTargetId()
 
   return (
     <Wrapper>
@@ -41,11 +41,11 @@ export const StatusBarComponent = () => {
       {' - '}
       {currentDate.toLocaleString()} ({currentTimeMult}
       x) {isPaused && '*PAUSED*'} <span>Zoom: {k.toFixed(4)}</span>{' '}
-      {target && (
+      {targetId && (
         <>
-          Following item{' '}
+          Following
           <button
-            onClick={() => useCanvasTransformStore.getState().setTarget(null)}
+            onClick={() => useCanvasTransformStore.getState().clearTarget()}
           >
             Unfollow
           </button>

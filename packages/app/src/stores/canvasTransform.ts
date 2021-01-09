@@ -2,10 +2,10 @@ import create from 'zustand'
 import { zoom, ZoomBehavior, zoomIdentity } from 'd3-zoom'
 import { select, Selection } from 'd3-selection'
 import shallow from 'zustand/shallow'
-import { OrbitalElement } from '@othrworld/core'
+import { Body, ID, Spacecraft } from '@othrworld/core'
 
 import { useDateStore } from './date'
-import { getAbsoluteCoords } from './system'
+import { getAbsoluteCoords, useSystemStore } from './system'
 import { GLOBAL_SCALE_MULTIPLIER } from '../components/Canvas/SVGView'
 
 type SVGSelection = Selection<SVGSVGElement, unknown, null, undefined>
@@ -24,9 +24,10 @@ type CanvasTransformState = {
   setTransform: (transform: CanvasTransform) => void
   applyZoomEvents: (elt: SVGSVGElement) => void
 
-  target: OrbitalElement | null
+  targetId: ID<'body'> | ID<'spacecraft'> | null
   targetFollowSubscribtion?: () => void
-  setTarget: (target: OrbitalElement | null) => void
+  setTarget: (target: Body | Spacecraft) => void
+  clearTarget: () => void
 }
 
 const initView = {
@@ -64,31 +65,44 @@ export const useCanvasTransformStore = create<CanvasTransformState>(
       return set({ selection })
     },
 
-    target: null,
-    setTarget: (target) => {
+    targetId: null,
+    clearTarget: () => {
       const { targetFollowSubscribtion } = get()
       if (targetFollowSubscribtion) {
         targetFollowSubscribtion()
       }
-      if (!target) {
-        set({ target, targetFollowSubscribtion: undefined })
-      } else {
-        set({
-          target,
-          targetFollowSubscribtion: useDateStore.subscribe(
-            (currentDate: Date) => {
-              const { x, y } = getAbsoluteCoords(target, currentDate)
+      set({ targetId: null, targetFollowSubscribtion: undefined })
+    },
+    setTarget: (targetProp) => {
+      const { targetFollowSubscribtion } = get()
+      if (targetFollowSubscribtion) {
+        targetFollowSubscribtion()
+      }
+      const setTransform = (t: Date) => {
+        const sys = useSystemStore.getState().system
+        const target =
+          targetProp.type === 'spacecraft'
+            ? sys.spacecrafts.find(({ id }) => id === targetProp.id)
+            : sys.bodies.find(({ id }) => id === targetProp.id)
+        if (!target || target.type === 'star') return
 
-              get().setTransform({
-                x: -x / GLOBAL_SCALE_MULTIPLIER,
-                y: -y / GLOBAL_SCALE_MULTIPLIER,
-                k: get().k,
-              })
-            },
-            (s) => s.currentDate
-          ),
+        const { x, y } = getAbsoluteCoords(target, t)
+        get().setTransform({
+          x: -x / GLOBAL_SCALE_MULTIPLIER,
+          y: -y / GLOBAL_SCALE_MULTIPLIER,
+          k: get().k,
         })
       }
+
+      setTransform(useDateStore.getState().currentDate)
+
+      set({
+        targetId: targetProp.id,
+        targetFollowSubscribtion: useDateStore.subscribe(
+          setTransform,
+          (s) => s.currentDate
+        ),
+      })
     },
   })
 )
@@ -101,6 +115,6 @@ const zoomExtractor = ({ k }: CanvasTransformState) => k
 export const useCanvasTransformZoom = () =>
   useCanvasTransformStore(zoomExtractor)
 
-const targetExtractor = ({ target }: CanvasTransformState) => target
-export const useCanvasTransformTarget = () =>
-  useCanvasTransformStore(targetExtractor)
+const targetIdExtractor = ({ targetId }: CanvasTransformState) => targetId
+export const useCanvasTransformTargetId = () =>
+  useCanvasTransformStore(targetIdExtractor)
