@@ -15,6 +15,7 @@ import { useKeyListener } from './hooks/useKeyListener'
 import { useSystemStore } from './stores/system'
 import { useDateStore, useIsPaused } from './stores/date'
 import { useFrame } from './hooks/useFrame'
+import { useCanvasTransformStore } from './stores/canvasTransform'
 
 css.global({
   body: {
@@ -27,6 +28,17 @@ export const App = () => {
     useSystemStore.getState().setSystem(system)
     useDateStore.getState().resetCurrentDate()
   }, [])
+
+  useKeyListener(
+    '1',
+    React.useCallback(
+      () =>
+        useCanvasTransformStore
+          .getState()
+          .setTransform({ x: -4600, y: 0, k: 1000 }),
+      []
+    )
+  )
 
   useKeyListener(
     'r',

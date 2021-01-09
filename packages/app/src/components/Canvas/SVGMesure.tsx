@@ -1,5 +1,6 @@
 import React from 'react'
 import { useCanvasTransformZoom } from '../../stores/canvasTransform'
+import { GLOBAL_SCALE_MULTIPLIER } from './SVGView'
 
 export interface MesureInfo {
   from: { x: number; y: number }
@@ -28,7 +29,7 @@ export const SVGMesure = ({ info }: SVGMesureProps) => {
         x={(info.from.x + info.to.x) / 2}
         y={(info.from.y + info.to.y) / 2}
       >
-        {((dist / k) * 1e5).toFixed(0)}km
+        {((dist / k) * GLOBAL_SCALE_MULTIPLIER).toFixed(0)}km
       </text>
     </g>
   )

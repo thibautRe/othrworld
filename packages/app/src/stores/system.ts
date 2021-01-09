@@ -1,6 +1,7 @@
 import create from 'zustand'
-import { Spacecraft, System } from '@othrworld/core'
+import { Body, OrbitalElement, Spacecraft, System } from '@othrworld/core'
 import { generateSystem } from '@othrworld/systemgen'
+import { getCarthesianCoords } from '@othrworld/orbital-mechanics'
 
 type SystemState = {
   system: System
@@ -32,3 +33,28 @@ export const useSystemStore = create<SystemState>((set, get) => ({
 
   getSpacecraft: (sId) => get().system.spacecrafts.find(({ id }) => id === sId),
 }))
+
+const getParent = (orbElt: OrbitalElement): Body | undefined =>
+  useSystemStore
+    .getState()
+    .system.bodies.find(({ id }) => id === orbElt.parentId)
+
+/** Returns an array of parents, from the outermost item */
+const getParentPath = (orbElt: OrbitalElement): OrbitalElement[] => {
+  const parent = getParent(orbElt)
+  if (parent && !(parent.type === 'star')) {
+    return [...getParentPath(parent), orbElt]
+  }
+  return [orbElt]
+}
+
+/** Returns the absolute coordinates of an orbital element */
+export const getAbsoluteCoords = (orbElt: OrbitalElement, t: Date) => {
+  const path = getParentPath(orbElt)
+  const coords = path.map((body) => getCarthesianCoords(body.orbit, t))
+  console.log(path, coords)
+
+  return coords.reduce((coord1, coord2) => {
+    return { x: coord1.x + coord2.x, y: coord1.y + coord2.y }
+  })
+}

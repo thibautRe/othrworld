@@ -1,23 +1,21 @@
 import { ID } from './id'
-import { Orbit } from './orbit'
+import { OrbitalElement } from './orbit'
 import { Distance } from './units'
 
 interface BodyBase {
   id: ID<'body'>
-  parentId?: ID<'body'>
   name: string
   /** @unit kg/km^3 */
   density: number
   radius: Distance
-  orbit: Orbit
 }
 
-export interface Planet extends BodyBase {
+export interface Planet extends BodyBase, OrbitalElement {
   type: 'planet'
   atmosphere: Atmosphere
 }
 
-export interface Asteroid extends BodyBase {
+export interface Asteroid extends BodyBase, OrbitalElement {
   type: 'asteroid'
 }
 

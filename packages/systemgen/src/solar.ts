@@ -30,13 +30,6 @@ export const generateSolarSystem = (): System => {
     name: 'Sun',
     radius: 696500,
     density: 1.408e12,
-    orbit: {
-      a: 0,
-      e: 0,
-      parentMass: 1,
-      phi: 0,
-      t0: new Date(),
-    },
     atmosphere: {
       altitudeHalf: 2000,
       density: 1, // fixme

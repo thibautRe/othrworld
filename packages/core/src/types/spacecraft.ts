@@ -1,15 +1,12 @@
-import { Body } from './body'
 import { ID } from './id'
-import { Orbit } from './orbit'
+import { OrbitalElement } from './orbit'
 
-export interface Spacecraft {
+export interface Spacecraft extends OrbitalElement {
   id: ID<'spacecraft'>
-  parentId: Body['id']
   type: 'spacecraft'
   name: string
   /** @unit kg */
   dryMass: number
-  orbit: Orbit
   parts: SpacecraftPart[]
 }
 

@@ -1,4 +1,14 @@
+import { ID } from './id'
 import { Distance, Mass } from './units'
+
+export interface OrbitalElement {
+  parentId: ID<'body'>
+  orbit: Orbit
+}
+
+export const isOrbitalElement = (
+  item: Record<string, any>
+): item is OrbitalElement => Boolean(item.parentId)
 
 export interface Orbit {
   /** semi-major axis distance */

@@ -4,16 +4,17 @@ import {
   getNextPeriapsisPassage,
   getSpeed,
 } from '@othrworld/orbital-mechanics'
+import { Orbit, OrbitalElement, Planet, Spacecraft } from '@othrworld/core'
 
 import { Popover } from './Popover'
 import { useCurrentDate } from '../stores/date'
 import { requestCircularOrbit } from '../actions/spacecraft/requestCircularOrbit'
-import { Orbit, Planet, Spacecraft } from '@othrworld/core'
 import { useSystemStore } from '../stores/system'
 import {
   useCanvasTooltip,
   useCanvasTooltipStore,
 } from '../stores/canvasTooltips'
+import { useCanvasTransformStore } from '../stores/canvasTransform'
 
 const CanvasTooltipOrbitInfo = ({ orbit }: { orbit: Orbit }) => {
   const currentDate = useCurrentDate()
@@ -34,8 +35,15 @@ const CanvasTooltipOrbitInfo = ({ orbit }: { orbit: Orbit }) => {
   )
 }
 
+const CanvasTooltipFollow = ({ item }: { item: OrbitalElement }) => (
+  <button onClick={() => useCanvasTransformStore.getState().setTarget(item)}>
+    Follow
+  </button>
+)
+
 const CanvasTooltipPlanet = ({ id }: { id: Planet['id'] }) => {
-  const planet = useSystemStore(
+  // @ts-expect-error this could break if this tooltip is being passed a Body that is not a planet
+  const planet: Planet = useSystemStore(
     React.useCallback((s) => s.system.bodies.find((b) => b.id === id)!, [id])
   )
 
@@ -46,6 +54,7 @@ const CanvasTooltipPlanet = ({ id }: { id: Planet['id'] }) => {
       </div>
 
       <CanvasTooltipOrbitInfo orbit={planet.orbit} />
+      <CanvasTooltipFollow item={planet} />
     </>
   )
 }
@@ -60,6 +69,7 @@ const CanvasTooltipSpacecraft = ({ id }: { id: Spacecraft['id'] }) => {
   return (
     <>
       <CanvasTooltipOrbitInfo orbit={spacecraft.orbit} />
+      <CanvasTooltipFollow item={spacecraft} />
       <button onClick={() => requestCircularOrbit(spacecraft.id, 50000)}>
         Request circular orbit
       </button>
