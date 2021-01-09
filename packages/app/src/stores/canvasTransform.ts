@@ -79,11 +79,11 @@ export const useCanvasTransformStore = create<CanvasTransformState>(
         targetFollowSubscribtion()
       }
       const setTransform = (t: Date) => {
-        const sys = useSystemStore.getState().system
+        const sysStore = useSystemStore.getState()
         const target =
           targetProp.type === 'spacecraft'
-            ? sys.spacecrafts.find(({ id }) => id === targetProp.id)
-            : sys.bodies.find(({ id }) => id === targetProp.id)
+            ? sysStore.getSpacecraft(targetProp.id)
+            : sysStore.getBody(targetProp.id)
         if (!target || target.type === 'star') return
 
         const { x, y } = getAbsoluteCoords(target, t)

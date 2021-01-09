@@ -6,6 +6,7 @@ import { getCarthesianCoords } from '@othrworld/orbital-mechanics'
 type SystemState = {
   system: System
   setSystem: (s: System) => void
+  getBody: (bodyId: Body['id']) => Body | undefined
   getSpacecraft: (spacecraftId: Spacecraft['id']) => Spacecraft | undefined
   setSpacecraft: (
     spacecraftId: Spacecraft['id'],
@@ -31,6 +32,7 @@ export const useSystemStore = create<SystemState>((set, get) => ({
     })
   },
 
+  getBody: (bId) => get().system.bodies.find(({ id }) => id === bId),
   getSpacecraft: (sId) => get().system.spacecrafts.find(({ id }) => id === sId),
 }))
 
