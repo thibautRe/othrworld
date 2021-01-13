@@ -1,11 +1,4 @@
-import {
-  Asteroid,
-  Body,
-  getBodyMass,
-  Orbit,
-  OrbitalElement,
-  Planet,
-} from '@othrworld/core'
+import { Asteroid, Body, getBodyMass, Orbit, Planet } from '@othrworld/core'
 import {
   CarthCoords,
   RadialCoords,
@@ -173,9 +166,9 @@ export const recalculateOrbitForPosAndSpeed = (
   const t0 = new Date(t.getTime() - tDelta * 1000)
 
   return {
+    ...orbit,
     a,
     e,
-    parentMass: orbit.parentMass,
     phi,
     t0,
   }

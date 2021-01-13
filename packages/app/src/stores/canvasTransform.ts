@@ -86,7 +86,7 @@ export const useCanvasTransformStore = create<CanvasTransformState>(
             : sysStore.getBody(targetProp.id)
         if (!target || target.type === 'star') return
 
-        const { x, y } = getAbsoluteCoords(target, t)
+        const { x, y } = getAbsoluteCoords(target.orbit, t)
         get().setTransform({
           x: -x / GLOBAL_SCALE_MULTIPLIER,
           y: -y / GLOBAL_SCALE_MULTIPLIER,

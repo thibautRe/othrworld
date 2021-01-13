@@ -1,5 +1,5 @@
 import React from 'react'
-import { Body, isOrbitalElement, System } from '@othrworld/core'
+import { Body, System } from '@othrworld/core'
 
 import { PlanetComponent } from './PlanetComponent'
 import { StarComponent } from './StarComponent'
@@ -26,12 +26,12 @@ interface BodyTreeProps {
 const BodyTree = ({ body, system }: BodyTreeProps) => (
   <BodyComponent body={body}>
     {system.bodies
-      .filter((b) => isOrbitalElement(b) && b.parentId === body.id)
+      .filter((b) => b.type !== 'star' && b.orbit.parentId === body.id)
       .map((b) => (
         <BodyTree key={b.id} body={b} system={system} />
       ))}
     {system.spacecrafts
-      .filter((s) => s.parentId === body.id)
+      .filter((s) => s.orbit.parentId === body.id)
       .map((spacecraft) => (
         <SpacecraftComponent key={spacecraft.id} spacecraft={spacecraft} />
       ))}
@@ -44,7 +44,7 @@ export const SystemComponent = () => {
   return (
     <>
       {system.bodies
-        .filter((b) => !isOrbitalElement(b))
+        .filter((b) => b.type === 'star')
         .map((body) => (
           <BodyTree key={body.id} body={body} system={system} />
         ))}

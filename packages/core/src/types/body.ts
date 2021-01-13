@@ -1,5 +1,5 @@
 import { ID } from './id'
-import { OrbitalElement } from './orbit'
+import { Orbit } from './orbit'
 import { Distance } from './units'
 
 interface BodyBase {
@@ -10,13 +10,15 @@ interface BodyBase {
   radius: Distance
 }
 
-export interface Planet extends BodyBase, OrbitalElement {
+export interface Planet extends BodyBase {
   type: 'planet'
   atmosphere: Atmosphere
+  orbit: Orbit
 }
 
-export interface Asteroid extends BodyBase, OrbitalElement {
+export interface Asteroid extends BodyBase {
   type: 'asteroid'
+  orbit: Orbit
 }
 
 export interface Star extends BodyBase {

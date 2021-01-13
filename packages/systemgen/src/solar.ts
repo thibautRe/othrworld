@@ -54,7 +54,6 @@ export const generateSolarSystem = (): System => {
       sun,
       {
         id: createID(),
-        parentId: sun.id,
         name: 'Mercury',
         type: 'planet',
         radius: 2439,
@@ -62,6 +61,7 @@ export const generateSolarSystem = (): System => {
         orbit: {
           a: 57909050,
           e: 0.20563,
+          parentId: sun.id,
           parentMass: sunMass,
           phi: 0,
           t0: new Date(),
@@ -70,7 +70,6 @@ export const generateSolarSystem = (): System => {
       },
       {
         id: createID(),
-        parentId: sun.id,
         name: 'Venus',
         type: 'planet',
         radius: 6051,
@@ -78,6 +77,7 @@ export const generateSolarSystem = (): System => {
         orbit: {
           a: 108200800,
           e: 0.0067,
+          parentId: sun.id,
           parentMass: sunMass,
           phi: 0,
           t0: new Date(),
@@ -89,7 +89,6 @@ export const generateSolarSystem = (): System => {
 
       {
         id: createID(),
-        parentId: sun.id,
         name: 'Mars',
         type: 'planet',
         radius: 3389,
@@ -97,6 +96,7 @@ export const generateSolarSystem = (): System => {
         orbit: {
           a: 227939200,
           e: 0.0934,
+          parentId: sun.id,
           parentMass: sunMass,
           phi: 0,
           t0: new Date(),
@@ -110,7 +110,6 @@ export const generateSolarSystem = (): System => {
 
       {
         id: createID(),
-        parentId: sun.id,
         name: 'Saturn',
         type: 'planet',
         radius: 58232,
@@ -118,6 +117,7 @@ export const generateSolarSystem = (): System => {
         orbit: {
           a: 1443000000,
           e: 0.0565,
+          parentId: sun.id,
           parentMass: sunMass,
           phi: 0,
           t0: new Date(),
@@ -127,7 +127,6 @@ export const generateSolarSystem = (): System => {
 
       {
         id: createID(),
-        parentId: sun.id,
         name: 'Uranus',
         type: 'planet',
         radius: 25360,
@@ -135,6 +134,7 @@ export const generateSolarSystem = (): System => {
         orbit: {
           a: 2875000000,
           e: 0.046,
+          parentId: sun.id,
           parentMass: sunMass,
           phi: 0,
           t0: new Date(),
@@ -144,7 +144,6 @@ export const generateSolarSystem = (): System => {
 
       {
         id: createID(),
-        parentId: sun.id,
         name: 'Neptune',
         type: 'planet',
         radius: 24620,
@@ -152,6 +151,7 @@ export const generateSolarSystem = (): System => {
         orbit: {
           a: 4500000000,
           e: 0.0086,
+          parentId: sun.id,
           parentMass: sunMass,
           phi: 0,
           t0: new Date(),
@@ -164,7 +164,6 @@ export const generateSolarSystem = (): System => {
       // Comets
       {
         id: createID(),
-        parentId: sun.id,
         type: 'planet',
         name: 'Hale–Bopp',
         radius: 60,
@@ -172,6 +171,7 @@ export const generateSolarSystem = (): System => {
         orbit: {
           a: 27825200000,
           e: 0.995086,
+          parentId: sun.id,
           parentMass: sunMass,
           phi: (130 * Math.PI) / 180,
           t0: new Date('1997-03-30'),
@@ -180,7 +180,6 @@ export const generateSolarSystem = (): System => {
       },
       {
         id: createID(),
-        parentId: sun.id,
         type: 'planet',
         name: 'C/1844 N1 (Mauvais)',
         radius: 10,
@@ -188,6 +187,7 @@ export const generateSolarSystem = (): System => {
         orbit: {
           a: 526584500000,
           e: 0.999757,
+          parentId: sun.id,
           parentMass: sunMass,
           phi: (211 * Math.PI) / 180,
           t0: new Date('1844-10-17'),
@@ -204,7 +204,6 @@ const createEarth: CP = (sun) => {
   const sunMass = getBodyMass(sun)
   const earth: Planet = {
     id: createID(),
-    parentId: sun.id,
     name: 'Earth',
     type: 'planet',
     radius: 6371,
@@ -212,6 +211,7 @@ const createEarth: CP = (sun) => {
     orbit: {
       a: 149598023,
       e: 0.0167086,
+      parentId: sun.id,
       parentMass: sunMass,
       phi: 0,
       t0: new Date('2021-01-02T13:59'),
@@ -232,11 +232,11 @@ const createEarth: CP = (sun) => {
     name: 'Moon',
     type: 'planet',
     radius: 1731,
-    parentId: earth.id,
     density: dummyDensity,
     orbit: {
       a: 384399,
       e: 0.0549,
+      parentId: earth.id,
       parentMass,
       phi: 0,
       t0: new Date(),
@@ -255,15 +255,13 @@ const createEarth: CP = (sun) => {
       {
         id: createID(),
         name: 'ISS',
-        parentId: earth.id,
         type: 'spacecraft',
         dryMass: 2000,
-        parts: [
-          { type: 'engine', mass: 2, name: 'Engine 1', specificImpulse: 1 },
-        ],
+        parts: [],
         orbit: {
           a: earth.radius + 450,
           e: 0,
+          parentId: earth.id,
           parentMass,
           phi: 0,
           t0: new Date(),
@@ -278,11 +276,11 @@ const createEarth: CP = (sun) => {
         orbit: {
           a: moon.radius + 1500,
           e: 0.2,
+          parentId: moon.id,
           parentMass: getBodyMass(moon),
           phi: Math.PI / 4,
           t0: new Date(),
         },
-        parentId: moon.id,
       },
     ],
     bodies: [earth, moon],
@@ -293,7 +291,6 @@ const createJupiter: CP = (sun) => {
   const sunMass = getBodyMass(sun)
   const jupiter: Planet = {
     id: createID(),
-    parentId: sun.id,
     name: 'Jupiter',
     type: 'planet',
     radius: 69911,
@@ -302,6 +299,7 @@ const createJupiter: CP = (sun) => {
     orbit: {
       a: 778570000,
       e: 0.0489,
+      parentId: sun.id,
       parentMass: sunMass,
       phi: 0,
       t0: new Date(),
@@ -317,12 +315,12 @@ const createJupiter: CP = (sun) => {
         name: 'Io',
         type: 'planet',
         radius: 3660 / 2,
-        parentId: jupiter.id,
         density: dummyDensity,
         atmosphere: dummyAtm,
         orbit: {
           a: 421800,
           e: 0.0041,
+          parentId: jupiter.id,
           parentMass: getBodyMass(jupiter),
           phi: 0,
           t0: new Date(),
@@ -333,12 +331,12 @@ const createJupiter: CP = (sun) => {
         name: 'Europa',
         type: 'planet',
         radius: 3121 / 2,
-        parentId: jupiter.id,
         density: dummyDensity,
         atmosphere: dummyAtm,
         orbit: {
           a: 671100,
           e: 0.0094,
+          parentId: jupiter.id,
           parentMass: getBodyMass(jupiter),
           phi: 0,
           t0: new Date(),
@@ -349,12 +347,12 @@ const createJupiter: CP = (sun) => {
         name: 'Ganymede',
         type: 'planet',
         radius: 5268 / 2,
-        parentId: jupiter.id,
         density: dummyDensity,
         atmosphere: dummyAtm,
         orbit: {
           a: 1070400,
           e: 0.0011,
+          parentId: jupiter.id,
           parentMass: getBodyMass(jupiter),
           phi: 0,
           t0: new Date(),
@@ -365,12 +363,12 @@ const createJupiter: CP = (sun) => {
         name: 'Callisto',
         type: 'planet',
         radius: 4820 / 2,
-        parentId: jupiter.id,
         density: dummyDensity,
         atmosphere: dummyAtm,
         orbit: {
           a: 1882700,
           e: 0.0074,
+          parentId: jupiter.id,
           parentMass: getBodyMass(jupiter),
           phi: 0,
           t0: new Date(),
@@ -383,7 +381,6 @@ const createJupiter: CP = (sun) => {
 const createPluto: CP = (sun) => {
   const pluto: Planet = {
     id: createID(),
-    parentId: sun.id,
     name: 'Pluto',
     type: 'planet',
     radius: 1188,
@@ -391,6 +388,7 @@ const createPluto: CP = (sun) => {
     orbit: {
       a: 5906380000,
       e: 0.2488,
+      parentId: sun.id,
       parentMass: getBodyMass(sun),
       phi: 0,
       t0: new Date('2050-06-01'),
@@ -406,11 +404,11 @@ const createPluto: CP = (sun) => {
         name: 'Charon',
         type: 'planet',
         density: 1.702e12,
-        parentId: pluto.id,
         radius: 606,
         orbit: {
           a: 19591,
           e: 0.0002,
+          parentId: pluto.id,
           parentMass: getBodyMass(pluto),
           phi: 0,
           t0: new Date('2002-11-22'),

@@ -35,7 +35,6 @@ export const generateDebugSystem = (): System => {
 
   const planet1: Planet = {
     id: createID(),
-    parentId: star.id,
     name: 'Planet 1',
     type: 'planet',
     radius: 3300,
@@ -43,6 +42,7 @@ export const generateDebugSystem = (): System => {
     orbit: {
       a: 579090500,
       e: 0.20563,
+      parentId: star.id,
       parentMass: getBodyMass(star),
       phi: 0,
       t0: new Date(),
@@ -57,13 +57,22 @@ export const generateDebugSystem = (): System => {
         id: createID(),
         type: 'spacecraft',
         name: 'Spacecraft',
-        parentId: planet1.id,
-        dryMass: 1000,
-        parts: [],
+        dryMass: 10000,
+        parts: [
+          { type: 'engine', thrust: 2200, mass: 1500, name: 'Raptor' },
+          { type: 'engine', thrust: 2200, mass: 1500, name: 'Raptor' },
+          {
+            type: 'fuel-container',
+            dryMass: 6000,
+            volume: 10000,
+            fuelDensity: 422.8, // liquid methane
+          },
+        ],
         orbit: {
           a: 7000,
           e: 0.2,
           parentMass: getBodyMass(planet1),
+          parentId: planet1.id,
           phi: 0,
           t0: new Date(),
         },
@@ -72,12 +81,12 @@ export const generateDebugSystem = (): System => {
         id: createID(),
         type: 'spacecraft',
         name: 'Spacecraft 2',
-        parentId: planet1.id,
         dryMass: 1000,
         parts: [],
         orbit: {
           a: 12988,
           e: 0.52,
+          parentId: planet1.id,
           parentMass: getBodyMass(planet1),
           phi: 1.27,
           t0: new Date(),

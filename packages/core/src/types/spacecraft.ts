@@ -1,23 +1,27 @@
 import { ID } from './id'
-import { OrbitalElement } from './orbit'
+import { Orbit } from './orbit'
 
-export interface Spacecraft extends OrbitalElement {
+export interface Spacecraft {
   id: ID<'spacecraft'>
   type: 'spacecraft'
   name: string
   /** @unit kg */
   dryMass: number
   parts: SpacecraftPart[]
+  orbit: Orbit
 }
 
 export interface SpacecraftEngine {
   type: 'engine'
   name: string
-  /** @unit TODO: check unit */
-  specificImpulse: number
   /** @unit kg */
   mass: number
+  /** @unit Newton */
+  thrust: number
 }
+export const isSpacecraftEngine = (
+  part: SpacecraftPart
+): part is SpacecraftEngine => part.type === 'engine'
 
 export interface SpacecraftFuelContainer {
   type: 'fuel-container'
@@ -28,5 +32,8 @@ export interface SpacecraftFuelContainer {
   /** @unit kg */
   dryMass: number
 }
+export const isSpacecraftFuelContainer = (
+  part: SpacecraftPart
+): part is SpacecraftFuelContainer => part.type === 'fuel-container'
 
 export type SpacecraftPart = SpacecraftEngine | SpacecraftFuelContainer

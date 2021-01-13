@@ -27,12 +27,12 @@ export const generatePlanet = ({
 
   return {
     id: createID(),
-    parentId,
     type: 'planet',
     name,
     radius,
     density,
     orbit: {
+      parentId,
       parentMass,
       a,
       e: Math.random() ** 3,

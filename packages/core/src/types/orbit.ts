@@ -1,15 +1,6 @@
 import { ID } from './id'
 import { Distance, Mass } from './units'
 
-export interface OrbitalElement {
-  parentId: ID<'body'>
-  orbit: Orbit
-}
-
-export const isOrbitalElement = (
-  item: Record<string, any>
-): item is OrbitalElement => Boolean(item.parentId)
-
 export interface Orbit {
   /** semi-major axis distance */
   a: Distance
@@ -19,6 +10,9 @@ export interface Orbit {
 
   /** Epoch when planet is at pericenter */
   t0: Date
+
+  /** ID of the parent body */
+  parentId: ID<'body'>
 
   /** Mass of the parent
    * @note This might be better stored somewhere else but is useful for calculations
