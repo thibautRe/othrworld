@@ -189,9 +189,11 @@ export const getNextApoapsisPassage = (orbit: Orbit, t: Date): Date => {
 }
 
 interface SpeedCoords {
-  /** Positive for prograde, negative for retrograde */
+  /** Positive for prograde, negative for retrograde
+   * @unit km/s */
   prograde: number
-  /** Positive for outside, negative for inside */
+  /** Positive for outside, negative for inside
+   * @unit km/s */
   normal: number
 }
 export const applySpeedChange = (
@@ -203,6 +205,7 @@ export const applySpeedChange = (
   const currentP = getCarthesianCoords(orbit, t)
 
   const unitS = unitVector(currentS)
+
   return recalculateOrbitForPosAndSpeed(
     orbit,
     currentP,

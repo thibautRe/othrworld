@@ -1,0 +1,15 @@
+{
+  "name": "@othrworld/spacecraft-utils",
+  "version": "0.0.1",
+  "private": true,
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "dependencies": {
+    "@othrworld/core": "*",
+    "@othrworld/orbital-mechanics": "*"
+  },
+  "scripts": {
+    "start": "tsc -w",
+    "build": "tsc"
+  }
+}

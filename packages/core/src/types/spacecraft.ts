@@ -12,21 +12,28 @@ export interface Spacecraft {
 }
 
 export interface SpacecraftEngine {
+  id: ID<'spacecraft-engine'>
   type: 'engine'
   name: string
   /** @unit kg */
   mass: number
   /** @unit Newton */
   thrust: number
+  /** @unit seconds */
+  specificImpulse: number
 }
 export const isSpacecraftEngine = (
   part: SpacecraftPart
 ): part is SpacecraftEngine => part.type === 'engine'
 
 export interface SpacecraftFuelContainer {
+  id: ID<'spacecraft-fuel-container'>
   type: 'fuel-container'
   /** @unit m^3 */
   volume: number
+  /** How much fuel is inside the container. Should be between 0 and `volume`
+   * @unit m^3 */
+  fuelVolume: number
   /** @unit kg/m^3 */
   fuelDensity: number
   /** @unit kg */

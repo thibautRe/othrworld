@@ -5,6 +5,7 @@
   "dependencies": {
     "@othrworld/core": "*",
     "@othrworld/orbital-mechanics": "*",
+    "@othrworld/spacecraft-utils": "*",
     "@othrworld/stitches-config": "*",
     "@othrworld/systemgen": "*",
     "@testing-library/jest-dom": "^5.11.4",

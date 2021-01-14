@@ -1,10 +1,10 @@
 import { Spacecraft } from '@othrworld/core'
 import {
-  applySpeedChange,
   getApoapsis,
   getNextApoapsisPassage,
   getNextPeriapsisPassage,
 } from '@othrworld/orbital-mechanics'
+import { applyAcceleration } from '@othrworld/spacecraft-utils'
 
 import { useDateStore } from '../../stores/date'
 import { useSystemStore } from '../../stores/system'
@@ -18,13 +18,9 @@ export const requestCircularOrbit = (sId: Spacecraft['id'], radius: number) => {
   const runApsisChange = () => {
     const s = useSystemStore.getState().getSpacecraft(sId)!
     const { currentDate } = useDateStore.getState()
+    const newS = applyAcceleration(s, 0.01, currentDate, 1)
 
-    const orbit = applySpeedChange(s.orbit, currentDate, {
-      prograde: 0.01,
-      normal: 0,
-    })
-
-    if (getApoapsis(orbit) < radius) {
+    if (getApoapsis(newS.orbit) < radius) {
       registerDateAction(new Date(currentDate.getTime() + 1000), runApsisChange)
     } else {
       registerDateAction(
@@ -33,20 +29,16 @@ export const requestCircularOrbit = (sId: Spacecraft['id'], radius: number) => {
       )
     }
 
-    setSpacecraft(sId, { ...s, orbit })
+    setSpacecraft(sId, newS)
   }
 
   // Phase 2: accelerate prograde at the apoapsis as long as the eccentricity decreases
   const runEccentricityChange = () => {
     const s = useSystemStore.getState().getSpacecraft(sId)!
     const { currentDate } = useDateStore.getState()
+    const newS = applyAcceleration(s, 0.01, currentDate, 1)
 
-    const orbit = applySpeedChange(s.orbit, currentDate, {
-      prograde: 0.01,
-      normal: 0,
-    })
-
-    if (s.orbit.e > orbit.e) {
+    if (s.orbit.e > newS.orbit.e) {
       registerDateAction(
         new Date(currentDate.getTime() + 1000),
         runEccentricityChange
@@ -54,7 +46,7 @@ export const requestCircularOrbit = (sId: Spacecraft['id'], radius: number) => {
     } else {
       return
     }
-    setSpacecraft(sId, { ...s, orbit })
+    setSpacecraft(sId, newS)
   }
 
   const spacecraft = useSystemStore.getState().getSpacecraft(sId)!
