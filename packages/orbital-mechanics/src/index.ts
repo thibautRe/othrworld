@@ -8,9 +8,7 @@ import {
   unitVector,
 } from './coords'
 
-// 6.6743e-11 using kg and m as unit
-// Here we use kg and km as base units
-const G = 6.6743e-20
+const G = 6.6743e-11
 
 // JS `%` operation is not the one expected for negative values.
 // @see https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/Remainder
@@ -98,9 +96,6 @@ export const getCarthesianCoords = (orbit: Orbit, t: Date): CarthCoords => {
   return radialToCarth(rad)
 }
 
-// Solve GMp/R^2 = GMpar/(R1-R)^2 for R
-// (R1-R)/R = sqrt(Mpar/Mp) = a
-// R1-R = R*a <=> R = R1/(1+sqrt(Mpar/Mp))
 // https://en.wikipedia.org/wiki/Hill_sphere
 const getBodySOIRadiusAtDistance = (
   body: Planet | Asteroid,
@@ -190,10 +185,10 @@ export const getNextApoapsisPassage = (orbit: Orbit, t: Date): Date => {
 
 interface SpeedCoords {
   /** Positive for prograde, negative for retrograde
-   * @unit km/s */
+   * @unit m/s */
   prograde: number
   /** Positive for outside, negative for inside
-   * @unit km/s */
+   * @unit m/s */
   normal: number
 }
 export const applySpeedChange = (

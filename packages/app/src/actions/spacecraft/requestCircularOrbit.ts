@@ -18,7 +18,7 @@ export const requestCircularOrbit = (sId: Spacecraft['id'], radius: number) => {
   const runApsisChange = () => {
     const s = useSystemStore.getState().getSpacecraft(sId)!
     const { currentDate } = useDateStore.getState()
-    const newS = applyAcceleration(s, 0.01, currentDate, 1)
+    const newS = applyAcceleration(s, 10, currentDate, 1)
 
     if (getApoapsis(newS.orbit) < radius) {
       registerDateAction(new Date(currentDate.getTime() + 1000), runApsisChange)
@@ -36,7 +36,7 @@ export const requestCircularOrbit = (sId: Spacecraft['id'], radius: number) => {
   const runEccentricityChange = () => {
     const s = useSystemStore.getState().getSpacecraft(sId)!
     const { currentDate } = useDateStore.getState()
-    const newS = applyAcceleration(s, 0.01, currentDate, 1)
+    const newS = applyAcceleration(s, 10, currentDate, 1)
 
     if (s.orbit.e > newS.orbit.e) {
       registerDateAction(

@@ -5,7 +5,7 @@ import { Distance } from './units'
 interface BodyBase {
   id: ID<'body'>
   name: string
-  /** @unit kg/km^3 */
+  /** @unit kg/m^3 */
   density: number
   radius: Distance
 }
@@ -34,11 +34,11 @@ export type Body = Planet | Star | Asteroid
 
 export interface Atmosphere {
   /** Density at sea level
-   * @unit kg/km^3 */
+   * @unit kg/m^3 */
   density: number
 
   /** Altitude at which the density dropped by half
-   * @unit km */
+   * @unit m */
   altitudeHalf: number
 
   /** Assuming that the sum of all components equals 1 */

@@ -1,4 +1,4 @@
-/** @unit km */
+/** @unit m */
 export type Distance = number
 
 /** @unit kg */

@@ -25,8 +25,7 @@ const CanvasTooltipOrbitInfo = ({ orbit }: { orbit: Orbit }) => {
   return (
     <>
       <div>
-        Speed:{' '}
-        <strong>{(getSpeed(orbit, currentDate) * 1e3).toFixed(1)}m/s</strong>
+        Speed: <strong>{getSpeed(orbit, currentDate).toFixed(1)}m/s</strong>
       </div>
       <div>
         Next passage at periapsis:{' '}
@@ -75,7 +74,7 @@ const CanvasTooltipSpacecraft = ({ id }: { id: Spacecraft['id'] }) => {
     <>
       <CanvasTooltipOrbitInfo orbit={spacecraft.orbit} />
       <CanvasTooltipFollow item={spacecraft} />
-      <button onClick={() => requestCircularOrbit(spacecraft.id, 50000)}>
+      <button onClick={() => requestCircularOrbit(spacecraft.id, 50000000)}>
         Request circular orbit
       </button>
       <div>DeltaV {getSpacecraftDeltaV(spacecraft).toFixed(0)}m/s</div>

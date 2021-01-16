@@ -19,10 +19,10 @@ export const generateSystem = (): System => {
     id: createID(),
     type: 'star',
     name: 'Sun',
-    radius: 696500,
-    density: 0.255 * 5.514e12,
+    radius: 696500000,
+    density: 0.255 * 5.514e3,
     atmosphere: {
-      altitudeHalf: 2000,
+      altitudeHalf: 2000000,
       density: 1, // fixme
       composition: {
         hydrogen: 73,
@@ -39,10 +39,10 @@ export const generateSystem = (): System => {
       generatePlanet({
         parentId: star.id,
         parentMass: getBodyMass(star),
-        minRadius: 2e3,
-        maxRadius: 1e5,
-        minDistance: 1e7,
-        maxDistance: 1e10,
+        minRadius: 2e6,
+        maxRadius: 1e8,
+        minDistance: 1e10,
+        maxDistance: 1e13,
       })
     )
     .sort((p1, p2) => p1.orbit.a - p2.orbit.a)

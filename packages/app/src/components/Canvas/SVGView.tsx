@@ -52,7 +52,7 @@ export const SVGView: React.FC<SVGViewProps> = ({
   )
 }
 
-export const GLOBAL_SCALE_MULTIPLIER = 1e5
+export const GLOBAL_SCALE_MULTIPLIER = 1e8
 
 /** Returns a helper function to call when trying to draw to-scale values (distances, radius, ...) */
 export const useToScaleAdapter = () => {

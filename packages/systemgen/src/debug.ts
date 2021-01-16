@@ -8,8 +8,8 @@ import {
 } from '@othrworld/core'
 
 const atmosphere: Atmosphere = {
-  altitudeHalf: 1,
-  density: 1,
+  altitudeHalf: 1000,
+  density: 0,
   composition: {
     argon: 1,
   },
@@ -20,10 +20,10 @@ export const generateDebugSystem = (): System => {
     id: createID(),
     type: 'star',
     name: 'Star',
-    radius: 69650,
-    density: 0.255 * 5.514e12,
+    radius: 69650000,
+    density: 0.255 * 5.514e3,
     atmosphere: {
-      altitudeHalf: 2000,
+      altitudeHalf: 2000000,
       density: 1,
       composition: {
         hydrogen: 73,
@@ -37,10 +37,10 @@ export const generateDebugSystem = (): System => {
     id: createID(),
     name: 'Planet 1',
     type: 'planet',
-    radius: 3300,
-    density: 1e13,
+    radius: 3300000,
+    density: 1e4,
     orbit: {
-      a: 579090500,
+      a: 579090500000,
       e: 0.20563,
       parentId: star.id,
       parentMass: getBodyMass(star),
@@ -77,7 +77,7 @@ export const generateDebugSystem = (): System => {
           },
         ],
         orbit: {
-          a: 6000,
+          a: 6000000,
           e: 0.4,
           parentMass: getBodyMass(planet1),
           parentId: planet1.id,
@@ -92,7 +92,7 @@ export const generateDebugSystem = (): System => {
         dryMass: 1000,
         parts: [],
         orbit: {
-          a: 12988,
+          a: 12988000,
           e: 0.52,
           parentId: planet1.id,
           parentMass: getBodyMass(planet1),

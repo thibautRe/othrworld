@@ -29,7 +29,7 @@ export const SVGMesure = ({ info }: SVGMesureProps) => {
         x={(info.from.x + info.to.x) / 2}
         y={(info.from.y + info.to.y) / 2}
       >
-        {((dist / k) * GLOBAL_SCALE_MULTIPLIER).toFixed(0)}km
+        {((dist / k) * GLOBAL_SCALE_MULTIPLIER * 1e-3).toFixed(0)}km
       </text>
     </g>
   )

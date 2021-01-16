@@ -21,7 +21,7 @@ export const generatePlanet = ({
   const name = generate()
   const radius = randFloat(maxRadius, minRadius)
   const a = randFloat(maxDistance, minDistance)
-  const density = randFloat(1e13, 1e11)
+  const density = randFloat(10, 0.1)
   const t0 = new Date()
   t0.setTime(Math.random() * 100000000)
 

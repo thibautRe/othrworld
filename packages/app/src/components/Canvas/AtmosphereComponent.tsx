@@ -18,7 +18,7 @@ export const AtmosphereComponent = ({
   return (
     <AtmosphereCircle
       r={toScale(radius + atmosphere.altitudeHalf * 20)}
-      style={{ opacity: (0.2 * atmosphere.density) / 1e9 }}
+      style={{ opacity: 0.2 * atmosphere.density }}
     />
   )
 }
