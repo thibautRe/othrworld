@@ -1,8 +1,8 @@
-import { Asteroid, Body, getBodyMass, Orbit, Planet } from '@othrworld/core'
+import { Asteroid, getBodyMass, Orbit, Planet } from '@othrworld/core'
+import { Distance, Time, unit, multUnit } from '@othrworld/units'
 import {
   CarthCoords,
   RadialCoords,
-  carthToRadial,
   radialToCarth,
   rotateCarth,
   unitVector,
@@ -16,25 +16,26 @@ const realModulo = (val: number, modulo: number): number =>
   ((val % modulo) + modulo) % modulo
 
 /** Returns the periapsis of a given orbit */
-export const getPeriapsis = (orbit: Orbit) => (1 - orbit.e) * orbit.a
+export const getPeriapsis = (orbit: Orbit) => multUnit(orbit.a, 1 - orbit.e)
 
 /** Returns the apoapsis of a given orbit */
-export const getApoapsis = (orbit: Orbit) => (1 + orbit.e) * orbit.a
+export const getApoapsis = (orbit: Orbit) => multUnit(orbit.a, 1 + orbit.e)
 
 /** Returns the semi-minor axis of a given orbit */
 export const getSemiMinorAxis = (orbit: Orbit) =>
-  orbit.a * Math.sqrt(1 - orbit.e ** 2)
+  multUnit(orbit.a, Math.sqrt(1 - orbit.e ** 2))
 
 /** Returns the current distance for a given true anomaly */
 const getDistanceForTrueAnomaly = (orbit: Orbit, trueAnomaly: number) =>
-  (orbit.a * (1 - orbit.e ** 2)) / (1 + orbit.e * Math.cos(trueAnomaly))
+  multUnit(orbit.a, (1 - orbit.e ** 2) / (1 + orbit.e * Math.cos(trueAnomaly)))
 
 /** Returns the angular speed for a circular orbit to complete an orbit */
 const getMeanMotion = (orbit: Orbit) =>
   Math.sqrt((G * orbit.parentMass) / orbit.a ** 3)
 
 /** Returns the period */
-const getOrbitPeriod = (orbit: Orbit) => (2 * Math.PI) / getMeanMotion(orbit)
+const getOrbitPeriod = (orbit: Orbit): Time =>
+  ((2 * Math.PI) / getMeanMotion(orbit)) as Time
 
 /**
  * Returns the mean anomaly at a given time
@@ -99,9 +100,9 @@ export const getCarthesianCoords = (orbit: Orbit, t: Date): CarthCoords => {
 // https://en.wikipedia.org/wiki/Hill_sphere
 const getBodySOIRadiusAtDistance = (
   body: Planet | Asteroid,
-  r: number
-): number =>
-  r * Math.pow(getBodyMass(body) / (3 * body.orbit.parentMass), 1 / 3)
+  r: Distance
+): Distance =>
+  multUnit(r, Math.pow(getBodyMass(body) / (3 * body.orbit.parentMass), 1 / 3))
 
 /** Radius of the SOI at a given date */
 export const getBodySOIRadius = (body: Planet | Asteroid, t: Date): number => {
@@ -130,8 +131,10 @@ export const getSpeedVector = (orbit: Orbit, t: Date): CarthCoords => {
 
   return rotateCarth(
     {
-      x: -Math.sqrt((G * orbit.parentMass) / p) * Math.sin(angle),
-      y: Math.sqrt((G * orbit.parentMass) / p) * (orbit.e + Math.cos(angle)),
+      x: unit(-Math.sqrt((G * orbit.parentMass) / p) * Math.sin(angle)),
+      y: unit(
+        Math.sqrt((G * orbit.parentMass) / p) * (orbit.e + Math.cos(angle))
+      ),
     },
     orbit.phi
   )
@@ -145,7 +148,9 @@ export const recalculateOrbitForPosAndSpeed = (
 ): Orbit => {
   const mu = G * orbit.parentMass
   const r = Math.hypot(pos.x, pos.y)
-  const a = (mu * r) / (2 * mu - r * (speed.x ** 2 + speed.y ** 2))
+  const a: Distance = unit(
+    (mu * r) / (2 * mu - r * (speed.x ** 2 + speed.y ** 2))
+  )
 
   const h = pos.x * speed.y - pos.y * speed.x
   const ex = pos.x / r - (h * speed.y) / mu
@@ -205,8 +210,8 @@ export const applySpeedChange = (
     orbit,
     currentP,
     {
-      x: currentS.x + unitS.x * prograde - unitS.y * normal,
-      y: currentS.y + unitS.y * prograde + unitS.x * normal,
+      x: unit(currentS.x + unitS.x * prograde - unitS.y * normal),
+      y: unit(currentS.y + unitS.y * prograde + unitS.x * normal),
     },
     t
   )

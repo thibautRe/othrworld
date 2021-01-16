@@ -1,5 +1,5 @@
+import { Distance, Mass } from '@othrworld/units'
 import { ID } from './id'
-import { Distance, Mass } from './units'
 
 export interface Orbit {
   /** semi-major axis distance */

@@ -6,6 +6,7 @@ import {
   System,
 } from '@othrworld/core'
 import { getRandomItemFromArray, randInt, randFloat } from '@othrworld/gen-core'
+import { unit } from '@othrworld/units'
 import { getBodySOIRadiusBounds } from '../../orbital-mechanics/dist'
 
 import { generatePlanet } from './planet'
@@ -19,11 +20,11 @@ export const generateSystem = (): System => {
     id: createID(),
     type: 'star',
     name: 'Sun',
-    radius: 696500000,
-    density: 0.255 * 5.514e3,
+    radius: unit(696500000),
+    density: unit(0.255 * 5.514e3),
     atmosphere: {
-      altitudeHalf: 2000000,
-      density: 1, // fixme
+      altitudeHalf: unit(2000000),
+      density: unit(1), // fixme
       composition: {
         hydrogen: 73,
         helium: 25,
@@ -80,10 +81,10 @@ export const generateSystem = (): System => {
           id: createID(),
           name: `Spacecraft ${i}`,
           type: 'spacecraft',
-          dryMass: 1000,
+          dryMass: unit(1000),
           parts: [],
           orbit: {
-            a: parent.radius * randFloat(6, 1.4),
+            a: unit(parent.radius * randFloat(6, 1.4)),
             e: Math.random() * 0.1,
             parentId: parent.id,
             parentMass,

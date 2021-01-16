@@ -1,12 +1,18 @@
+import {
+  Density,
+  Distance,
+  getMassFromDensity,
+  getSphereVolume,
+  Mass,
+} from '@othrworld/units'
+
 import { ID } from './id'
 import { Orbit } from './orbit'
-import { Distance } from './units'
 
 interface BodyBase {
   id: ID<'body'>
   name: string
-  /** @unit kg/m^3 */
-  density: number
+  density: Density
   radius: Distance
 }
 
@@ -35,11 +41,11 @@ export type Body = Planet | Star | Asteroid
 export interface Atmosphere {
   /** Density at sea level
    * @unit kg/m^3 */
-  density: number
+  density: Density
 
   /** Altitude at which the density dropped by half
    * @unit m */
-  altitudeHalf: number
+  altitudeHalf: Distance
 
   /** Assuming that the sum of all components equals 1 */
   composition: AtmosphereComposition
@@ -51,4 +57,8 @@ export interface AtmosphereComposition {
   helium?: number
   oxygen?: number
   nitrogen?: number
+}
+
+export const getBodyMass = (b: Body): Mass => {
+  return getMassFromDensity(b.density, getSphereVolume(b.radius))
 }

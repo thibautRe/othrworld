@@ -6,10 +6,11 @@ import {
   Star,
   System,
 } from '@othrworld/core'
+import { unit } from '@othrworld/units'
 
 const atmosphere: Atmosphere = {
-  altitudeHalf: 1000,
-  density: 0,
+  altitudeHalf: unit(1000),
+  density: unit(0),
   composition: {
     argon: 1,
   },
@@ -20,11 +21,11 @@ export const generateDebugSystem = (): System => {
     id: createID(),
     type: 'star',
     name: 'Star',
-    radius: 69650000,
-    density: 0.255 * 5.514e3,
+    radius: unit(69650000),
+    density: unit(0.255 * 5.514e3),
     atmosphere: {
-      altitudeHalf: 2000000,
-      density: 1,
+      altitudeHalf: unit(2000000),
+      density: unit(1),
       composition: {
         hydrogen: 73,
         helium: 25,
@@ -37,10 +38,10 @@ export const generateDebugSystem = (): System => {
     id: createID(),
     name: 'Planet 1',
     type: 'planet',
-    radius: 3300000,
-    density: 1e4,
+    radius: unit(3300000),
+    density: unit(1e4),
     orbit: {
-      a: 579090500000,
+      a: unit(579090500000),
       e: 0.20563,
       parentId: star.id,
       parentMass: getBodyMass(star),
@@ -57,27 +58,27 @@ export const generateDebugSystem = (): System => {
         id: createID(),
         type: 'spacecraft',
         name: 'Spacecraft',
-        dryMass: 10000,
+        dryMass: unit(10000),
         parts: [
           {
             id: createID(),
             type: 'engine',
-            thrust: 2200 * 1e3, // raptor 2200 kN
-            specificImpulse: 320, // raptor 320s
-            mass: 1500, // raptor 1500kg
+            thrust: unit(2200 * 1e3), // raptor 2200 kN
+            specificImpulse: unit(320), // raptor 320s
+            mass: unit(1500), // raptor 1500kg
             name: 'Raptor',
           },
           {
             id: createID(),
             type: 'fuel-container',
-            dryMass: 6000,
-            volume: 1000,
-            fuelVolume: 1000,
-            fuelDensity: 422.8, // liquid methane
+            dryMass: unit(6000),
+            volume: unit(1000),
+            fuelVolume: unit(1000),
+            fuelDensity: unit(422.8), // liquid methane
           },
         ],
         orbit: {
-          a: 6000000,
+          a: unit(6000000),
           e: 0.4,
           parentMass: getBodyMass(planet1),
           parentId: planet1.id,
@@ -89,10 +90,10 @@ export const generateDebugSystem = (): System => {
         id: createID(),
         type: 'spacecraft',
         name: 'Spacecraft 2',
-        dryMass: 1000,
+        dryMass: unit(1000),
         parts: [],
         orbit: {
-          a: 12988000,
+          a: unit(12988000),
           e: 0.52,
           parentId: planet1.id,
           parentMass: getBodyMass(planet1),

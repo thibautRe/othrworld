@@ -1,5 +1,5 @@
 {
-  "name": "@othrworld/orbital-mechanics",
+  "name": "@othrworld/units",
   "version": "0.0.1",
   "private": true,
   "main": "dist/index.js",
@@ -7,9 +7,5 @@
   "scripts": {
     "start": "tsc -w",
     "build": "tsc"
-  },
-  "dependencies": {
-    "@othrworld/core": "*",
-    "@othrworld/units": "*"
   }
 }

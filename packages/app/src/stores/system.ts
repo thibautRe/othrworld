@@ -2,6 +2,7 @@ import create from 'zustand'
 import { Body, Orbit, Spacecraft, System } from '@othrworld/core'
 import { generateSystem } from '@othrworld/systemgen'
 import { getCarthesianCoords } from '@othrworld/orbital-mechanics'
+import { sumUnits } from '@othrworld/units'
 
 type SystemState = {
   system: System
@@ -56,6 +57,6 @@ export const getAbsoluteCoords = (orbit: Orbit, t: Date) => {
   const coords = path.map((orbit) => getCarthesianCoords(orbit, t))
 
   return coords.reduce((coord1, coord2) => {
-    return { x: coord1.x + coord2.x, y: coord1.y + coord2.y }
+    return { x: sumUnits(coord1.x, coord2.x), y: sumUnits(coord1.y, coord2.y) }
   })
 }

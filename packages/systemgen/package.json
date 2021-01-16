@@ -8,7 +8,8 @@
     "@othrworld/core": "*",
     "@othrworld/gen-core": "*",
     "@othrworld/namegen-nobel": "*",
-    "@othrworld/orbital-mechanics": "*"
+    "@othrworld/orbital-mechanics": "*",
+    "@othrworld/units": "*"
   },
   "scripts": {
     "start": "tsc -w",

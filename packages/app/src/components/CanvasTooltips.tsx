@@ -19,6 +19,7 @@ import {
   useCanvasTooltipStore,
 } from '../stores/canvasTooltips'
 import { useCanvasTransformStore } from '../stores/canvasTransform'
+import { unit } from '@othrworld/units'
 
 const CanvasTooltipOrbitInfo = ({ orbit }: { orbit: Orbit }) => {
   const currentDate = useCurrentDate()
@@ -74,7 +75,9 @@ const CanvasTooltipSpacecraft = ({ id }: { id: Spacecraft['id'] }) => {
     <>
       <CanvasTooltipOrbitInfo orbit={spacecraft.orbit} />
       <CanvasTooltipFollow item={spacecraft} />
-      <button onClick={() => requestCircularOrbit(spacecraft.id, 50000000)}>
+      <button
+        onClick={() => requestCircularOrbit(spacecraft.id, unit(50000000))}
+      >
         Request circular orbit
       </button>
       <div>DeltaV {getSpacecraftDeltaV(spacecraft).toFixed(0)}m/s</div>

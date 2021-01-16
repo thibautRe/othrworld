@@ -1,20 +1,22 @@
+import { Distance, multUnit } from '@othrworld/units'
+
 export interface RadialCoords {
-  r: number
+  r: Distance
   angle: number
 }
 export interface CarthCoords {
-  x: number
-  y: number
+  x: Distance
+  y: Distance
 }
 
 export const radialToCarth = ({ angle, r }: RadialCoords): CarthCoords => ({
-  x: Math.cos(angle) * r,
-  y: Math.sin(angle) * r,
+  x: multUnit(r, Math.cos(angle)),
+  y: multUnit(r, Math.sin(angle)),
 })
 
 // unused
 export const carthToRadial = ({ x, y }: CarthCoords): RadialCoords => ({
-  r: Math.hypot(x, y),
+  r: Math.hypot(x, y) as Distance,
   angle: Math.atan2(y, x),
 })
 
@@ -28,9 +30,9 @@ export const rotateCarth = (
   return radialToCarth(radial)
 }
 
-export const getLen = (vec: CarthCoords) => Math.hypot(vec.x, vec.y)
+export const getLen = (vec: CarthCoords) => Math.hypot(vec.x, vec.y) as Distance
 
 export const unitVector = (vec: CarthCoords): CarthCoords => {
   const len = getLen(vec)
-  return { x: vec.x / len, y: vec.y / len }
+  return { x: multUnit(vec.x, 1 / len), y: multUnit(vec.y, 1 / len) }
 }

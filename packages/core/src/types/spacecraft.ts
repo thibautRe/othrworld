@@ -1,3 +1,4 @@
+import { Density, Mass, Time, Volume, Force } from '@othrworld/units'
 import { ID } from './id'
 import { Orbit } from './orbit'
 
@@ -5,8 +6,7 @@ export interface Spacecraft {
   id: ID<'spacecraft'>
   type: 'spacecraft'
   name: string
-  /** @unit kg */
-  dryMass: number
+  dryMass: Mass
   parts: SpacecraftPart[]
   orbit: Orbit
 }
@@ -15,12 +15,9 @@ export interface SpacecraftEngine {
   id: ID<'spacecraft-engine'>
   type: 'engine'
   name: string
-  /** @unit kg */
-  mass: number
-  /** @unit Newton */
-  thrust: number
-  /** @unit seconds */
-  specificImpulse: number
+  mass: Mass
+  thrust: Force
+  specificImpulse: Time
 }
 export const isSpacecraftEngine = (
   part: SpacecraftPart
@@ -29,15 +26,11 @@ export const isSpacecraftEngine = (
 export interface SpacecraftFuelContainer {
   id: ID<'spacecraft-fuel-container'>
   type: 'fuel-container'
-  /** @unit m^3 */
-  volume: number
-  /** How much fuel is inside the container. Should be between 0 and `volume`
-   * @unit m^3 */
-  fuelVolume: number
-  /** @unit kg/m^3 */
-  fuelDensity: number
-  /** @unit kg */
-  dryMass: number
+  volume: Volume
+  /** How much fuel is inside the container. Should be between 0 and `volume` */
+  fuelVolume: Volume
+  fuelDensity: Density
+  dryMass: Mass
 }
 export const isSpacecraftFuelContainer = (
   part: SpacecraftPart

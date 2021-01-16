@@ -1,6 +1,7 @@
 import { Spacecraft, SpacecraftPart } from '@othrworld/core'
+import { Mass, unit, sumUnits, getMassFromDensity } from '@othrworld/units'
 
-const getSpacecraftPartDryMass = (part: SpacecraftPart): number => {
+const getSpacecraftPartDryMass = (part: SpacecraftPart): Mass => {
   switch (part.type) {
     case 'engine':
       return part.mass
@@ -9,20 +10,20 @@ const getSpacecraftPartDryMass = (part: SpacecraftPart): number => {
   }
 }
 
-const getSpacecraftPartFuelMass = (part: SpacecraftPart): number => {
+const getSpacecraftPartFuelMass = (part: SpacecraftPart): Mass => {
   switch (part.type) {
     case 'fuel-container':
-      return part.fuelDensity * part.fuelVolume
-    case 'engine':
-      return 0
+      return getMassFromDensity(part.fuelDensity, part.fuelVolume)
+    default:
+      return unit(0)
   }
 }
 
-export const getSpacecraftDryMass = (s: Spacecraft): number =>
-  s.parts.reduce((a, p) => a + getSpacecraftPartDryMass(p), 0) + s.dryMass
+export const getSpacecraftDryMass = (s: Spacecraft) =>
+  sumUnits(s.dryMass, ...s.parts.map(getSpacecraftPartDryMass))
 
-export const getSpacecraftFuelMass = (s: Spacecraft): number =>
-  s.parts.reduce((a, p) => a + getSpacecraftPartFuelMass(p), 0)
+export const getSpacecraftFuelMass = (s: Spacecraft) =>
+  sumUnits(...s.parts.map(getSpacecraftPartFuelMass))
 
-export const getSpacecraftMass = (s: Spacecraft): number =>
-  getSpacecraftDryMass(s) + getSpacecraftFuelMass(s)
+export const getSpacecraftMass = (s: Spacecraft) =>
+  sumUnits(getSpacecraftDryMass(s), getSpacecraftFuelMass(s))

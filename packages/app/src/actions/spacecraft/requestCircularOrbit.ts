@@ -5,12 +5,16 @@ import {
   getNextPeriapsisPassage,
 } from '@othrworld/orbital-mechanics'
 import { applyAcceleration } from '@othrworld/spacecraft-utils'
+import { Distance, unit } from '@othrworld/units'
 
 import { useDateStore } from '../../stores/date'
 import { useSystemStore } from '../../stores/system'
 
 /** Optimal (in terms of energy) circular orbit command producer */
-export const requestCircularOrbit = (sId: Spacecraft['id'], radius: number) => {
+export const requestCircularOrbit = (
+  sId: Spacecraft['id'],
+  radius: Distance
+) => {
   const { setSpacecraft } = useSystemStore.getState()
   const { registerDateAction, currentDate } = useDateStore.getState()
 
@@ -18,7 +22,7 @@ export const requestCircularOrbit = (sId: Spacecraft['id'], radius: number) => {
   const runApsisChange = () => {
     const s = useSystemStore.getState().getSpacecraft(sId)!
     const { currentDate } = useDateStore.getState()
-    const newS = applyAcceleration(s, 10, currentDate, 1)
+    const newS = applyAcceleration(s, unit(10), currentDate, unit(1))
 
     if (getApoapsis(newS.orbit) < radius) {
       registerDateAction(new Date(currentDate.getTime() + 1000), runApsisChange)
@@ -36,7 +40,7 @@ export const requestCircularOrbit = (sId: Spacecraft['id'], radius: number) => {
   const runEccentricityChange = () => {
     const s = useSystemStore.getState().getSpacecraft(sId)!
     const { currentDate } = useDateStore.getState()
-    const newS = applyAcceleration(s, 10, currentDate, 1)
+    const newS = applyAcceleration(s, unit(10), currentDate, unit(1))
 
     if (s.orbit.e > newS.orbit.e) {
       registerDateAction(
