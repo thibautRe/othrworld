@@ -4,11 +4,11 @@ import {
   Spacecraft,
   System,
   createID,
-  getBodyMass,
   Planet,
   Star,
 } from '@othrworld/core'
 import { Density, unit } from '@othrworld/units'
+import { getBodyMass } from '@othrworld/body-utils'
 
 // Density for planets that I don't know yet what they are
 // @TODO use the right values from Internet

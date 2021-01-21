@@ -1,11 +1,5 @@
-import {
-  Atmosphere,
-  createID,
-  getBodyMass,
-  Planet,
-  Star,
-  System,
-} from '@othrworld/core'
+import { getBodyMass } from '@othrworld/body-utils'
+import { Atmosphere, createID, Planet, Star, System } from '@othrworld/core'
 import { unit } from '@othrworld/units'
 
 const atmosphere: Atmosphere = {

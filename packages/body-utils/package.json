@@ -1,15 +1,12 @@
 {
-  "name": "@othrworld/systemgen",
+  "name": "@othrworld/body-utils",
   "version": "0.0.1",
   "private": true,
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
   "dependencies": {
     "@othrworld/core": "*",
-    "@othrworld/gen-core": "*",
-    "@othrworld/namegen-nobel": "*",
     "@othrworld/orbital-mechanics": "*",
-    "@othrworld/body-utils": "*",
     "@othrworld/units": "*"
   },
   "scripts": {

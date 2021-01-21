@@ -58,7 +58,3 @@ export interface AtmosphereComposition {
   oxygen?: number
   nitrogen?: number
 }
-
-export const getBodyMass = (b: Body): Mass => {
-  return getMassFromDensity(b.density, getSphereVolume(b.radius))
-}

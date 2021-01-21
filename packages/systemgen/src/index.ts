@@ -1,13 +1,7 @@
-import {
-  createID,
-  getBodyMass,
-  Spacecraft,
-  Star,
-  System,
-} from '@othrworld/core'
+import { createID, Spacecraft, Star, System } from '@othrworld/core'
 import { getRandomItemFromArray, randInt, randFloat } from '@othrworld/gen-core'
 import { unit } from '@othrworld/units'
-import { getBodySOIRadiusBounds } from '../../orbital-mechanics/dist'
+import { getBodyMass, getBodySOIRadiusBounds } from '@othrworld/body-utils'
 
 import { generatePlanet } from './planet'
 
