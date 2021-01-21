@@ -90,15 +90,32 @@ export const generateDebugSystem = (): System => {
         id: createID(),
         type: 'spacecraft',
         name: 'Spacecraft 2',
-        dryMass: unit(1000),
-        parts: [],
+        dryMass: unit(10000),
+        parts: [
+          {
+            id: createID(),
+            type: 'engine',
+            thrust: unit(2200 * 1e3), // raptor 2200 kN
+            specificImpulse: unit(320), // raptor 320s
+            mass: unit(1500), // raptor 1500kg
+            name: 'Raptor',
+          },
+          {
+            id: createID(),
+            type: 'fuel-container',
+            dryMass: unit(6000),
+            volume: unit(1000),
+            fuelVolume: unit(500),
+            fuelDensity: unit(422.8), // liquid methane
+          },
+        ],
         orbit: {
-          a: unit(12988000),
-          e: 0.52,
-          parentId: planet1.id,
+          a: unit(6000000),
+          e: 0.4,
           parentMass: getBodyMass(planet1),
-          phi: 1.27,
-          t0: new Date(),
+          parentId: planet1.id,
+          phi: 0.3,
+          t0: new Date('2010-12-02'),
         },
       },
     ],
