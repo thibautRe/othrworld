@@ -72,16 +72,3 @@ const startSubCmd = packagesJsons
   .join(' ')
 const startCmd = `concurrently ${startSubCmd}`
 cp.execSync(startCmd, { stdio: 'inherit' })
-
-// // Add the first build level: packages with no dependency
-// const buildLevel0 = packageObject.filter(
-//   (o) => !(o.dependencies && o.dependencies.length)
-// )
-
-// // Level 1: packages with only dependencies in level 0
-// const buildLevel1 = packageObject.filter(
-//   (o) =>
-//     o.dependencies &&
-//     o.dependencies.length &&
-//     o.dependencies.every((d) => buildLevel0.some((b0) => b0.name === d))
-// )
