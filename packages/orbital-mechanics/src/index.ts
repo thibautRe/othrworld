@@ -1,5 +1,5 @@
 import { Asteroid, getBodyMass, Orbit, Planet } from '@othrworld/core'
-import { Distance, Time, unit, multUnit } from '@othrworld/units'
+import { Distance, Time, unit, multUnit, Speed } from '@othrworld/units'
 import {
   CarthCoords,
   RadialCoords,
@@ -189,12 +189,10 @@ export const getNextApoapsisPassage = (orbit: Orbit, t: Date): Date => {
 }
 
 interface SpeedCoords {
-  /** Positive for prograde, negative for retrograde
-   * @unit m/s */
-  prograde: number
-  /** Positive for outside, negative for inside
-   * @unit m/s */
-  normal: number
+  /** Positive for prograde, negative for retrograde */
+  prograde: Speed
+  /** Positive for outside, negative for inside */
+  normal: Speed
 }
 export const applySpeedChange = (
   orbit: Orbit,

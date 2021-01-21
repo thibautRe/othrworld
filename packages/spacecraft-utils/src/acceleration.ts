@@ -54,7 +54,7 @@ export const applyAcceleration = (
   )
   return {
     ...s,
-    orbit: applySpeedChange(s.orbit, t, { prograde, normal: 0 }),
+    orbit: applySpeedChange(s.orbit, t, { prograde, normal: unit(0) }),
     parts: s.parts.map((p) => {
       if (p.type !== 'fuel-container') return p
 
