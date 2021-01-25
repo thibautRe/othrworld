@@ -14,7 +14,7 @@
     "concurrently": "^5.3.0"
   },
   "scripts": {
-    "start": "yarn workspace @othrworld/app tscbuild && yarn workspace @othrworld/app start",
+    "start": "yarn workspace @othrworld/app tsc -b && concurrently -n tsc,cra \"node scripts/start.js\" \"yarn workspace @othrworld/app start\"",
     "start-legacy": "node scripts/start.js"
   }
 }
