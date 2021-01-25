@@ -8,5 +8,12 @@
     "strict": true,
     "allowJs": true
   },
-  "include": ["src/**/*"]
+  "include": ["src/**/*"],
+  "references": [
+    { "path": "../core" },
+    { "path": "../orbital-mechanics" },
+    { "path": "../spacecraft-utils" },
+    { "path": "../stitches-config" },
+    { "path": "../systemgen" }
+  ]
 }

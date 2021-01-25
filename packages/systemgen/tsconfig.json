@@ -5,5 +5,13 @@
     "outDir": "dist",
     "tsBuildInfoFile": "dist/tsconfig.tsbuildinfo"
   },
-  "include": ["src/**/*"]
+  "include": ["src/**/*"],
+  "references": [
+    { "path": "../core" },
+    { "path": "../gen-core" },
+    { "path": "../namegen-nobel" },
+    { "path": "../orbital-mechanics" },
+    { "path": "../body-utils" },
+    { "path": "../units" }
+  ]
 }

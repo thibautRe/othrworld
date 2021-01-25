@@ -1,3 +1,8 @@
+/**
+ * This file is unused right now but is kept for posterity until
+ * I'm confident that there is no need to recursively detect and build packages
+ */
+
 const fs = require('fs')
 const path = require('path')
 const cp = require('child_process')

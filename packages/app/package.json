@@ -24,10 +24,12 @@
     "zustand": "^3.2.0"
   },
   "scripts": {
-    "start": "BROWSER=none react-scripts start",
+    "prestart": "yarn tscbuild",
+    "start": "concurrently --kill-others \"yarn tscbuild --watch\" \"react-scripts start\"",
     "build": "react-scripts build",
     "test": "react-scripts test",
-    "eject": "react-scripts eject"
+    "eject": "react-scripts eject",
+    "tscbuild": "tsc --build"
   },
   "eslintConfig": {
     "extends": [

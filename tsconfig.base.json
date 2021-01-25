@@ -7,10 +7,12 @@
     "jsx": "react-jsx",
     "allowSyntheticDefaultImports": true,
     "moduleResolution": "node",
+    "composite": true,
     "resolveJsonModule": true,
     "pretty": true,
     "incremental": true,
     "declaration": true,
+    "declarationMap": true,
     "sourceMap": true,
     "skipLibCheck": true,
 
