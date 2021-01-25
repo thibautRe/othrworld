@@ -1,10 +1,14 @@
 import { Spacecraft } from '@othrworld/core'
 import {
-  getApoapsis,
   getNextApoapsisPassage,
   getNextPeriapsisPassage,
+  findSpeedDiffAtPeriapsisForApoapsis,
+  findSpeedDiffAtApoapsisForCircular,
 } from '@othrworld/orbital-mechanics'
-import { applyAcceleration } from '@othrworld/spacecraft-utils'
+import {
+  applyAcceleration,
+  getMaxAcceleration,
+} from '@othrworld/spacecraft-utils'
 import { Distance, unit } from '@othrworld/units'
 
 import { useDateStore } from '../../stores/date'
@@ -15,20 +19,30 @@ export const requestCircularOrbit = (
   sId: Spacecraft['id'],
   radius: Distance
 ) => {
-  const { setSpacecraft } = useSystemStore.getState()
+  const { setSpacecraft, getSpacecraft } = useSystemStore.getState()
   const { registerDateAction, currentDate } = useDateStore.getState()
+
+  let requiredPeriSpeed = findSpeedDiffAtPeriapsisForApoapsis(
+    getSpacecraft(sId)!.orbit,
+    radius
+  )
+  let requiredApsisSpeed = -1
 
   // Phase 1: accelerate in order to reach a certain apoapsis defined by the radius
   const runApsisChange = () => {
     const s = useSystemStore.getState().getSpacecraft(sId)!
     const { currentDate } = useDateStore.getState()
-    const newS = applyAcceleration(s, unit(10), currentDate, unit(1))
+    const appliedAcc = Math.min(requiredPeriSpeed, getMaxAcceleration(s))
+    // @ts-expect-error unit issue. This works because the base time is 1 second
+    requiredPeriSpeed -= appliedAcc
+    const newS = applyAcceleration(s, unit(appliedAcc), currentDate, unit(1))
 
-    if (getApoapsis(newS.orbit) < radius) {
+    if (requiredPeriSpeed > 0) {
       registerDateAction(new Date(currentDate.getTime() + 1000), runApsisChange)
     } else {
+      requiredApsisSpeed = findSpeedDiffAtApoapsisForCircular(newS.orbit)
       registerDateAction(
-        getNextApoapsisPassage(s.orbit, currentDate),
+        getNextApoapsisPassage(newS.orbit, currentDate),
         runEccentricityChange
       )
     }
@@ -40,15 +54,15 @@ export const requestCircularOrbit = (
   const runEccentricityChange = () => {
     const s = useSystemStore.getState().getSpacecraft(sId)!
     const { currentDate } = useDateStore.getState()
-    const newS = applyAcceleration(s, unit(10), currentDate, unit(1))
+    const appliedAcc = Math.min(requiredApsisSpeed, getMaxAcceleration(s))
+    requiredApsisSpeed -= appliedAcc
+    const newS = applyAcceleration(s, unit(appliedAcc), currentDate, unit(1))
 
-    if (s.orbit.e > newS.orbit.e) {
+    if (requiredApsisSpeed > 0) {
       registerDateAction(
         new Date(currentDate.getTime() + 1000),
         runEccentricityChange
       )
-    } else {
-      return
     }
     setSpacecraft(sId, newS)
   }

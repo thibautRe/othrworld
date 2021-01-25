@@ -3,10 +3,10 @@ import { multUnit, Time } from '@othrworld/units'
 
 import { G } from './utils'
 
-/** Returns the periapsis of a given orbit */
+/** Returns the periapsis (smallest altitude) of a given orbit */
 export const getPeriapsis = (orbit: Orbit) => multUnit(orbit.a, 1 - orbit.e)
 
-/** Returns the apoapsis of a given orbit */
+/** Returns the apoapsis (highest altitude) of a given orbit */
 export const getApoapsis = (orbit: Orbit) => multUnit(orbit.a, 1 + orbit.e)
 
 /** Returns the semi-minor axis of a given orbit */

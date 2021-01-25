@@ -72,8 +72,8 @@ export const generateDebugSystem = (): System => {
           },
         ],
         orbit: {
-          a: unit(6000000),
-          e: 0.4,
+          a: unit(7000000),
+          e: 0.2,
           parentMass: getBodyMass(planet1),
           parentId: planet1.id,
           phi: 0.3,

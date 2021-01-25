@@ -11,6 +11,11 @@ export const unitless__unsafe = <T extends string>(unit: Unit<T>): number =>
 export const sumUnits = <T extends string>(...val: Unit<T>[]): Unit<T> =>
   val.reduce((a, b) => a + b, 0) as Unit<T>
 
+export const subUnits = <T extends string>(
+  val1: Unit<T>,
+  val2: Unit<T>
+): Unit<T> => (val1 - val2) as Unit<T>
+
 /** Multiply a unit by a scalair */
 export const multUnit = <T extends string>(u: Unit<T>, l: number): Unit<T> =>
   (u * l) as Unit<T>

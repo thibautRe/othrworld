@@ -28,23 +28,22 @@ const getSpacecraftEngineSpImp = (s: Spacecraft) =>
 const getSpacecraftEngineThrust = (s: Spacecraft) =>
   sumUnits(...s.parts.filter(isSpacecraftEngine).map((e) => e.thrust))
 
-const getMaxAcceleration = (s: Spacecraft) =>
+export const getMaxAcceleration = (s: Spacecraft) =>
   getAccelerationFromForceMass(
     getSpacecraftEngineThrust(s),
     getSpacecraftMass(s)
   )
 
-/** API subject to change: the acceleration vector (absolute?) should be specified here */
+/** API subject to change: the acceleration vector (absolute?) should be specified here
+ * Also the fact that both orbit and fuel consumption is done here is a bit meh
+*/
 export const applyAcceleration = (
   s: Spacecraft,
   requestedAcc: Acceleration,
   t: Date,
   deltaTimeS: Time
 ): Spacecraft => {
-  const maxAcc = getMaxAcceleration(s)
-
-  const effectiveAcc = Math.min(requestedAcc, maxAcc) as Acceleration
-  const prograde = getSpeedFromAcceleration(effectiveAcc, deltaTimeS)
+  const prograde = getSpeedFromAcceleration(requestedAcc, deltaTimeS)
   const spImp = getSpacecraftEngineSpImp(s)
 
   // Tsiolkovsky rocket equation inverted

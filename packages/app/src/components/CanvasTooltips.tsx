@@ -55,7 +55,7 @@ const CanvasTooltipPlanet = ({ id }: { id: Planet['id'] }) => {
   return (
     <>
       <div>
-        Radius: <strong>{planet.radius.toFixed()}</strong>
+        Radius: <strong>{(planet.radius*1e-3).toFixed()}km</strong>
       </div>
 
       <CanvasTooltipOrbitInfo orbit={planet.orbit} />
