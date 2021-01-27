@@ -1,21 +1,21 @@
-export type Unit<T extends string> = number & { __dimension: T }
+type Dim = '__dimension'
+export type Unit<T extends string> = number & { [dim in Dim]: T }
+export type DimOf<U extends Unit<string>> = U[Dim]
 
 /** Construct a typed unit of a given dimension */
 export const unit = <T extends string>(val: number): Unit<T> => val as Unit<T>
 
 /** Sum a serie of similarly dimensionned units */
-export const sumUnits = <T extends string>(...val: Unit<T>[]): Unit<T> =>
-  val.reduce((a, b) => a + b, 0) as Unit<T>
+export const sumUnits = <U extends Unit<string>>(...val: U[]): U =>
+  val.reduce((a, b) => a + b, 0) as U
 
-export const subUnits = <T extends string>(
-  val1: Unit<T>,
-  val2: Unit<T>
-): Unit<T> => (val1 - val2) as Unit<T>
+export const subUnits = <U extends Unit<string>>(val1: U, val2: U): U =>
+  (val1 - val2) as U
 
 /** Multiply a unit by a scalair */
-export const multUnit = <T extends string>(u: Unit<T>, l: number): Unit<T> =>
-  (u * l) as Unit<T>
+export const multUnit = <U extends Unit<string>>(u: U, l: number): U =>
+  (u * l) as U
 
 /** Average a serie of similarly dimensionned units */
-export const avgUnits = <T extends string>(...val: Unit<T>[]): Unit<T> =>
+export const avgUnits = <U extends Unit<string>>(...val: U[]): U =>
   multUnit(sumUnits(...val), 1 / val.length)
