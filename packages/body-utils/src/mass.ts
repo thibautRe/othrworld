@@ -1,6 +1,13 @@
 import { Body } from '@othrworld/core'
-import { getMassFromDensity, getSphereVolume, Mass } from '@othrworld/units'
+import {
+  Distance,
+  distanceToVolume,
+  massVolumeDensityTriad,
+  multUnit,
+} from '@othrworld/units'
 
-export const getBodyMass = (b: Body): Mass => {
-  return getMassFromDensity(b.density, getSphereVolume(b.radius))
-}
+export const getSphereVolume = (r: Distance) =>
+  multUnit(distanceToVolume(r), (4 / 3) * Math.PI)
+
+export const getBodyMass = (b: Body) =>
+  massVolumeDensityTriad.getUp(getSphereVolume(b.radius), b.density)

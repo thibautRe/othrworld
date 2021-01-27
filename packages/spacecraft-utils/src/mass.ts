@@ -1,5 +1,5 @@
 import { Spacecraft, SpacecraftPart } from '@othrworld/core'
-import { Mass, unit, sumUnits, getMassFromDensity } from '@othrworld/units'
+import { Mass, unit, sumUnits, massVolumeDensityTriad } from '@othrworld/units'
 
 const getSpacecraftPartDryMass = (part: SpacecraftPart): Mass => {
   switch (part.type) {
@@ -13,7 +13,7 @@ const getSpacecraftPartDryMass = (part: SpacecraftPart): Mass => {
 const getSpacecraftPartFuelMass = (part: SpacecraftPart): Mass => {
   switch (part.type) {
     case 'fuel-container':
-      return getMassFromDensity(part.fuelDensity, part.fuelVolume)
+      return massVolumeDensityTriad.getUp(part.fuelVolume, part.fuelDensity)
     default:
       return unit(0)
   }

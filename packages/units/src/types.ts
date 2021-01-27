@@ -1,26 +1,31 @@
 import { Unit } from './unit'
 
-export type Mass = Unit<'kg'>
-export type Distance = Unit<'m'>
+export type MassUnit = 'kg'
+export type Mass = Unit<MassUnit>
 
-export type Volume = Unit<'m^3'>
-export const getSphereVolume = (r: Distance): Volume =>
-  ((4 / 3) * Math.PI * r ** 3) as Volume
+export type DistanceUnit = 'm'
+export type Distance = Unit<DistanceUnit>
 
-export type Density = Unit<'kg/m^3'>
-export const getDensity = (m: Mass, v: Volume): Density => (m / v) as Density
-export const getMassFromDensity = (d: Density, v: Volume): Mass =>
-  (d * v) as Mass
-export const getVolumeFromDensity = (d: Density, m: Mass): Volume =>
-  (m / d) as Volume
+export type AreaUnit = 'm^2'
+export type Area = Unit<AreaUnit>
 
-export type Time = Unit<'s'>
-export type Speed = Unit<'m/s'>
-export const getSpeed = (s: Distance, t: Time): Speed => (s / t) as Speed
+export type VolumeUnit = 'm^3'
+export type Volume = Unit<VolumeUnit>
 
-export type Force = Unit<'N'>
-export type Acceleration = Unit<'m/s^2'>
-export const getAccelerationFromForceMass = (f: Force, m: Mass) =>
-  (f / m) as Acceleration
-export const getSpeedFromAcceleration = (a: Acceleration, t: Time): Speed =>
-  (a * t) as Speed
+export type DensityUnit = 'kg/m^3'
+export type Density = Unit<DensityUnit>
+
+export type TimeUnit = 's'
+export type Time = Unit<TimeUnit>
+
+export type SpeedUnit = 'm/s'
+export type Speed = Unit<SpeedUnit>
+
+export type ForceUnit = 'N'
+export type Force = Unit<ForceUnit>
+
+export type AccelerationUnit = 'm/s^2'
+export type Acceleration = Unit<AccelerationUnit>
+
+export const distanceToArea = (r: Distance): Area => (r ** 2) as Area
+export const distanceToVolume = (r: Distance): Volume => (r ** 3) as Volume

@@ -5,17 +5,14 @@ import {
   findSpeedDiffAtPeriapsisForApoapsis,
   findSpeedDiffAtApoapsisForCircular,
 } from '@othrworld/orbital-mechanics'
-import {
-  applyDeltaV,
-  getApproxDeltaVBurnTime,
-  getMaxAcceleration,
-} from '@othrworld/spacecraft-utils'
+import { applyDeltaV, getMaxAcceleration } from '@othrworld/spacecraft-utils'
 import {
   Distance,
-  getSpeedFromAcceleration,
   Speed,
   subUnits,
   unit,
+  Acceleration,
+  speedTimeAccelerationTriad,
 } from '@othrworld/units'
 
 import { useDateStore } from '../../stores/date'
@@ -34,31 +31,22 @@ export const requestCircularOrbit = (
   let requiredApsisSpeed: Speed
 
   const periPassage = getNextPeriapsisPassage(s.orbit, currentDate)
-  const periBurnTime = getApproxDeltaVBurnTime(s, requiredPeriSpeed)
-  console.log('Peri burn time', periBurnTime)
-  console.log('peri deltav', requiredPeriSpeed.toFixed(1))
 
   // Phase 1: accelerate in order to reach a certain apoapsis defined by the radius
   const runApsisChange = () => {
     const s = useSystemStore.getState().getSpacecraft(sId)!
     const { currentDate } = useDateStore.getState()
-    const appliedAcc = Math.min(requiredPeriSpeed, getMaxAcceleration(s))
-    const deltaV = getSpeedFromAcceleration(unit(appliedAcc), unit(1))
+    const appliedAcc: Acceleration = unit(
+      Math.min(requiredPeriSpeed, getMaxAcceleration(s))
+    )
+    const deltaV = speedTimeAccelerationTriad.getUp(unit(1), appliedAcc)
     requiredPeriSpeed = subUnits(requiredPeriSpeed, deltaV)
     const newS = applyDeltaV(s, deltaV, currentDate)
 
     if (requiredPeriSpeed > 0) {
       registerDateAction(new Date(currentDate.getTime() + 1000), runApsisChange)
     } else {
-      const totalPeriBurnTimeMs = currentDate.getTime() - periPassage.getTime()
-      console.log(
-        'Effective periapsis burn time',
-        (totalPeriBurnTimeMs / 1000).toFixed(1)
-      )
-
       requiredApsisSpeed = findSpeedDiffAtApoapsisForCircular(newS.orbit)
-      const apsisBurnTime = getApproxDeltaVBurnTime(s, requiredApsisSpeed)
-      console.log('Apoapsis burn time', apsisBurnTime)
       registerDateAction(
         getNextApoapsisPassage(newS.orbit, currentDate),
         runEccentricityChange
@@ -72,8 +60,10 @@ export const requestCircularOrbit = (
   const runEccentricityChange = () => {
     const s = useSystemStore.getState().getSpacecraft(sId)!
     const { currentDate } = useDateStore.getState()
-    const appliedAcc = Math.min(requiredApsisSpeed, getMaxAcceleration(s))
-    const deltaV = getSpeedFromAcceleration(unit(appliedAcc), unit(1))
+    const appliedAcc: Acceleration = unit(
+      Math.min(requiredApsisSpeed, getMaxAcceleration(s))
+    )
+    const deltaV = speedTimeAccelerationTriad.getUp(unit(1), appliedAcc)
     requiredApsisSpeed = subUnits(requiredApsisSpeed, deltaV)
     const newS = applyDeltaV(s, deltaV, currentDate)
 

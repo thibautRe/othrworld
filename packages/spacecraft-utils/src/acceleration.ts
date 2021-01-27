@@ -6,8 +6,6 @@ import {
 import { applySpeedChange, SpeedCoords } from '@othrworld/orbital-mechanics'
 import {
   sumUnits,
-  getAccelerationFromForceMass,
-  getVolumeFromDensity,
   unit,
   Mass,
   Speed,
@@ -15,6 +13,8 @@ import {
   multUnit,
   avgUnits,
   subUnits,
+  massVolumeDensityTriad,
+  forceMassAccelerationTriad,
 } from '@othrworld/units'
 
 import { getSpacecraftFuelMass, getSpacecraftMass } from './mass'
@@ -26,7 +26,7 @@ const getSpacecraftEngineThrust = (s: Spacecraft) =>
   sumUnits(...s.parts.filter(isSpacecraftEngine).map((e) => e.thrust))
 
 export const getMaxAcceleration = (s: Spacecraft) =>
-  getAccelerationFromForceMass(
+  forceMassAccelerationTriad.getRes(
     getSpacecraftEngineThrust(s),
     getSpacecraftMass(s)
   )
@@ -45,13 +45,13 @@ const consomateFuel = (
   parts: s.parts.map((p) => {
     if (p.type !== 'fuel-container') return p
 
-    const volumeFuelConsomated = getVolumeFromDensity(
-      p.fuelDensity,
-      massFuelConsomated
+    const volumeFuelConsomated = massVolumeDensityTriad.getDown(
+      massFuelConsomated,
+      p.fuelDensity
     )
     const newFuelContainer: SpacecraftFuelContainer = {
       ...p,
-      fuelVolume: unit(p.fuelVolume - volumeFuelConsomated),
+      fuelVolume: subUnits(p.fuelVolume, volumeFuelConsomated),
     }
     return newFuelContainer
   }),
