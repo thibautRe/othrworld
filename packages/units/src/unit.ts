@@ -19,3 +19,7 @@ export const subUnits = <T extends string>(
 /** Multiply a unit by a scalair */
 export const multUnit = <T extends string>(u: Unit<T>, l: number): Unit<T> =>
   (u * l) as Unit<T>
+
+/** Average a serie of similarly dimensionned units */
+export const avgUnits = <T extends string>(...val: Unit<T>[]): Unit<T> =>
+  multUnit(sumUnits(...val), 1 / val.length)

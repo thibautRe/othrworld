@@ -66,7 +66,7 @@ const recalculateOrbitForPosAndSpeed = (
   }
 }
 
-interface SpeedCoords {
+export interface SpeedCoords {
   /** Positive for prograde, negative for retrograde */
   prograde: Speed
   /** Positive for outside, negative for inside */

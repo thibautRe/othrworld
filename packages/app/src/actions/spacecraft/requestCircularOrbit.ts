@@ -6,10 +6,17 @@ import {
   findSpeedDiffAtApoapsisForCircular,
 } from '@othrworld/orbital-mechanics'
 import {
-  applyAcceleration,
+  applyDeltaV,
+  getApproxDeltaVBurnTime,
   getMaxAcceleration,
 } from '@othrworld/spacecraft-utils'
-import { Distance, unit } from '@othrworld/units'
+import {
+  Distance,
+  getSpeedFromAcceleration,
+  Speed,
+  subUnits,
+  unit,
+} from '@othrworld/units'
 
 import { useDateStore } from '../../stores/date'
 import { useSystemStore } from '../../stores/system'
@@ -21,26 +28,37 @@ export const requestCircularOrbit = (
 ) => {
   const { setSpacecraft, getSpacecraft } = useSystemStore.getState()
   const { registerDateAction, currentDate } = useDateStore.getState()
+  const s = getSpacecraft(sId)!
 
-  let requiredPeriSpeed = findSpeedDiffAtPeriapsisForApoapsis(
-    getSpacecraft(sId)!.orbit,
-    radius
-  )
-  let requiredApsisSpeed = -1
+  let requiredPeriSpeed = findSpeedDiffAtPeriapsisForApoapsis(s.orbit, radius)
+  let requiredApsisSpeed: Speed
+
+  const periPassage = getNextPeriapsisPassage(s.orbit, currentDate)
+  const periBurnTime = getApproxDeltaVBurnTime(s, requiredPeriSpeed)
+  console.log('Peri burn time', periBurnTime)
+  console.log('peri deltav', requiredPeriSpeed.toFixed(1))
 
   // Phase 1: accelerate in order to reach a certain apoapsis defined by the radius
   const runApsisChange = () => {
     const s = useSystemStore.getState().getSpacecraft(sId)!
     const { currentDate } = useDateStore.getState()
     const appliedAcc = Math.min(requiredPeriSpeed, getMaxAcceleration(s))
-    // @ts-expect-error unit issue. This works because the base time is 1 second
-    requiredPeriSpeed -= appliedAcc
-    const newS = applyAcceleration(s, unit(appliedAcc), currentDate, unit(1))
+    const deltaV = getSpeedFromAcceleration(unit(appliedAcc), unit(1))
+    requiredPeriSpeed = subUnits(requiredPeriSpeed, deltaV)
+    const newS = applyDeltaV(s, deltaV, currentDate)
 
     if (requiredPeriSpeed > 0) {
       registerDateAction(new Date(currentDate.getTime() + 1000), runApsisChange)
     } else {
+      const totalPeriBurnTimeMs = currentDate.getTime() - periPassage.getTime()
+      console.log(
+        'Effective periapsis burn time',
+        (totalPeriBurnTimeMs / 1000).toFixed(1)
+      )
+
       requiredApsisSpeed = findSpeedDiffAtApoapsisForCircular(newS.orbit)
+      const apsisBurnTime = getApproxDeltaVBurnTime(s, requiredApsisSpeed)
+      console.log('Apoapsis burn time', apsisBurnTime)
       registerDateAction(
         getNextApoapsisPassage(newS.orbit, currentDate),
         runEccentricityChange
@@ -55,8 +73,9 @@ export const requestCircularOrbit = (
     const s = useSystemStore.getState().getSpacecraft(sId)!
     const { currentDate } = useDateStore.getState()
     const appliedAcc = Math.min(requiredApsisSpeed, getMaxAcceleration(s))
-    requiredApsisSpeed -= appliedAcc
-    const newS = applyAcceleration(s, unit(appliedAcc), currentDate, unit(1))
+    const deltaV = getSpeedFromAcceleration(unit(appliedAcc), unit(1))
+    requiredApsisSpeed = subUnits(requiredApsisSpeed, deltaV)
+    const newS = applyDeltaV(s, deltaV, currentDate)
 
     if (requiredApsisSpeed > 0) {
       registerDateAction(
@@ -67,9 +86,5 @@ export const requestCircularOrbit = (
     setSpacecraft(sId, newS)
   }
 
-  const spacecraft = useSystemStore.getState().getSpacecraft(sId)!
-  registerDateAction(
-    getNextPeriapsisPassage(spacecraft.orbit, currentDate),
-    runApsisChange
-  )
+  registerDateAction(periPassage, runApsisChange)
 }

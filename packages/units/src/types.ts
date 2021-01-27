@@ -12,7 +12,7 @@ export const getDensity = (m: Mass, v: Volume): Density => (m / v) as Density
 export const getMassFromDensity = (d: Density, v: Volume): Mass =>
   (d * v) as Mass
 export const getVolumeFromDensity = (d: Density, m: Mass): Volume =>
-  (d / m) as Volume
+  (m / d) as Volume
 
 export type Time = Unit<'s'>
 export type Speed = Unit<'m/s'>

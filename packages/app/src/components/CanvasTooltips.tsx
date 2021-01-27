@@ -6,7 +6,7 @@ import {
 } from '@othrworld/orbital-mechanics'
 import { Body, Orbit, Planet, Spacecraft } from '@othrworld/core'
 import {
-  getSpacecraftDeltaV,
+  getSpacecraftTotalDeltaV,
   getSpacecraftMass,
 } from '@othrworld/spacecraft-utils'
 
@@ -55,7 +55,7 @@ const CanvasTooltipPlanet = ({ id }: { id: Planet['id'] }) => {
   return (
     <>
       <div>
-        Radius: <strong>{(planet.radius*1e-3).toFixed()}km</strong>
+        Radius: <strong>{(planet.radius * 1e-3).toFixed()}km</strong>
       </div>
 
       <CanvasTooltipOrbitInfo orbit={planet.orbit} />
@@ -80,7 +80,7 @@ const CanvasTooltipSpacecraft = ({ id }: { id: Spacecraft['id'] }) => {
       >
         Request circular orbit
       </button>
-      <div>DeltaV {getSpacecraftDeltaV(spacecraft).toFixed(0)}m/s</div>
+      <div>DeltaV {getSpacecraftTotalDeltaV(spacecraft).toFixed(0)}m/s</div>
       <div>Mass {getSpacecraftMass(spacecraft).toFixed(0)}kg</div>
       <hr />
       <h5>Parts</h5>

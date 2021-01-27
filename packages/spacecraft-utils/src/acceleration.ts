@@ -3,24 +3,21 @@ import {
   isSpacecraftEngine,
   SpacecraftFuelContainer,
 } from '@othrworld/core'
-import { applySpeedChange } from '@othrworld/orbital-mechanics'
+import { applySpeedChange, SpeedCoords } from '@othrworld/orbital-mechanics'
 import {
   sumUnits,
   getAccelerationFromForceMass,
-  getSpeedFromAcceleration,
   getVolumeFromDensity,
   unit,
   Mass,
   Speed,
-  Acceleration,
   Time,
+  multUnit,
+  avgUnits,
+  subUnits,
 } from '@othrworld/units'
 
-import {
-  getSpacecraftDryMass,
-  getSpacecraftFuelMass,
-  getSpacecraftMass,
-} from './mass'
+import { getSpacecraftFuelMass, getSpacecraftMass } from './mass'
 
 const getSpacecraftEngineSpImp = (s: Spacecraft) =>
   sumUnits(...s.parts.filter(isSpacecraftEngine).map((e) => e.specificImpulse))
@@ -34,48 +31,77 @@ export const getMaxAcceleration = (s: Spacecraft) =>
     getSpacecraftMass(s)
   )
 
-/** API subject to change: the acceleration vector (absolute?) should be specified here
- * Also the fact that both orbit and fuel consumption is done here is a bit meh
-*/
-export const applyAcceleration = (
+const applySpacecraftSpeedChange = (
   s: Spacecraft,
-  requestedAcc: Acceleration,
   t: Date,
-  deltaTimeS: Time
-): Spacecraft => {
-  const prograde = getSpeedFromAcceleration(requestedAcc, deltaTimeS)
-  const spImp = getSpacecraftEngineSpImp(s)
+  speed: SpeedCoords
+): Spacecraft => ({ ...s, orbit: applySpeedChange(s.orbit, t, speed) })
 
-  // Tsiolkovsky rocket equation inverted
-  const massfuelConsomated: Mass = unit(
-    getSpacecraftMass(s) *
-      (1 - Math.exp(-Math.abs(prograde) / (spImp * 9.80665)))
+const consomateFuel = (
+  s: Spacecraft,
+  massFuelConsomated: Mass
+): Spacecraft => ({
+  ...s,
+  parts: s.parts.map((p) => {
+    if (p.type !== 'fuel-container') return p
+
+    const volumeFuelConsomated = getVolumeFromDensity(
+      p.fuelDensity,
+      massFuelConsomated
+    )
+    const newFuelContainer: SpacecraftFuelContainer = {
+      ...p,
+      fuelVolume: unit(p.fuelVolume - volumeFuelConsomated),
+    }
+    return newFuelContainer
+  }),
+})
+
+/** @warning API subject to change: the deltaV vector should be specified here */
+export const applyDeltaV = (
+  s: Spacecraft,
+  deltaV: Speed,
+  t: Date
+): Spacecraft =>
+  consomateFuel(
+    applySpacecraftSpeedChange(s, t, { prograde: deltaV, normal: unit(0) }),
+    getMassFuelForDeltaV(s, deltaV)
   )
-  return {
-    ...s,
-    orbit: applySpeedChange(s.orbit, t, { prograde, normal: unit(0) }),
-    parts: s.parts.map((p) => {
-      if (p.type !== 'fuel-container') return p
 
-      // Remove some fuel in the container. How much depends on how many engines are on,
-      // how much force they apply, etc... For now we hardcode some values
+const G0 = 9.80665
+/** Returns the available deltaV for a spacecraft */
+export const getSpacecraftTotalDeltaV = (s: Spacecraft) =>
+  getDeltaVForMassFuel(s, getSpacecraftFuelMass(s))
 
-      const volumeFuelConsomated = getVolumeFromDensity(
-        p.fuelDensity,
-        massfuelConsomated
-      )
-      const newFuelContainer: SpacecraftFuelContainer = {
-        ...p,
-        fuelVolume: unit(p.fuelVolume - volumeFuelConsomated),
-      }
-      return newFuelContainer
-    }),
-  }
+const getDeltaVForMassFuel = (
+  s: Spacecraft,
+  massFuelConsomated: Mass
+): Speed => {
+  const startMass = getSpacecraftMass(s)
+  const endMass = subUnits(startMass, massFuelConsomated)
+  // Tsiolkovsky rocket equation
+  return unit(getSpacecraftEngineSpImp(s) * G0 * Math.log(startMass / endMass))
 }
 
-// Tsiolkovsky rocket equation
-const G0 = 9.80665
-export const getSpacecraftDeltaV = (s: Spacecraft): Speed =>
-  (getSpacecraftEngineSpImp(s) *
-    G0 *
-    Math.log(1 + getSpacecraftFuelMass(s) / getSpacecraftDryMass(s))) as Speed
+const getMassFuelForDeltaV = (s: Spacecraft, deltaV: Speed): Mass =>
+  // Reversed Tsiolkovsky rocket equation
+  multUnit(
+    getSpacecraftMass(s),
+    1 - Math.exp(-Math.abs(deltaV) / (getSpacecraftEngineSpImp(s) * G0))
+  )
+
+/**
+ * Returns an approximation of the burn time for a given deltaV
+ * @note result is approximated because the weight of the spacecraft decreases as time goes on
+ * and should only be used for getting a rough idea
+ */
+export const getApproxDeltaVBurnTime = (s: Spacecraft, deltaV: Speed): Time => {
+  // We are doing an average of the acceleration at the start and at the end of the burn
+  // and consider that for the approximation
+  const accAtStart = getMaxAcceleration(s)
+  const accAtEnd = getMaxAcceleration(
+    consomateFuel(s, getMassFuelForDeltaV(s, deltaV))
+  )
+  const accAvg = avgUnits(accAtStart, accAtEnd)
+  return unit(deltaV / accAvg)
+}
