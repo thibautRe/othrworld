@@ -1,4 +1,4 @@
-import { Distance, Mass } from '@othrworld/units'
+import { Distance, Mass, Speed } from '@othrworld/units'
 import { ID } from './id'
 
 export interface Orbit {
@@ -21,4 +21,9 @@ export interface Orbit {
 
   /** semi-major axis angle from horizontal (radians) */
   phi: number
+}
+
+export interface OrbitManeuver {
+  epoch: Date
+  deltaV: { x: Speed; y: Speed }
 }
