@@ -1,4 +1,4 @@
-import { Density, Mass, Time, Volume, Force } from '@othrworld/units'
+import { Density, Mass, Time, Volume, Force, Energy } from '@othrworld/units'
 import { ID } from './id'
 import { Orbit } from './orbit'
 
@@ -36,4 +36,14 @@ export const isSpacecraftFuelContainer = (
   part: SpacecraftPart
 ): part is SpacecraftFuelContainer => part.type === 'fuel-container'
 
-export type SpacecraftPart = SpacecraftEngine | SpacecraftFuelContainer
+export interface SpacecraftBattery {
+  id: ID<'spacecraft-battery'>
+  type: 'battery'
+  capacity: Energy
+  mass: Mass
+}
+
+export type SpacecraftPart =
+  | SpacecraftEngine
+  | SpacecraftFuelContainer
+  | SpacecraftBattery

@@ -7,6 +7,8 @@ const getSpacecraftPartDryMass = (part: SpacecraftPart): Mass => {
       return part.mass
     case 'fuel-container':
       return part.dryMass
+    case 'battery':
+      return part.mass
   }
 }
 
