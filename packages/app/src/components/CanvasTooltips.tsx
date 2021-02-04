@@ -12,7 +12,10 @@ import {
 
 import { Popover } from './Popover'
 import { useCurrentDate } from '../stores/date'
-import { requestCircularOrbit } from '../actions/spacecraft/requestCircularOrbit'
+import {
+  requestCircularOrbit,
+  requestHohmannManeuvers,
+} from '../actions/spacecraft/requestCircularOrbit'
 import { useSystemStore } from '../stores/system'
 import {
   useCanvasTooltip,
@@ -75,11 +78,12 @@ const CanvasTooltipSpacecraft = ({ id }: { id: Spacecraft['id'] }) => {
     <>
       <CanvasTooltipOrbitInfo orbit={spacecraft.orbit} />
       <CanvasTooltipFollow item={spacecraft} />
-      <button
-        onClick={() => requestCircularOrbit(spacecraft.id, unit(50000000))}
-      >
+      <button onClick={() => requestCircularOrbit(spacecraft.id, unit(5e7))}>
         Request circular orbit
       </button>
+      <button
+        onClick={() => requestHohmannManeuvers(spacecraft.id, unit(5e7))}
+      ></button>
       <div>DeltaV {getSpacecraftTotalDeltaV(spacecraft).toFixed(0)}m/s</div>
       <div>Mass {getSpacecraftMass(spacecraft).toFixed(0)}kg</div>
       <hr />

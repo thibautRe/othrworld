@@ -1,5 +1,6 @@
-import create from 'zustand'
-import { Body, Orbit, Spacecraft, System } from '@othrworld/core'
+import create, { StateCreator } from 'zustand'
+import { devtools } from 'zustand/middleware'
+import { Body, Orbit, OrbitManeuver, Spacecraft, System } from '@othrworld/core'
 import { generateSystem } from '@othrworld/systemgen'
 import { getCarthesianCoords } from '@othrworld/orbital-mechanics'
 import { sumUnits } from '@othrworld/units'
@@ -11,14 +12,18 @@ type SystemState = {
   getSpacecraft: (spacecraftId: Spacecraft['id']) => Spacecraft | undefined
   setSpacecraft: (
     spacecraftId: Spacecraft['id'],
-    spacecraft: Spacecraft
+    setter: (s: Spacecraft) => Spacecraft
+  ) => void
+  setSpacecraftManeuvers: (
+    sId: Spacecraft['id'],
+    maneuvers: OrbitManeuver[]
   ) => void
 }
 
-export const useSystemStore = create<SystemState>((set, get) => ({
+const stateCreator: StateCreator<SystemState> = (set, get) => ({
   system: generateSystem(),
   setSystem: (system) => set({ system }),
-  setSpacecraft: (sId, spacecraft) => {
+  setSpacecraft: (sId, setter) => {
     const { system: s } = get()
     const spacecraftIndex = s.spacecrafts.findIndex((sp) => sp.id === sId)
     set({
@@ -26,16 +31,20 @@ export const useSystemStore = create<SystemState>((set, get) => ({
         ...s,
         spacecrafts: [
           ...s.spacecrafts.slice(0, spacecraftIndex),
-          spacecraft,
+          setter(s.spacecrafts[spacecraftIndex]),
           ...s.spacecrafts.slice(spacecraftIndex + 1),
         ],
       },
     })
   },
+  setSpacecraftManeuvers: (sId, maneuvers) =>
+    get().setSpacecraft(sId, (s) => ({ ...s, maneuvers })),
 
   getBody: (bId) => get().system.bodies.find(({ id }) => id === bId),
   getSpacecraft: (sId) => get().system.spacecrafts.find(({ id }) => id === sId),
-}))
+})
+
+export const useSystemStore = create(devtools(stateCreator, 'system'))
 
 const getParentBody = (orbit: Orbit): Body | undefined =>
   useSystemStore

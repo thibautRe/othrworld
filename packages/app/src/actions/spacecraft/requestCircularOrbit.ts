@@ -4,6 +4,7 @@ import {
   getNextPeriapsisPassage,
   findSpeedDiffAtPeriapsisForApoapsis,
   findSpeedDiffAtApoapsisForCircular,
+  getHohmannTransfer,
 } from '@othrworld/orbital-mechanics'
 import { applyDeltaV, getMaxAcceleration } from '@othrworld/spacecraft-utils'
 import {
@@ -53,7 +54,7 @@ export const requestCircularOrbit = (
       )
     }
 
-    setSpacecraft(sId, newS)
+    setSpacecraft(sId, () => newS)
   }
 
   // Phase 2: accelerate prograde at the apoapsis as long as the eccentricity decreases
@@ -73,8 +74,20 @@ export const requestCircularOrbit = (
         runEccentricityChange
       )
     }
-    setSpacecraft(sId, newS)
+    setSpacecraft(sId, () => newS)
   }
 
   registerDateAction(periPassage, runApsisChange)
+}
+
+export const requestHohmannManeuvers = (
+  sId: Spacecraft['id'],
+  radius: Distance
+) => {
+  const { getSpacecraft, setSpacecraftManeuvers } = useSystemStore.getState()
+  const spacecraft = getSpacecraft(sId)
+  if (!spacecraft) return
+  const { currentDate } = useDateStore.getState()
+  const maneuvers = getHohmannTransfer(spacecraft.orbit, radius, currentDate)
+  setSpacecraftManeuvers(sId, maneuvers)
 }
