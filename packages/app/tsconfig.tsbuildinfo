@@ -296,24 +296,34 @@
         "signature": "f2a1762227da2e99918ad367fc8ab4b00bcfad9cb3baf696f38c28ff87bcfd63",
         "affectsGlobalScope": false
       },
-      "../units/dist/unit.d.ts": {
-        "version": "e2e3065c1835f9a2985ce8be16ad5b2d0fbf85456cf4d0f30c17942200970255",
-        "signature": "e2e3065c1835f9a2985ce8be16ad5b2d0fbf85456cf4d0f30c17942200970255",
+      "../units/dist/types.d.ts": {
+        "version": "05fe806da58910a32cd42038039cf5c7d1513cc8e6ace97c9b4f68dc07c01ffa",
+        "signature": "05fe806da58910a32cd42038039cf5c7d1513cc8e6ace97c9b4f68dc07c01ffa",
         "affectsGlobalScope": false
       },
-      "../units/dist/types.d.ts": {
-        "version": "671da1a6de4d78706adddbb93bef8c465257947aa23542a31da2422503feadd1",
-        "signature": "671da1a6de4d78706adddbb93bef8c465257947aa23542a31da2422503feadd1",
+      "../units/dist/operations.d.ts": {
+        "version": "2dfde0852e0694af0b32a79a26f7c6ef69198df5723c0541ba3a184bc3ef0456",
+        "signature": "2dfde0852e0694af0b32a79a26f7c6ef69198df5723c0541ba3a184bc3ef0456",
+        "affectsGlobalScope": false
+      },
+      "../units/dist/conversions.d.ts": {
+        "version": "9be2e96db2da7587c6a715c172a211995245d6b7c9701241f5a9bc9319c7dab7",
+        "signature": "9be2e96db2da7587c6a715c172a211995245d6b7c9701241f5a9bc9319c7dab7",
+        "affectsGlobalScope": false
+      },
+      "../units/dist/triads.d.ts": {
+        "version": "4ca6bc084541a47fe2cfc95b2bb0ab32793d1ccf5ba548e03f9968c1e9ebc133",
+        "signature": "4ca6bc084541a47fe2cfc95b2bb0ab32793d1ccf5ba548e03f9968c1e9ebc133",
         "affectsGlobalScope": false
       },
       "../units/dist/index.d.ts": {
-        "version": "58af4acab32e8075d323278e02c860b6983f1b09659e75c95c8b3bd30820e3ec",
-        "signature": "58af4acab32e8075d323278e02c860b6983f1b09659e75c95c8b3bd30820e3ec",
+        "version": "2522d9cda08d4f1820afcc2fd8bee784b3624d70a6be4fab6bddcef76147a3d2",
+        "signature": "2522d9cda08d4f1820afcc2fd8bee784b3624d70a6be4fab6bddcef76147a3d2",
         "affectsGlobalScope": false
       },
       "../core/dist/types/orbit.d.ts": {
-        "version": "c2f87d0c2bf702438be5921a8c4eaf8bd179e81cfec42b5132464e1baeaac7f3",
-        "signature": "c2f87d0c2bf702438be5921a8c4eaf8bd179e81cfec42b5132464e1baeaac7f3",
+        "version": "cf88d718c2481359b0cb63690ec93917268cbf58ab748aa9631af67d74f78eff",
+        "signature": "cf88d718c2481359b0cb63690ec93917268cbf58ab748aa9631af67d74f78eff",
         "affectsGlobalScope": false
       },
       "../core/dist/types/body.d.ts": {
@@ -322,8 +332,8 @@
         "affectsGlobalScope": false
       },
       "../core/dist/types/spacecraft.d.ts": {
-        "version": "ab3c7ffc5842cb23cda809f00ac3ae7bf2d791663e2bb66cc1db35ecc88d829a",
-        "signature": "ab3c7ffc5842cb23cda809f00ac3ae7bf2d791663e2bb66cc1db35ecc88d829a",
+        "version": "5cf64a77e6abf0e651b7616b34a55c6675e7db52513ec66683131b898d6392e8",
+        "signature": "5cf64a77e6abf0e651b7616b34a55c6675e7db52513ec66683131b898d6392e8",
         "affectsGlobalScope": false
       },
       "../core/dist/types/system.d.ts": {
@@ -391,14 +401,19 @@
         "signature": "1b2b0df7a9e204a57f4f0c0be80dd65e633c11281b3eb1a56bb00af4c508c520",
         "affectsGlobalScope": false
       },
+      "../../node_modules/zustand/middleware.d.ts": {
+        "version": "dee469ee9930f4f8f568ea9117c369220bed950faafed4e234669ffd6bf4785a",
+        "signature": "dee469ee9930f4f8f568ea9117c369220bed950faafed4e234669ffd6bf4785a",
+        "affectsGlobalScope": false
+      },
       "../orbital-mechanics/dist/orbit-characteristics.d.ts": {
         "version": "245a60a7aee7183cbf65b8010a8ad61f97832533bf3c09eb8c801380f90059f0",
         "signature": "245a60a7aee7183cbf65b8010a8ad61f97832533bf3c09eb8c801380f90059f0",
         "affectsGlobalScope": false
       },
       "../orbital-mechanics/dist/coords.d.ts": {
-        "version": "23d5d794c886d01cc6a13d59bf3b29e82b08f19d12187216827969d7d7810494",
-        "signature": "23d5d794c886d01cc6a13d59bf3b29e82b08f19d12187216827969d7d7810494",
+        "version": "80d8945d42a032dc7ebee68970d6247dee4233f91ae3b1ba25e5b8494174a89d",
+        "signature": "80d8945d42a032dc7ebee68970d6247dee4233f91ae3b1ba25e5b8494174a89d",
         "affectsGlobalScope": false
       },
       "../orbital-mechanics/dist/position.d.ts": {
@@ -417,18 +432,23 @@
         "affectsGlobalScope": false
       },
       "../orbital-mechanics/dist/orbit-change.d.ts": {
-        "version": "e087cf3f49988bfdb17a1087dbdb12a556574befefeb8bc6fd082354bd3adab1",
-        "signature": "e087cf3f49988bfdb17a1087dbdb12a556574befefeb8bc6fd082354bd3adab1",
+        "version": "8a78ea9309bdba1aad39ed03bb157d81138d979f3fd3f6f67bafa8dd902ccb6b",
+        "signature": "8a78ea9309bdba1aad39ed03bb157d81138d979f3fd3f6f67bafa8dd902ccb6b",
+        "affectsGlobalScope": false
+      },
+      "../orbital-mechanics/dist/maneuver/hohmann.d.ts": {
+        "version": "277e98f4e758dbb1cb53f5b31cb99a2d5dee075d2617129870e6bbff673a1acd",
+        "signature": "277e98f4e758dbb1cb53f5b31cb99a2d5dee075d2617129870e6bbff673a1acd",
         "affectsGlobalScope": false
       },
       "../orbital-mechanics/dist/index.d.ts": {
-        "version": "a2165e06df72cdf0d54a5d6f8234a241118edd00477c5e8ca2653fed2b830d36",
-        "signature": "a2165e06df72cdf0d54a5d6f8234a241118edd00477c5e8ca2653fed2b830d36",
+        "version": "fc8627bb36005d57b8236d2115771b046c45616fd851825c37fcbabe14033bf1",
+        "signature": "fc8627bb36005d57b8236d2115771b046c45616fd851825c37fcbabe14033bf1",
         "affectsGlobalScope": false
       },
       "./src/stores/system.ts": {
-        "version": "b84742f96e34efb934365df1a23bb97001b702f8389043804fda2f69602dd51f",
-        "signature": "e7e75a6ee996f9e5b795bc234bfa090bc96e4e0b87af695e8f162dfdfb5d7f44",
+        "version": "bc5ebbb0dd2285c33069b90f7efa5cbab854f7329b9285f428ef6276d0543c70",
+        "signature": "36ac6543c4279e72929af550f154661230c257fbd035fd4e9ddd3576d48681ee",
         "affectsGlobalScope": false
       },
       "./src/components/canvas/svgview.tsx": {
@@ -517,8 +537,8 @@
         "affectsGlobalScope": false
       },
       "../spacecraft-utils/dist/acceleration.d.ts": {
-        "version": "b09e85c458a2e9352a1d236a9446767582989dd8f4b76ebf33ecea54eecb3d25",
-        "signature": "b09e85c458a2e9352a1d236a9446767582989dd8f4b76ebf33ecea54eecb3d25",
+        "version": "5aabda118bf7e2bf36ab7acb3e827da260c9b661636981fcc5f8e70163aa4867",
+        "signature": "5aabda118bf7e2bf36ab7acb3e827da260c9b661636981fcc5f8e70163aa4867",
         "affectsGlobalScope": false
       },
       "../spacecraft-utils/dist/mass.d.ts": {
@@ -547,12 +567,12 @@
         "affectsGlobalScope": false
       },
       "./src/actions/spacecraft/requestcircularorbit.ts": {
-        "version": "d2920f5dcf3586ebcda2edd5e39a51f4f638d785d3e0f8d4f0f47fe8ceaa3903",
-        "signature": "a679a38c8641d84a4e56f694d9cdcdf52a8ef53785d3f04ce9cb6e29a166189c",
+        "version": "14a349a3a2943586bd99516e175d299bdfe1d747fbbd4672f5f06cabaab6f4bd",
+        "signature": "e4fb16440cc3348597fda6be666c4d8e0ed7ee7ae990a9e7ed2cf67896d4393b",
         "affectsGlobalScope": false
       },
       "./src/components/canvastooltips.tsx": {
-        "version": "0197706c5153d1d7b0c16525627b2d1cc8bf16fa7d21ca7ff5da18f79e45db93",
+        "version": "5cc1a2005854eef0ad1a72e85491e92742025d23c698ea13e2df7de7cbdef2df",
         "signature": "25e0925f0198ef16815494206b146a0f822fc1bc125f0bab398999003ac6f9b1",
         "affectsGlobalScope": false
       },
@@ -567,7 +587,7 @@
         "affectsGlobalScope": false
       },
       "./src/app.tsx": {
-        "version": "a39e423731936d43babc8291c0e7ab9341cb1ee6fd6145bcd95b9f6f4f4c37e1",
+        "version": "9268fe7f5911b8318859700be17bec623e029b593b3a7e42df6367f6a03def73",
         "signature": "0e9948e5d467bd450d6107a6add1d06b6bf8478db6b2285d07bf3d6d2fd33ec7",
         "affectsGlobalScope": false
       },
@@ -1529,6 +1549,9 @@
       "../../node_modules/zustand/index.d.ts": [
         "../../node_modules/zustand/vanilla.d.ts"
       ],
+      "../../node_modules/zustand/middleware.d.ts": [
+        "../../node_modules/zustand/vanilla.d.ts"
+      ],
       "./src/actions/spacecraft/requestcircularorbit.ts": [
         "../../node_modules/@types/react/jsx-runtime.d.ts",
         "../core/dist/index.d.ts",
@@ -1738,6 +1761,7 @@
       "./src/stores/system.ts": [
         "../../node_modules/@types/react/jsx-runtime.d.ts",
         "../../node_modules/zustand/index.d.ts",
+        "../../node_modules/zustand/middleware.d.ts",
         "../core/dist/index.d.ts",
         "../orbital-mechanics/dist/index.d.ts",
         "../systemgen/dist/index.d.ts",
@@ -1777,11 +1801,16 @@
         "../units/dist/index.d.ts"
       ],
       "../orbital-mechanics/dist/index.d.ts": [
+        "../orbital-mechanics/dist/maneuver/hohmann.d.ts",
         "../orbital-mechanics/dist/orbit-change.d.ts",
         "../orbital-mechanics/dist/orbit-characteristics.d.ts",
         "../orbital-mechanics/dist/passage.d.ts",
         "../orbital-mechanics/dist/position.d.ts",
         "../orbital-mechanics/dist/speed.d.ts"
+      ],
+      "../orbital-mechanics/dist/maneuver/hohmann.d.ts": [
+        "../core/dist/index.d.ts",
+        "../units/dist/index.d.ts"
       ],
       "../orbital-mechanics/dist/orbit-change.d.ts": [
         "../core/dist/index.d.ts",
@@ -1830,12 +1859,20 @@
       "../systemgen/dist/solar.d.ts": [
         "../core/dist/index.d.ts"
       ],
-      "../units/dist/index.d.ts": [
-        "../units/dist/types.d.ts",
-        "../units/dist/unit.d.ts"
+      "../units/dist/conversions.d.ts": [
+        "../units/dist/types.d.ts"
       ],
-      "../units/dist/types.d.ts": [
-        "../units/dist/unit.d.ts"
+      "../units/dist/index.d.ts": [
+        "../units/dist/conversions.d.ts",
+        "../units/dist/operations.d.ts",
+        "../units/dist/triads.d.ts",
+        "../units/dist/types.d.ts"
+      ],
+      "../units/dist/operations.d.ts": [
+        "../units/dist/types.d.ts"
+      ],
+      "../units/dist/triads.d.ts": [
+        "../units/dist/types.d.ts"
       ]
     },
     "exportedModulesMap": {
@@ -2216,6 +2253,9 @@
       "../../node_modules/zustand/index.d.ts": [
         "../../node_modules/zustand/vanilla.d.ts"
       ],
+      "../../node_modules/zustand/middleware.d.ts": [
+        "../../node_modules/zustand/vanilla.d.ts"
+      ],
       "./src/actions/spacecraft/requestcircularorbit.ts": [
         "../core/dist/index.d.ts",
         "../units/dist/index.d.ts"
@@ -2320,11 +2360,16 @@
         "../units/dist/index.d.ts"
       ],
       "../orbital-mechanics/dist/index.d.ts": [
+        "../orbital-mechanics/dist/maneuver/hohmann.d.ts",
         "../orbital-mechanics/dist/orbit-change.d.ts",
         "../orbital-mechanics/dist/orbit-characteristics.d.ts",
         "../orbital-mechanics/dist/passage.d.ts",
         "../orbital-mechanics/dist/position.d.ts",
         "../orbital-mechanics/dist/speed.d.ts"
+      ],
+      "../orbital-mechanics/dist/maneuver/hohmann.d.ts": [
+        "../core/dist/index.d.ts",
+        "../units/dist/index.d.ts"
       ],
       "../orbital-mechanics/dist/orbit-change.d.ts": [
         "../core/dist/index.d.ts",
@@ -2373,12 +2418,20 @@
       "../systemgen/dist/solar.d.ts": [
         "../core/dist/index.d.ts"
       ],
-      "../units/dist/index.d.ts": [
-        "../units/dist/types.d.ts",
-        "../units/dist/unit.d.ts"
+      "../units/dist/conversions.d.ts": [
+        "../units/dist/types.d.ts"
       ],
-      "../units/dist/types.d.ts": [
-        "../units/dist/unit.d.ts"
+      "../units/dist/index.d.ts": [
+        "../units/dist/conversions.d.ts",
+        "../units/dist/operations.d.ts",
+        "../units/dist/triads.d.ts",
+        "../units/dist/types.d.ts"
+      ],
+      "../units/dist/operations.d.ts": [
+        "../units/dist/types.d.ts"
+      ],
+      "../units/dist/triads.d.ts": [
+        "../units/dist/types.d.ts"
       ]
     },
     "semanticDiagnosticsPerFile": [
@@ -2550,6 +2603,7 @@
       "../../node_modules/typescript/lib/lib.esnext.string.d.ts",
       "../../node_modules/typescript/lib/lib.esnext.weakref.d.ts",
       "../../node_modules/zustand/index.d.ts",
+      "../../node_modules/zustand/middleware.d.ts",
       "../../node_modules/zustand/shallow.d.ts",
       "../../node_modules/zustand/vanilla.d.ts",
       "./src/actions/spacecraft/requestcircularorbit.ts",
@@ -2590,6 +2644,7 @@
       "../core/dist/types/system.d.ts",
       "../orbital-mechanics/dist/coords.d.ts",
       "../orbital-mechanics/dist/index.d.ts",
+      "../orbital-mechanics/dist/maneuver/hohmann.d.ts",
       "../orbital-mechanics/dist/orbit-change.d.ts",
       "../orbital-mechanics/dist/orbit-characteristics.d.ts",
       "../orbital-mechanics/dist/passage.d.ts",
@@ -2602,9 +2657,11 @@
       "../systemgen/dist/debug.d.ts",
       "../systemgen/dist/index.d.ts",
       "../systemgen/dist/solar.d.ts",
+      "../units/dist/conversions.d.ts",
       "../units/dist/index.d.ts",
-      "../units/dist/types.d.ts",
-      "../units/dist/unit.d.ts"
+      "../units/dist/operations.d.ts",
+      "../units/dist/triads.d.ts",
+      "../units/dist/types.d.ts"
     ],
     "affectedFilesPendingEmit": [
       [
@@ -3132,6 +3189,10 @@
         1
       ],
       [
+        "../../node_modules/zustand/middleware.d.ts",
+        1
+      ],
+      [
         "../../node_modules/zustand/shallow.d.ts",
         1
       ],
@@ -3292,6 +3353,10 @@
         1
       ],
       [
+        "../orbital-mechanics/dist/maneuver/hohmann.d.ts",
+        1
+      ],
+      [
         "../orbital-mechanics/dist/orbit-change.d.ts",
         1
       ],
@@ -3340,7 +3405,19 @@
         1
       ],
       [
+        "../units/dist/conversions.d.ts",
+        1
+      ],
+      [
         "../units/dist/index.d.ts",
+        1
+      ],
+      [
+        "../units/dist/operations.d.ts",
+        1
+      ],
+      [
+        "../units/dist/triads.d.ts",
         1
       ],
       [

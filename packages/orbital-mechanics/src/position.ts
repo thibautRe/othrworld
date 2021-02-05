@@ -1,4 +1,5 @@
 import { Orbit } from '@othrworld/core'
+import { withMemoDouble } from '@othrworld/memo-utils'
 import { multUnit } from '@othrworld/units'
 
 import { CarthCoords, RadialCoords, radialToCarth } from './coords'
@@ -14,11 +15,12 @@ export const getRadialCoords = (orbit: Orbit, t: Date): RadialCoords<'m'> => {
   return { r, angle: trueAnomaly }
 }
 
-export const getCarthesianCoords = (
-  orbit: Orbit,
-  t: Date
-): CarthCoords<'m'> => {
+const getCarthesianCoordsUnmemo = (orbit: Orbit, t: Date): CarthCoords<'m'> => {
+  console.log('Getting carth coords')
+
   const rad = getRadialCoords(orbit, t)
   rad.angle += orbit.phi
   return radialToCarth(rad)
 }
+
+export const getCarthesianCoords = withMemoDouble(getCarthesianCoordsUnmemo)

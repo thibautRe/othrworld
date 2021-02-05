@@ -259,6 +259,7 @@ const createEarth: CP = (sun) => {
         type: 'spacecraft',
         dryMass: unit(2000000),
         parts: [],
+        maneuvers: [],
         orbit: {
           a: unit(earth.radius + 450000),
           e: 0,
@@ -274,6 +275,7 @@ const createEarth: CP = (sun) => {
         type: 'spacecraft',
         dryMass: unit(1000000),
         parts: [],
+        maneuvers: [],
         orbit: {
           a: unit(moon.radius + 1500000),
           e: 0.2,

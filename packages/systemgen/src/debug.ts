@@ -53,6 +53,7 @@ export const generateDebugSystem = (): System => {
         type: 'spacecraft',
         name: 'Spacecraft',
         dryMass: unit(10000),
+        maneuvers: [],
         parts: [
           {
             id: createID(),
@@ -85,6 +86,7 @@ export const generateDebugSystem = (): System => {
         type: 'spacecraft',
         name: 'Spacecraft 2',
         dryMass: unit(10000),
+        maneuvers: [],
         parts: [
           {
             id: createID(),

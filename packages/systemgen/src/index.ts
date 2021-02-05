@@ -77,6 +77,7 @@ export const generateSystem = (): System => {
           type: 'spacecraft',
           dryMass: unit(1000),
           parts: [],
+          maneuvers: [],
           orbit: {
             a: unit(parent.radius * randFloat(6, 1.4)),
             e: Math.random() * 0.1,
