@@ -17,11 +17,7 @@ import { useDateStore, useIsPaused } from './stores/date'
 import { useFrame } from './hooks/useFrame'
 import { useCanvasTransformStore } from './stores/canvasTransform'
 
-css.global({
-  body: {
-    fontFamily: '$sansSerif',
-  },
-})
+css.global({ body: { fontFamily: '$sansSerif' } })
 
 export const App = () => {
   const resetSystem = React.useCallback((system: System) => {
