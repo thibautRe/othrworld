@@ -1,0 +1,9 @@
+[build]
+command = "yarn netlify"
+
+# Redirect default Netlify subdomain to primary domain
+[[redirects]]
+from = "https://othrworld-master.netlify.com/*"
+to = "https://othr.world/:splat"
+status = 301
+force = true
