@@ -1,7 +1,7 @@
 import create, { StateCreator } from 'zustand'
 import { devtools } from 'zustand/middleware'
 import { Body, Orbit, OrbitManeuver, Spacecraft, System } from '@othrworld/core'
-import { generateSystem } from '@othrworld/systemgen'
+import { generateDebugSystem } from '@othrworld/systemgen'
 import { getCarthesianCoords } from '@othrworld/orbital-mechanics'
 import { sumUnits } from '@othrworld/units'
 
@@ -21,7 +21,7 @@ type SystemState = {
 }
 
 const stateCreator: StateCreator<SystemState> = (set, get) => ({
-  system: generateSystem(),
+  system: generateDebugSystem(),
   setSystem: (system) => set({ system }),
   setSpacecraft: (sId, setter) => {
     const { system: s } = get()

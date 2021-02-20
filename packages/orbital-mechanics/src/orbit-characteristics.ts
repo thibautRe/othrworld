@@ -1,5 +1,6 @@
 import { Orbit } from '@othrworld/core'
-import { multUnit, Time } from '@othrworld/units'
+import { withMemoSimple } from '@othrworld/memo-utils'
+import { multUnit, Speed, Time, unit } from '@othrworld/units'
 
 import { G } from './utils'
 
@@ -14,9 +15,17 @@ export const getSemiMinorAxis = (orbit: Orbit) =>
   multUnit(orbit.a, Math.sqrt(1 - orbit.e ** 2))
 
 /** Returns the angular speed for a circular orbit to complete an orbit */
-export const getOrbitMeanMotion = (orbit: Orbit) =>
-  Math.sqrt((G * orbit.parentMass) / orbit.a ** 3)
+const getOrbitMeanMotionUnmemo = (orbit: Orbit) =>
+  Math.sqrt((G * orbit.parentMass) / Math.abs(orbit.a) ** 3)
+
+export const getOrbitMeanMotion = withMemoSimple(getOrbitMeanMotionUnmemo)
 
 /** Returns the period */
-export const getOrbitPeriod = (orbit: Orbit): Time =>
+const getOrbitPeriodUnmemo = (orbit: Orbit): Time =>
   ((2 * Math.PI) / getOrbitMeanMotion(orbit)) as Time
+
+export const getOrbitPeriod = withMemoSimple(getOrbitPeriodUnmemo)
+
+/** Returns VInfinity, the residual speed on an hyperbolic orbit */
+export const getVInf = (orbit: Orbit): Speed =>
+  unit(Math.sqrt((-G * orbit.parentMass) / orbit.a))

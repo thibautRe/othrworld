@@ -3,6 +3,7 @@ import {
   getNextApoapsisPassage,
   getNextPeriapsisPassage,
   getSpeed,
+  getVInf,
 } from '@othrworld/orbital-mechanics'
 import { Body, Orbit, Planet, Spacecraft } from '@othrworld/core'
 import {
@@ -31,14 +32,25 @@ const CanvasTooltipOrbitInfo = ({ orbit }: { orbit: Orbit }) => {
       <div>
         Speed: <strong>{getSpeed(orbit, currentDate).toFixed(1)}m/s</strong>
       </div>
-      <div>
-        Next passage at periapsis:{' '}
-        {getNextPeriapsisPassage(orbit, currentDate).toLocaleDateString()}
-      </div>
-      <div>
-        Next passage at apoapsis:{' '}
-        {getNextApoapsisPassage(orbit, currentDate).toLocaleDateString()}
-      </div>
+      {orbit.e < 1 && (
+        <>
+          <div>
+            Next passage at periapsis:{' '}
+            {getNextPeriapsisPassage(orbit, currentDate).toLocaleDateString()}
+          </div>
+          <div>
+            Next passage at apoapsis:{' '}
+            {getNextApoapsisPassage(orbit, currentDate).toLocaleDateString()}
+          </div>
+        </>
+      )}
+      {orbit.e > 1 && (
+        <>
+          <div>
+            v<sub>&infin;</sub> {getVInf(orbit).toFixed(1)}m/s
+          </div>
+        </>
+      )}
     </>
   )
 }

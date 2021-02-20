@@ -48,70 +48,86 @@ export const generateDebugSystem = (): System => {
     id: createID(),
     type: 'system',
     spacecrafts: [
+      // {
+      //   id: createID(),
+      //   type: 'spacecraft',
+      //   name: 'Spacecraft',
+      //   dryMass: unit(10000),
+      //   maneuvers: [],
+      //   parts: [
+      //     {
+      //       id: createID(),
+      //       type: 'engine',
+      //       thrust: unit(2200 * 1e3), // raptor 2200 kN
+      //       specificImpulse: unit(320), // raptor 320s
+      //       mass: unit(1500), // raptor 1500kg
+      //       name: 'Raptor',
+      //     },
+      //     {
+      //       id: createID(),
+      //       type: 'fuel-container',
+      //       dryMass: unit(6000),
+      //       volume: unit(1000),
+      //       fuelVolume: unit(1000),
+      //       fuelDensity: unit(422.8), // liquid methane
+      //     },
+      //   ],
+      //   orbit: {
+      //     a: unit(7000000),
+      //     e: 0.2,
+      //     parentMass: getBodyMass(planet1),
+      //     parentId: planet1.id,
+      //     phi: 0.3,
+      //     t0: new Date('2010-12-01'),
+      //   },
+      // },
+      // {
+      //   id: createID(),
+      //   type: 'spacecraft',
+      //   name: 'Spacecraft 2',
+      //   dryMass: unit(10000),
+      //   maneuvers: [],
+      //   parts: [
+      //     {
+      //       id: createID(),
+      //       type: 'engine',
+      //       thrust: unit(2200 * 1e3), // raptor 2200 kN
+      //       specificImpulse: unit(320), // raptor 320s
+      //       mass: unit(1500), // raptor 1500kg
+      //       name: 'Raptor',
+      //     },
+      //     {
+      //       id: createID(),
+      //       type: 'fuel-container',
+      //       dryMass: unit(6000),
+      //       volume: unit(1000),
+      //       fuelVolume: unit(500),
+      //       fuelDensity: unit(422.8), // liquid methane
+      //     },
+      //   ],
+      //   orbit: {
+      //     a: unit(6000000),
+      //     e: 0.4,
+      //     parentMass: getBodyMass(planet1),
+      //     parentId: planet1.id,
+      //     phi: 0.3,
+      //     t0: new Date('2010-12-02'),
+      //   },
+      // },
       {
         id: createID(),
         type: 'spacecraft',
-        name: 'Spacecraft',
-        dryMass: unit(10000),
+        dryMass: unit(1000),
         maneuvers: [],
-        parts: [
-          {
-            id: createID(),
-            type: 'engine',
-            thrust: unit(2200 * 1e3), // raptor 2200 kN
-            specificImpulse: unit(320), // raptor 320s
-            mass: unit(1500), // raptor 1500kg
-            name: 'Raptor',
-          },
-          {
-            id: createID(),
-            type: 'fuel-container',
-            dryMass: unit(6000),
-            volume: unit(1000),
-            fuelVolume: unit(1000),
-            fuelDensity: unit(422.8), // liquid methane
-          },
-        ],
+        name: 'Spacecraft 3',
+        parts: [],
         orbit: {
-          a: unit(7000000),
-          e: 0.2,
+          a: unit(-60000000),
+          e: 1.3,
           parentMass: getBodyMass(planet1),
           parentId: planet1.id,
-          phi: 0.3,
-          t0: new Date('2010-12-01'),
-        },
-      },
-      {
-        id: createID(),
-        type: 'spacecraft',
-        name: 'Spacecraft 2',
-        dryMass: unit(10000),
-        maneuvers: [],
-        parts: [
-          {
-            id: createID(),
-            type: 'engine',
-            thrust: unit(2200 * 1e3), // raptor 2200 kN
-            specificImpulse: unit(320), // raptor 320s
-            mass: unit(1500), // raptor 1500kg
-            name: 'Raptor',
-          },
-          {
-            id: createID(),
-            type: 'fuel-container',
-            dryMass: unit(6000),
-            volume: unit(1000),
-            fuelVolume: unit(500),
-            fuelDensity: unit(422.8), // liquid methane
-          },
-        ],
-        orbit: {
-          a: unit(6000000),
-          e: 0.4,
-          parentMass: getBodyMass(planet1),
-          parentId: planet1.id,
-          phi: 0.3,
-          t0: new Date('2010-12-02'),
+          phi: 0,
+          t0: new Date(new Date().getTime() + 1000000000),
         },
       },
     ],

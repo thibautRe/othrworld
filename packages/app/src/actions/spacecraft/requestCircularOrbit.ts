@@ -85,9 +85,9 @@ export const requestHohmannManeuvers = (
   radius: Distance
 ) => {
   const { getSpacecraft, setSpacecraftManeuvers } = useSystemStore.getState()
+  const { currentDate } = useDateStore.getState()
   const spacecraft = getSpacecraft(sId)
   if (!spacecraft) return
-  const { currentDate } = useDateStore.getState()
   const maneuvers = getHohmannTransfer(spacecraft.orbit, radius, currentDate)
   setSpacecraftManeuvers(sId, maneuvers)
 }
