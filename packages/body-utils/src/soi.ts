@@ -1,4 +1,4 @@
-import { Planet } from '@othrworld/core'
+import { isOrbitHyperbola, Orbit, Planet } from '@othrworld/core'
 import { Distance, multUnit } from '@othrworld/units'
 import {
   getApoapsis,
@@ -18,9 +18,18 @@ export const getBodySOIRadius = (body: Planet, t: Date): number => {
   return getBodySOIRadiusAtDistance(body, r)
 }
 
-/** Return the bounds of the SOI sphere (smallest at perihelion, biggest at aphelion) */
+/** Return the bounds of the SOI sphere (smallest at periapsis, biggest at apoapsis) */
 /** TODO move to a body-utils package */
 export const getBodySOIRadiusBounds = (body: Planet): [number, number] => [
   getBodySOIRadiusAtDistance(body, getPeriapsis(body.orbit)),
   getBodySOIRadiusAtDistance(body, getApoapsis(body.orbit)),
 ]
+
+/** Returns true if the given orbit around the body is always contained within the SOI */
+export const isOrbitContainedInSOI = (body: Planet, orbit: Orbit): boolean => {
+  if (isOrbitHyperbola(orbit)) return false
+  // smallest SOI radius is at periapsis
+  const soi = getBodySOIRadiusAtDistance(body, getPeriapsis(body.orbit))
+
+  return getApoapsis(orbit) < soi
+}
