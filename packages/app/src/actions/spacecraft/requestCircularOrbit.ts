@@ -1,4 +1,4 @@
-import { Spacecraft } from '@othrworld/core'
+import { isOrbitHyperbola, Spacecraft } from '@othrworld/core'
 import {
   getNextApoapsisPassage,
   getNextPeriapsisPassage,
@@ -31,6 +31,7 @@ export const requestCircularOrbit = (
   let requiredPeriSpeed = findSpeedDiffAtPeriapsisForApoapsis(s.orbit, radius)
   let requiredApsisSpeed: Speed
 
+  // @ts-expect-error orbit ellipse
   const periPassage = getNextPeriapsisPassage(s.orbit, currentDate)
 
   // Phase 1: accelerate in order to reach a certain apoapsis defined by the radius
@@ -47,8 +48,10 @@ export const requestCircularOrbit = (
     if (requiredPeriSpeed > 0) {
       registerDateAction(new Date(currentDate.getTime() + 1000), runApsisChange)
     } else {
+      // @ts-expect-error orbit ellipse
       requiredApsisSpeed = findSpeedDiffAtApoapsisForCircular(newS.orbit)
       registerDateAction(
+        // @ts-expect-error orbit ellipse
         getNextApoapsisPassage(newS.orbit, currentDate),
         runEccentricityChange
       )
@@ -88,6 +91,11 @@ export const requestHohmannManeuvers = (
   const { currentDate } = useDateStore.getState()
   const spacecraft = getSpacecraft(sId)
   if (!spacecraft) return
+
+  if (isOrbitHyperbola(spacecraft.orbit)) {
+    console.error('Cannot compute hohmann tranfer for hyperbolic orbit yet')
+    throw new Error('Not implemented')
+  }
   const maneuvers = getHohmannTransfer(spacecraft.orbit, radius, currentDate)
   setSpacecraftManeuvers(sId, maneuvers)
 }

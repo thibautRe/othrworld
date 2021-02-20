@@ -1,4 +1,4 @@
-import { Orbit, OrbitManeuver } from '@othrworld/core'
+import { isOrbitHyperbola, OrbitEllipse, OrbitManeuver } from '@othrworld/core'
 import { Distance, unit } from '@othrworld/units'
 import { multVector, unitVector } from '../coords'
 import {
@@ -10,7 +10,7 @@ import { getNextApoapsisPassage, getNextPeriapsisPassage } from '../passage'
 import { getSpeedVector } from '../speed'
 
 export const getHohmannTransfer = (
-  orbit: Orbit,
+  orbit: OrbitEllipse,
   endRadius: Distance,
   t: Date
 ): OrbitManeuver[] => {
@@ -27,6 +27,12 @@ export const getHohmannTransfer = (
     prograde: speedPeri,
     normal: unit(0),
   })
+
+  if (isOrbitHyperbola(transferOrbit)) {
+    console.error('transferOrbit', { ...transferOrbit })
+    throw new Error('Transfer orbit is hyperbolic')
+  }
+
   const speedApo = findSpeedDiffAtApoapsisForCircular(transferOrbit)
   const epochApo = getNextApoapsisPassage(transferOrbit, epochPeri)
   const speedApoVecUnit = unitVector(getSpeedVector(transferOrbit, epochApo))

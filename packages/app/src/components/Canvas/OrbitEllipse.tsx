@@ -1,6 +1,6 @@
 import React from 'react'
 import { styled } from '@othrworld/stitches-config'
-import { Orbit } from '@othrworld/core'
+import { OrbitEllipse } from '@othrworld/core'
 import { getSemiMinorAxis } from '@othrworld/orbital-mechanics'
 
 import { useFixedSizeAdapter, useToScaleAdapter } from './SVGView'
@@ -12,11 +12,11 @@ const OrbitEll = styled.ellipse({
 
 export interface OrbitEllipseProps
   extends React.SVGAttributes<SVGEllipseElement> {
-  orbit: Orbit
+  orbit: OrbitEllipse
   isHovered: boolean
   baseStrokeWidth?: number
 }
-export const OrbitEllipse = ({
+export const OrbitEllipseComponent = ({
   orbit,
   isHovered,
   baseStrokeWidth = 1,

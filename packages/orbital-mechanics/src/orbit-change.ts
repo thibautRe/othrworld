@@ -1,4 +1,4 @@
-import { Orbit } from '@othrworld/core'
+import { Orbit, OrbitEllipse } from '@othrworld/core'
 import {
   Distance,
   Speed,
@@ -108,7 +108,9 @@ export const findSpeedDiffAtPeriapsisForApoapsis = (
 }
 
 /** Returns the required speed diff for circularizing at apoapsis */
-export const findSpeedDiffAtApoapsisForCircular = (orbit: Orbit): Speed => {
+export const findSpeedDiffAtApoapsisForCircular = (
+  orbit: OrbitEllipse
+): Speed => {
   const apoapsis = getApoapsis(orbit)
   const a = apoapsis
   return subUnits(

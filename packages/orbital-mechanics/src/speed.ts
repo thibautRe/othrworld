@@ -1,4 +1,4 @@
-import { Orbit } from '@othrworld/core'
+import { Orbit, OrbitEllipse } from '@othrworld/core'
 import { Distance, Speed, unit } from '@othrworld/units'
 
 import { CarthCoords, rotateCarth } from './coords'
@@ -16,7 +16,7 @@ export const getSpeed = (orbit: Orbit, t: Date): Speed =>
 
 export const getSpeedAtPeriapsis = (orbit: Orbit): Speed =>
   getSpeedAtDistance(orbit, getPeriapsis(orbit))
-export const getSpeedAtApoapsis = (orbit: Orbit): Speed =>
+export const getSpeedAtApoapsis = (orbit: OrbitEllipse): Speed =>
   getSpeedAtDistance(orbit, getApoapsis(orbit))
 
 /** Returns a carthesian vector describing the speed item on the orbit */

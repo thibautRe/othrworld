@@ -1,7 +1,7 @@
 import React from 'react'
-import { Orbit } from '@othrworld/core'
+import { Orbit, isOrbitElliptical } from '@othrworld/core'
 
-import { OrbitEllipse, OrbitEllipseProps } from './OrbitEllipse'
+import { OrbitEllipseComponent, OrbitEllipseProps } from './OrbitEllipse'
 import { OrbitItem } from './OrbitItem'
 import { OrbitPoints } from './OrbitPoint'
 
@@ -21,15 +21,15 @@ export const OrbitComponent: React.FC<OrbitComponentProps> = ({
         onMouseEnter={() => setIsHovered(true)}
         onMouseLeave={() => setIsHovered(false)}
       >
-        {orbit.e < 1 && (
+        {isOrbitElliptical(orbit) && (
           <>
-            <OrbitEllipse
+            <OrbitEllipseComponent
               isHovered={isHovered}
               orbit={orbit}
               {...OrbitEllipseProps}
             />
             {/* Gard ellipse */}
-            <OrbitEllipse
+            <OrbitEllipseComponent
               isHovered={false}
               orbit={orbit}
               baseStrokeWidth={15}

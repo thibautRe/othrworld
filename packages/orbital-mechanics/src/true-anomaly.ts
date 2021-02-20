@@ -1,13 +1,10 @@
-import { Orbit } from '@othrworld/core'
+import { isOrbitElliptical, Orbit } from '@othrworld/core'
 import { getOrbitMeanMotion, getOrbitPeriod } from './orbit-characteristics'
 import { realModulo } from './utils'
 
 /**
  * Returns the mean anomaly at a given time
  * This function takes care of using the "modulo" operator on the period if the orbit is elliptic
- *
- * @performance There is possibly some performance stuff to do here because meanMotion and getOrbit
- * period are heavily linked and don't depend on time
  */
 const getMeanAnomaly = (orbit: Orbit, t: Date, M0 = 0) => {
   const timeMult = t.getTime() / 1000 - orbit.t0.getTime() / 1000
@@ -15,7 +12,9 @@ const getMeanAnomaly = (orbit: Orbit, t: Date, M0 = 0) => {
   return (
     M0 +
     getOrbitMeanMotion(orbit) *
-      (orbit.e < 1 ? realModulo(timeMult, getOrbitPeriod(orbit)) : timeMult)
+      (isOrbitElliptical(orbit)
+        ? realModulo(timeMult, getOrbitPeriod(orbit))
+        : timeMult)
   )
 }
 

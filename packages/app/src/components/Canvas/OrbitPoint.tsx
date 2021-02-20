@@ -1,5 +1,5 @@
 import React from 'react'
-import { Orbit } from '@othrworld/core'
+import { isOrbitElliptical, Orbit } from '@othrworld/core'
 import { getApoapsis, getPeriapsis } from '@othrworld/orbital-mechanics'
 import { radialToCarth } from '@othrworld/orbital-mechanics/dist/coords'
 import { styled } from '@othrworld/stitches-config'
@@ -24,7 +24,7 @@ export const OrbitPoints = ({ orbit, isHovered }: OrbitPointsProps) => {
 
   const pericenter = radialToCarth({ angle: orbit.phi, r: getPeriapsis(orbit) })
   const apocenter =
-    orbit.e < 1 &&
+    isOrbitElliptical(orbit) &&
     radialToCarth({
       angle: orbit.phi + Math.PI,
       r: getApoapsis(orbit),

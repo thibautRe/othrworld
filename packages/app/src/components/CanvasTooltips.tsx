@@ -5,7 +5,13 @@ import {
   getSpeed,
   getVInf,
 } from '@othrworld/orbital-mechanics'
-import { Body, Orbit, Planet, Spacecraft } from '@othrworld/core'
+import {
+  Body,
+  isOrbitElliptical,
+  Orbit,
+  Planet,
+  Spacecraft,
+} from '@othrworld/core'
 import {
   getSpacecraftTotalDeltaV,
   getSpacecraftMass,
@@ -32,7 +38,7 @@ const CanvasTooltipOrbitInfo = ({ orbit }: { orbit: Orbit }) => {
       <div>
         Speed: <strong>{getSpeed(orbit, currentDate).toFixed(1)}m/s</strong>
       </div>
-      {orbit.e < 1 && (
+      {isOrbitElliptical(orbit) ? (
         <>
           <div>
             Next passage at periapsis:{' '}
@@ -43,8 +49,7 @@ const CanvasTooltipOrbitInfo = ({ orbit }: { orbit: Orbit }) => {
             {getNextApoapsisPassage(orbit, currentDate).toLocaleDateString()}
           </div>
         </>
-      )}
-      {orbit.e > 1 && (
+      ) : (
         <>
           <div>
             v<sub>&infin;</sub> {getVInf(orbit).toFixed(1)}m/s
