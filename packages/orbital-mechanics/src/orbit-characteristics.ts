@@ -12,21 +12,23 @@ export const getApoapsis = (orbit: OrbitEllipse) =>
   multUnit(orbit.a, 1 + orbit.e)
 
 /** Returns the semi-minor axis of a given orbit */
-export const getSemiMinorAxis = (orbit: OrbitEllipse) =>
+export const getSemiMinorAxis = withMemoSimple((orbit: OrbitEllipse) =>
   multUnit(orbit.a, Math.sqrt(1 - orbit.e ** 2))
+)
 
 /** Returns the angular speed for a circular orbit to complete an orbit */
-const getOrbitMeanMotionUnmemo = (orbit: Orbit) =>
+export const getOrbitMeanMotion = withMemoSimple((orbit: Orbit) =>
   Math.sqrt((G * orbit.parentMass) / Math.abs(orbit.a) ** 3)
-
-export const getOrbitMeanMotion = withMemoSimple(getOrbitMeanMotionUnmemo)
+)
 
 /** Returns the period */
-const getOrbitPeriodUnmemo = (orbit: OrbitEllipse): Time =>
-  ((2 * Math.PI) / getOrbitMeanMotion(orbit)) as Time
-
-export const getOrbitPeriod = withMemoSimple(getOrbitPeriodUnmemo)
+export const getOrbitPeriod = withMemoSimple(
+  (orbit: OrbitEllipse): Time =>
+    ((2 * Math.PI) / getOrbitMeanMotion(orbit)) as Time
+)
 
 /** Returns VInfinity, the residual speed on an hyperbolic orbit */
-export const getVInf = (orbit: OrbitHyperbola): Speed =>
-  unit(Math.sqrt((-G * orbit.parentMass) / orbit.a))
+export const getVInf = withMemoSimple(
+  (orbit: OrbitHyperbola): Speed =>
+    unit(Math.sqrt((-G * orbit.parentMass) / orbit.a))
+)
