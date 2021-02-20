@@ -8,7 +8,7 @@ import { G } from './utils'
 export const getPeriapsis = (orbit: Orbit) => multUnit(orbit.a, 1 - orbit.e)
 
 /** Returns the apoapsis (highest altitude) of a given orbit. Only available for elliptical orbits */
-export const getApoapsis = (orbit: OrbitEllipse) =>
+export const getApoapsis = (orbit: OrbitHyperbola) =>
   multUnit(orbit.a, 1 + orbit.e)
 
 /** Returns the semi-minor axis of a given orbit */
