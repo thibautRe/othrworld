@@ -15,7 +15,8 @@
   },
   "scripts": {
     "start": "yarn workspace @othrworld/app tsc -b && concurrently -n tsc,cra \"node scripts/start.js\" \"yarn workspace @othrworld/app start\"",
+    "typecheck": "yarn workspace @othrworld/app tsc -b",
     "build": "yarn workspace @othrworld/app build",
-    "typecheck": "yarn workspace @othrworld/app tsc -b"
+    "netlify": "yarn typecheck && yarn build"
   }
 }
