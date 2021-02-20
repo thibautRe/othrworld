@@ -21,18 +21,22 @@ export const OrbitComponent: React.FC<OrbitComponentProps> = ({
         onMouseEnter={() => setIsHovered(true)}
         onMouseLeave={() => setIsHovered(false)}
       >
-        <OrbitEllipse
-          isHovered={isHovered}
-          orbit={orbit}
-          {...OrbitEllipseProps}
-        />
-        {/* Gard ellipse */}
-        <OrbitEllipse
-          isHovered={false}
-          orbit={orbit}
-          baseStrokeWidth={15}
-          style={{ opacity: 0 }}
-        />
+        {orbit.e < 1 && (
+          <>
+            <OrbitEllipse
+              isHovered={isHovered}
+              orbit={orbit}
+              {...OrbitEllipseProps}
+            />
+            {/* Gard ellipse */}
+            <OrbitEllipse
+              isHovered={false}
+              orbit={orbit}
+              baseStrokeWidth={15}
+              style={{ opacity: 0 }}
+            />
+          </>
+        )}
         <OrbitPoints isHovered={isHovered} orbit={orbit} />
       </g>
       <OrbitItem orbit={orbit}>{children}</OrbitItem>

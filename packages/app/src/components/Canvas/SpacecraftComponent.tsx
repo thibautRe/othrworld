@@ -32,17 +32,10 @@ export const SpacecraftComponent = ({
   const textOpacity = visualRadius > fixed(50) ? 1 : 0
   const ellipseOpacity = visualRadius > fixed(20) ? 1 : 0
 
-  const orbitStrokeDash = toScale(spacecraft.orbit.a) / 30
-
   return (
     <OrbitComponent
       orbit={spacecraft.orbit}
-      OrbitEllipseProps={{
-        style: {
-          strokeDasharray: `${orbitStrokeDash} ${orbitStrokeDash}`,
-          opacity: ellipseOpacity,
-        },
-      }}
+      OrbitEllipseProps={{ style: { opacity: ellipseOpacity } }}
     >
       <g
         onClick={(e) =>

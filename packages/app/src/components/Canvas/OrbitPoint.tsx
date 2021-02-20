@@ -23,10 +23,12 @@ export const OrbitPoints = ({ orbit, isHovered }: OrbitPointsProps) => {
   const toScale = useToScaleAdapter()
 
   const pericenter = radialToCarth({ angle: orbit.phi, r: getPeriapsis(orbit) })
-  const apocenter = radialToCarth({
-    angle: orbit.phi + Math.PI,
-    r: getApoapsis(orbit),
-  })
+  const apocenter =
+    orbit.e < 1 &&
+    radialToCarth({
+      angle: orbit.phi + Math.PI,
+      r: getApoapsis(orbit),
+    })
 
   return (
     <OrbitPointsGroup style={{ opacity: isHovered ? 1 : 0 }}>
@@ -35,11 +37,13 @@ export const OrbitPoints = ({ orbit, isHovered }: OrbitPointsProps) => {
         cx={toScale(pericenter.x)}
         cy={toScale(pericenter.y)}
       />
-      <OrbitPointCircle
-        r={fixed(2)}
-        cx={toScale(apocenter.x)}
-        cy={toScale(apocenter.y)}
-      />
+      {apocenter && (
+        <OrbitPointCircle
+          r={fixed(2)}
+          cx={toScale(apocenter.x)}
+          cy={toScale(apocenter.y)}
+        />
+      )}
     </OrbitPointsGroup>
   )
 }
