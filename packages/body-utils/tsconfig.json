@@ -8,6 +8,7 @@
   "include": ["src/**/*"],
   "references": [
     { "path": "../core" },
+    { "path": "../memo-utils" },
     { "path": "../orbital-mechanics" },
     { "path": "../units" }
   ]
