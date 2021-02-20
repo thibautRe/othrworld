@@ -38,8 +38,20 @@ export const getBodySOIRadiusBounds = (body: Planet): [number, number] => [
   getHighestBodySOIRadius(body),
 ]
 
+// ---- SOI and elements in orbit ----
+
 /** Returns true if the given orbit around the body is always contained within the SOI */
-export const isOrbitContainedInSOI = (body: Planet, orbit: Orbit): boolean => {
+const isOrbitContainedInSOI = (body: Planet, orbit: Orbit): boolean => {
   if (isOrbitHyperbola(orbit)) return false
   return getApoapsis(orbit) < getLowestBodySOIRadius(body)
+}
+
+const getOrbitSOIEscapeDate = (
+  body: Planet,
+  orbit: Orbit,
+  t: Date
+): Date | null => {
+  if (isOrbitContainedInSOI(body, orbit)) return null
+
+  
 }

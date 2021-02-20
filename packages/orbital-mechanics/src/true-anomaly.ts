@@ -41,10 +41,6 @@ const getEccentricAnomaly = (orbit: Orbit, t: Date) => {
     E = Math.PI
   }
 
-  // if (e > 1 && t > orbit.t0) {
-  //   E = Math.acos(-1 / e)
-  // }
-
   let dE = 1
   let i = 0
   while (Math.abs(dE) > ε && i < maxIter) {
