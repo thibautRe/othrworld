@@ -1,3 +1,4 @@
+export * from './types'
 export * from './orbit-characteristics'
 export * from './position'
 export * from './speed'

@@ -3,19 +3,20 @@ import { withMemoDouble } from '@othrworld/memo-utils'
 import { Distance, multUnit, unit } from '@othrworld/units'
 
 import { CarthCoords, RadialCoords, radialToCarth } from './coords'
-import { getTrueAnomaly } from './true-anomaly'
+import { getDateAtTrueAnomaly, getTrueAnomaly } from './true-anomaly'
+import { TrueAnomaly } from './types'
 
 /** Returns the distance for a given true anomaly */
-const getDistanceForTrueAnomaly = ({ a, e }: Orbit, trueAnomaly: number) =>
-  multUnit(a, (1 - e ** 2) / (1 + e * Math.cos(trueAnomaly)))
+const getDistanceForTrueAnomaly = ({ a, e }: Orbit, nu: TrueAnomaly) =>
+  multUnit(a, (1 - e ** 2) / (1 + e * Math.cos(nu)))
 
 /**
  * Returns the true anomaly for a given distance
  * @note Due to the symetry of the solutions, the negative value of the returned
  * function could also be usable.
  **/
-const getTrueAnomalyForDistance = ({ a, e }: Orbit, r: Distance) =>
-  Math.acos(((a * (1 - e ** 2)) / r - 1) / e)
+const getTrueAnomalyForDistance = ({ a, e }: Orbit, r: Distance): TrueAnomaly =>
+  unit(Math.acos(((a * (1 - e ** 2)) / r - 1) / e))
 
 export const getRadialCoords = withMemoDouble(
   (orbit: Orbit, t: Date): RadialCoords<'m'> => {
@@ -32,3 +33,6 @@ export const getCarthesianCoords = withMemoDouble(
     return radialToCarth(rad)
   }
 )
+
+export const getDateForDistance = (orbit: Orbit, r: Distance): Date =>
+  getDateAtTrueAnomaly(getTrueAnomalyForDistance(orbit, r), orbit)
