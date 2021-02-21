@@ -14,7 +14,7 @@ import { G } from './utils'
 import { getSpeedAtDistance, getSpeedVector } from './speed'
 import { getApoapsis, getPeriapsis } from './orbit-characteristics'
 
-const recalculateOrbitForPosAndSpeed = (
+export const recalculateOrbitForPosAndSpeed = (
   orbit: Orbit,
   pos: CarthCoords<'m'>,
   speed: CarthCoords<'m/s'>,
@@ -36,22 +36,8 @@ const recalculateOrbitForPosAndSpeed = (
 
   const EquadrantAdjust = -ey * pos.x + ex * pos.y > 0
 
-  /**
-   * clamp (1 - r / a) / e between -1 and 1 (I have ran into a ECos of -1.0000000000004) which
-   * makes Math.acos(ECos) return `NaN`.
-   * @test Add a test case for these input values:
-   * orbit: {
-   *  a: 26701796.135601416,
-   *  e: 0.865097802881665,
-   *  parentId: "6795324368063.101",
-   *  parentMass: 1.5053255358940854e+24,
-   *  phi: 0.3311171591510967,
-   *  t0: new Date(1611602521370)
-   * }
-   * pos: {x: -47096233.269638695, y: -16190440.38855717}
-   * speed: {x: 173.1969741840608, y: -503.8112006911377}
-   * t: new Date(1611645767028)
-   */
+  // clamp (1 - r / a) / e between -1 and 1 (I have ran into a ECos of -1.0000000000004) which
+  // makes Math.acos(ECos) return `NaN`.
   const ECos = Math.min(1, Math.max(-1, (1 - r / a) / e))
   const E = Math.acos(ECos) * (EquadrantAdjust ? -1 : 1)
   const tDelta = Math.sqrt(Math.pow(a, 3) / mu) * (E - e * Math.sin(E))

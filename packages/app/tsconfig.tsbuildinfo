@@ -407,8 +407,8 @@
         "affectsGlobalScope": false
       },
       "../orbital-mechanics/dist/orbit-characteristics.d.ts": {
-        "version": "df00d01bb39909624c901e9dd06c8f91d6aeae0589dda87cefd8ee7a7612e7f0",
-        "signature": "df00d01bb39909624c901e9dd06c8f91d6aeae0589dda87cefd8ee7a7612e7f0",
+        "version": "97b9a575c9b0332988a436bba3f531d196a65c350671237b09f057e7d447fff7",
+        "signature": "97b9a575c9b0332988a436bba3f531d196a65c350671237b09f057e7d447fff7",
         "affectsGlobalScope": false
       },
       "../orbital-mechanics/dist/coords.d.ts": {
@@ -432,8 +432,8 @@
         "affectsGlobalScope": false
       },
       "../orbital-mechanics/dist/orbit-change.d.ts": {
-        "version": "b682db952a0f103ee5c51f7c5cd33784164f286813b842a93ad0845c1c304bdd",
-        "signature": "b682db952a0f103ee5c51f7c5cd33784164f286813b842a93ad0845c1c304bdd",
+        "version": "69d8d97cc2cb9d2e8c789ea9d2ea55e2cfc5babe3d2734f75a90d0b9940e57ff",
+        "signature": "69d8d97cc2cb9d2e8c789ea9d2ea55e2cfc5babe3d2734f75a90d0b9940e57ff",
         "affectsGlobalScope": false
       },
       "../orbital-mechanics/dist/maneuver/hohmann.d.ts": {
@@ -1814,6 +1814,7 @@
       ],
       "../orbital-mechanics/dist/orbit-change.d.ts": [
         "../core/dist/index.d.ts",
+        "../orbital-mechanics/dist/coords.d.ts",
         "../units/dist/index.d.ts"
       ],
       "../orbital-mechanics/dist/orbit-characteristics.d.ts": [
@@ -2373,6 +2374,7 @@
       ],
       "../orbital-mechanics/dist/orbit-change.d.ts": [
         "../core/dist/index.d.ts",
+        "../orbital-mechanics/dist/coords.d.ts",
         "../units/dist/index.d.ts"
       ],
       "../orbital-mechanics/dist/orbit-characteristics.d.ts": [
