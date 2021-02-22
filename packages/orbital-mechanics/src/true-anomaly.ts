@@ -19,10 +19,29 @@ const getMeanAnomaly = (orbit: Orbit, t: Date): MeanAnomaly => {
   )
 }
 
-/** Returns a date for a given Mean Anomaly */
-const getDateForMean = (M: MeanAnomaly, orbit: Orbit): Date => {
-  // M = MM*(t-t0)/1000 => t = t0+M*1000/MM
-  return new Date(orbit.t0.getTime() + (M * 1000) / getOrbitMeanMotion(orbit))
+/**
+ * Returns the earliest Date for a given Mean Anomaly after a given Date
+ * The function can return `null` if the given mean anomaly can never be reached again, for instance
+ * when the orbit is hyperbolic
+ **/
+const getNextDateForMean = (
+  M: MeanAnomaly,
+  orbit: Orbit,
+  t: Date
+): Date | null => {
+  const t0 = orbit.t0.getTime()
+  const F = (M * 1000) / getOrbitMeanMotion(orbit)
+
+  if (isOrbitElliptical(orbit)) {
+    const P = 1000 * getOrbitPeriod(orbit)
+
+    // Lowest integer that validates t0 + X*P + F > t
+    const X = Math.ceil((t.getTime() - t0 - F) / P)
+    return new Date(t0 + X * P + F)
+  }
+
+  const tentativePassage = new Date(t0 + F)
+  return tentativePassage < t ? null : tentativePassage
 }
 
 const ε = 1e-4
@@ -113,5 +132,9 @@ export const getTrueAnomaly = (orbit: Orbit, t: Date) => {
 }
 
 /** Returns a Date at which an orbit has a given true anomaly */
-export const getDateAtTrueAnomaly = (nu: TrueAnomaly, orbit: Orbit): Date =>
-  getDateForMean(EccToMean(TrueToEcc(nu, orbit), orbit), orbit)
+export const getNextDateAtTrueAnomaly = (
+  nu: TrueAnomaly,
+  orbit: Orbit,
+  t: Date
+): Date | null =>
+  getNextDateForMean(EccToMean(TrueToEcc(nu, orbit), orbit), orbit, t)

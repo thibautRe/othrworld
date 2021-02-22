@@ -10,7 +10,7 @@ import {
 
 import { getCarthesianCoords } from './position'
 import { CarthCoords, unitVector } from './coords'
-import { G } from './utils'
+import { acosClamp, G } from './utils'
 import { getSpeedAtDistance, getSpeedVector } from './speed'
 import { getApoapsis, getPeriapsis } from './orbit-characteristics'
 
@@ -38,7 +38,7 @@ export const recalculateOrbitForPosAndSpeed = (
 
   // clamp (1 - r / a) / e between -1 and 1 (I have ran into a ECos of -1.0000000000004) which
   // makes Math.acos(ECos) return `NaN`.
-  const ECos = Math.min(1, Math.max(-1, (1 - r / a) / e))
+  const ECos = acosClamp((1 - r / a) / e)
   const E = Math.acos(ECos) * (EquadrantAdjust ? -1 : 1)
   const tDelta = Math.sqrt(Math.pow(a, 3) / mu) * (E - e * Math.sin(E))
   const t0 = new Date(t.getTime() - tDelta * 1000)
