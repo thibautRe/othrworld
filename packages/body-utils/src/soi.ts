@@ -2,6 +2,7 @@ import { isOrbitHyperbola, Orbit, Planet } from '@othrworld/core'
 import { Distance, multUnit } from '@othrworld/units'
 import {
   getApoapsis,
+  getNextDateForDistance,
   getPeriapsis,
   getRadialCoords,
 } from '@othrworld/orbital-mechanics'
@@ -52,6 +53,6 @@ const getOrbitSOIEscapeDate = (
   t: Date
 ): Date | null => {
   if (isOrbitContainedInSOI(body, orbit)) return null
-
-  
+  // Using Lowest Body SOI for now
+  return getNextDateForDistance(orbit, getLowestBodySOIRadius(body), t)
 }
