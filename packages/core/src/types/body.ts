@@ -1,7 +1,7 @@
 import { Density, Distance } from '@othrworld/units'
 
 import { ID } from './id'
-import { Orbit, OrbitEllipse } from './orbit'
+import { OrbitEllipse, SystemOrbit } from './orbit'
 
 interface BodyBase {
   id: ID<'body'>
@@ -13,12 +13,12 @@ interface BodyBase {
 export interface Planet extends BodyBase {
   type: 'planet'
   atmosphere: Atmosphere
-  orbit: OrbitEllipse
+  orbit: SystemOrbit<OrbitEllipse>
 }
 
 export interface Asteroid extends BodyBase {
   type: 'asteroid'
-  orbit: Orbit
+  orbit: SystemOrbit
 }
 
 export interface Star extends BodyBase {

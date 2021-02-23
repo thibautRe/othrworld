@@ -1,6 +1,12 @@
 import create, { StateCreator } from 'zustand'
 import { devtools } from 'zustand/middleware'
-import { Body, Orbit, OrbitManeuver, Spacecraft, System } from '@othrworld/core'
+import {
+  Body,
+  OrbitManeuver,
+  SystemOrbit,
+  Spacecraft,
+  System,
+} from '@othrworld/core'
 import { generateDebugSystem } from '@othrworld/systemgen'
 import { getCarthesianCoords } from '@othrworld/orbital-mechanics'
 import { sumUnits } from '@othrworld/units'
@@ -46,13 +52,13 @@ const stateCreator: StateCreator<SystemState> = (set, get) => ({
 
 export const useSystemStore = create(devtools(stateCreator, 'system'))
 
-const getParentBody = (orbit: Orbit): Body | undefined =>
+const getParentBody = (orbit: SystemOrbit): Body | undefined =>
   useSystemStore
     .getState()
     .system.bodies.find(({ id }) => id === orbit.parentId)
 
 /** Returns an array of parent orbits, from the outermost item. Includes the current orbit at the end */
-const getOrbitPath = (orbit: Orbit): Orbit[] => {
+const getOrbitPath = (orbit: SystemOrbit): SystemOrbit[] => {
   const parentBody = getParentBody(orbit)
   if (parentBody && !(parentBody.type === 'star')) {
     return [...getOrbitPath(parentBody.orbit), orbit]
@@ -61,7 +67,7 @@ const getOrbitPath = (orbit: Orbit): Orbit[] => {
 }
 
 /** Returns the absolute coordinates of an orbital element */
-export const getAbsoluteCoords = (orbit: Orbit, t: Date) => {
+export const getAbsoluteCoords = (orbit: SystemOrbit, t: Date) => {
   const path = getOrbitPath(orbit)
   const coords = path.map((orbit) => getCarthesianCoords(orbit, t))
 
