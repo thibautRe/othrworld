@@ -36,7 +36,7 @@ const getEccentricAnomaly = (orbit: Orbit, t: Date) => {
   let E = M
 
   if (memoLastEccentricAnomaly.has(orbit)) {
-    E = memoLastEccentricAnomaly.get(orbit)
+    E = memoLastEccentricAnomaly.get(orbit)!
   } else if (e > 0.8) {
     E = Math.PI
   }
