@@ -1,7 +1,7 @@
-import { Orbit } from '@othrworld/core'
 import { withMemoDouble } from '@othrworld/memo-utils'
 import { Distance, multUnit, unit } from '@othrworld/units'
 
+import { Orbit } from './orbit'
 import { CarthCoords, RadialCoords, radialToCarth } from './coords'
 import { getNextDateAtTrueAnomaly, getTrueAnomaly } from './true-anomaly'
 import { TrueAnomaly } from './types'

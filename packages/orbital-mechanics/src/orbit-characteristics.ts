@@ -1,7 +1,7 @@
-import { Orbit, OrbitEllipse, OrbitHyperbola } from '@othrworld/core'
 import { withMemoSimple } from '@othrworld/memo-utils'
 import { multUnit, Speed, Time, unit } from '@othrworld/units'
 
+import { Orbit, OrbitEllipse, OrbitHyperbola } from './orbit'
 import { G } from './utils'
 
 /** Returns the periapsis (smallest altitude) of a given orbit */

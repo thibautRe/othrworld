@@ -1,5 +1,4 @@
-import { Distance, Mass, Speed } from '@othrworld/units'
-import { ID } from './id'
+import { Distance, Mass } from '@othrworld/units'
 
 type EccentricityEllipse = number & { __above1?: false }
 type EccentricityHyperbola = number & { __above1?: true }
@@ -34,17 +33,7 @@ export interface OrbitHyperbola extends OrbitBaseElements {
 
 export type Orbit = OrbitEllipse | OrbitHyperbola
 
-/** Orbit to be used in a system */
-export type SystemOrbit<TOrbit extends Orbit = Orbit> = TOrbit & {
-  parentId: ID<'body'>
-}
-
 export const isOrbitElliptical = (orbit: Orbit): orbit is OrbitEllipse =>
   orbit.e < 1
 export const isOrbitHyperbola = (orbit: Orbit): orbit is OrbitHyperbola =>
   orbit.e >= 1
-
-export interface OrbitManeuver {
-  epoch: Date
-  deltaV: { x: Speed; y: Speed }
-}

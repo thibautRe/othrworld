@@ -1,4 +1,4 @@
-import { OrbitEllipse } from '@othrworld/core'
+import { OrbitEllipse } from './orbit'
 import { getOrbitPeriod } from './orbit-characteristics'
 import { realModulo } from './utils'
 

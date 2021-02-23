@@ -1,7 +1,8 @@
 import { Density, Distance } from '@othrworld/units'
+import { OrbitEllipse } from '@othrworld/orbital-mechanics'
 
 import { ID } from './id'
-import { OrbitEllipse, SystemOrbit } from './orbit'
+import { SystemOrbit } from './systemOrbit'
 
 interface BodyBase {
   id: ID<'body'>

@@ -1,4 +1,3 @@
-import { Orbit, OrbitEllipse } from '@othrworld/core'
 import {
   Distance,
   Speed,
@@ -8,6 +7,7 @@ import {
   multUnit,
 } from '@othrworld/units'
 
+import { Orbit, OrbitEllipse } from './orbit'
 import { getCarthesianCoords } from './position'
 import { CarthCoords, sumVector, unitVector } from './coords'
 import { acosClamp, G } from './utils'

@@ -1,5 +1,7 @@
 export * from './types'
+export * from './orbit'
 export * from './orbit-characteristics'
+export * from './orbit-maneuver'
 export * from './position'
 export * from './speed'
 export * from './passage'

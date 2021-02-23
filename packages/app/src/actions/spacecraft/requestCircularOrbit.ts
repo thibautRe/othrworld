@@ -1,10 +1,11 @@
-import { isOrbitHyperbola, Spacecraft } from '@othrworld/core'
+import { Spacecraft } from '@othrworld/core'
 import {
   getNextApoapsisPassage,
   getNextPeriapsisPassage,
   findSpeedDiffAtPeriapsisForApoapsis,
   findSpeedDiffAtApoapsisForCircular,
   getHohmannTransfer,
+  isOrbitHyperbola,
 } from '@othrworld/orbital-mechanics'
 import { applyDeltaV, getMaxAcceleration } from '@othrworld/spacecraft-utils'
 import {

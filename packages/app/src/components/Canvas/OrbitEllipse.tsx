@@ -1,7 +1,6 @@
 import React from 'react'
 import { styled } from '@othrworld/stitches-config'
-import { OrbitEllipse } from '@othrworld/core'
-import { getSemiMinorAxis } from '@othrworld/orbital-mechanics'
+import { getSemiMinorAxis, OrbitEllipse } from '@othrworld/orbital-mechanics'
 
 import { useFixedSizeAdapter, useToScaleAdapter } from './SVGView'
 

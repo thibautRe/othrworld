@@ -1,17 +1,13 @@
 import React from 'react'
 import {
+  Orbit,
+  isOrbitElliptical,
   getNextApoapsisPassage,
   getNextPeriapsisPassage,
   getSpeed,
   getVInf,
 } from '@othrworld/orbital-mechanics'
-import {
-  Body,
-  isOrbitElliptical,
-  Orbit,
-  Planet,
-  Spacecraft,
-} from '@othrworld/core'
+import { Body, Planet, Spacecraft } from '@othrworld/core'
 import {
   getSpacecraftTotalDeltaV,
   getSpacecraftMass,

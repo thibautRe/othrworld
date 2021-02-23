@@ -1,5 +1,6 @@
-import { isOrbitHyperbola, OrbitEllipse, OrbitManeuver } from '@othrworld/core'
 import { Distance, unit } from '@othrworld/units'
+
+import { isOrbitHyperbola, OrbitEllipse } from '../orbit'
 import { multVector, unitVector } from '../coords'
 import {
   applySpeedChange,
@@ -8,6 +9,7 @@ import {
 } from '../orbit-change'
 import { getNextApoapsisPassage, getNextPeriapsisPassage } from '../passage'
 import { getSpeedVector } from '../speed'
+import { OrbitManeuver } from '../orbit-maneuver'
 
 export const getHohmannTransfer = (
   orbit: OrbitEllipse,

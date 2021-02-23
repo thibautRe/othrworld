@@ -1,6 +1,6 @@
-import { Orbit, OrbitEllipse } from '@othrworld/core'
 import { Distance, Speed, unit } from '@othrworld/units'
 
+import { Orbit, OrbitEllipse } from './orbit'
 import { CarthCoords, rotateCarth } from './coords'
 import { getApoapsis, getPeriapsis } from './orbit-characteristics'
 import { getRadialCoords } from './position'

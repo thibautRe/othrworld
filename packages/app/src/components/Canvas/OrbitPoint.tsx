@@ -1,6 +1,10 @@
 import React from 'react'
-import { isOrbitElliptical, Orbit } from '@othrworld/core'
-import { getApoapsis, getPeriapsis } from '@othrworld/orbital-mechanics'
+import {
+  isOrbitElliptical,
+  Orbit,
+  getApoapsis,
+  getPeriapsis,
+} from '@othrworld/orbital-mechanics'
 import { radialToCarth } from '@othrworld/orbital-mechanics/dist/coords'
 import { styled } from '@othrworld/stitches-config'
 

@@ -1,4 +1,3 @@
-import { createFixedID } from '@othrworld/core'
 import { unit } from '@othrworld/units'
 import { recalculateOrbitForPosAndSpeed } from '../src'
 import { orbitEllipse1 } from './fixtures'
@@ -15,7 +14,6 @@ test('Orbit Change: recalculateOrbitForPosAndSpeed', () => {
     Object {
       "a": 35.35908516736843,
       "e": 0.999788110579031,
-      "parentId": "ellipse1",
       "parentMass": 100,
       "phi": 3.9269908169872414,
       "t0": 2020-01-01T10:04:15.275Z,
@@ -27,7 +25,6 @@ test('Orbit Change: recalculateOrbitForPosAndSpeed', () => {
       {
         a: unit(26701796.135601416),
         e: 0.865097802881665,
-        parentId: createFixedID('ID'),
         parentMass: unit(1.5053255358940854e24),
         phi: 0.3311171591510967,
         t0: new Date(1611602521370),
@@ -40,7 +37,6 @@ test('Orbit Change: recalculateOrbitForPosAndSpeed', () => {
     Object {
       "a": 26784869.636649903,
       "e": 0.8593131861788373,
-      "parentId": "ID",
       "parentMass": 1.5053255358940854e+24,
       "phi": 0.3311171591845633,
       "t0": 2021-01-25T19:18:39.396Z,

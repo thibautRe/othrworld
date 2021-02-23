@@ -9,7 +9,6 @@
     "build": "tsc"
   },
   "dependencies": {
-    "@othrworld/core": "*",
     "@othrworld/memo-utils": "*",
     "@othrworld/units": "*"
   }

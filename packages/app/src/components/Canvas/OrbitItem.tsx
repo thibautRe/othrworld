@@ -1,6 +1,5 @@
 import React from 'react'
-import { Orbit } from '@othrworld/core'
-import { getCarthesianCoords } from '@othrworld/orbital-mechanics'
+import { Orbit, getCarthesianCoords } from '@othrworld/orbital-mechanics'
 
 import { useCurrentDate } from '../../stores/date'
 import { useToScaleAdapter } from './SVGView'

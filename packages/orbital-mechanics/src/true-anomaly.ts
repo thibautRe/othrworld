@@ -1,5 +1,6 @@
-import { isOrbitElliptical, Orbit } from '@othrworld/core'
 import { unit } from '@othrworld/units'
+
+import { isOrbitElliptical, Orbit } from './orbit'
 import { getOrbitMeanMotion, getOrbitPeriod } from './orbit-characteristics'
 import { EccentricAnomaly, MeanAnomaly, TrueAnomaly } from './types'
 import { realModulo } from './utils'

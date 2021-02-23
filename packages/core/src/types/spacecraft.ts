@@ -1,6 +1,8 @@
+import { OrbitManeuver } from '@othrworld/orbital-mechanics'
 import { Density, Mass, Time, Volume, Force, Energy } from '@othrworld/units'
+
 import { ID } from './id'
-import { Orbit, OrbitManeuver, SystemOrbit } from './orbit'
+import { SystemOrbit } from './systemOrbit'
 
 export interface Spacecraft {
   id: ID<'spacecraft'>

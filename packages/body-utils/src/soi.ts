@@ -1,13 +1,15 @@
-import { isOrbitHyperbola, Orbit, Planet } from '@othrworld/core'
+import { Planet } from '@othrworld/core'
 import { Distance, multUnit } from '@othrworld/units'
 import {
   getApoapsis,
   getNextDateForDistance,
   getPeriapsis,
+  isOrbitHyperbola,
+  Orbit,
 } from '@othrworld/orbital-mechanics'
+import { withMemoSimple } from '@othrworld/memo-utils'
 
 import { getBodyMass } from './mass'
-import { withMemoSimple } from '@othrworld/memo-utils'
 
 // Memoized base SOI radius for the planet
 const getSOIRadiusBaseUnit = withMemoSimple((body: Planet) =>
