@@ -9,8 +9,8 @@ import {
 } from '@othrworld/units'
 
 import { getCarthesianCoords } from './position'
-import { CarthCoords, unitVector } from './coords'
-import { G } from './utils'
+import { CarthCoords, sumVector, unitVector } from './coords'
+import { acosClamp, G } from './utils'
 import { getSpeedAtDistance, getSpeedVector } from './speed'
 import { getApoapsis, getPeriapsis } from './orbit-characteristics'
 
@@ -38,7 +38,7 @@ export const recalculateOrbitForPosAndSpeed = (
 
   // clamp (1 - r / a) / e between -1 and 1 (I have ran into a ECos of -1.0000000000004) which
   // makes Math.acos(ECos) return `NaN`.
-  const ECos = Math.min(1, Math.max(-1, (1 - r / a) / e))
+  const ECos = acosClamp((1 - r / a) / e)
   const E = Math.acos(ECos) * (EquadrantAdjust ? -1 : 1)
   const tDelta = Math.sqrt(Math.pow(a, 3) / mu) * (E - e * Math.sin(E))
   const t0 = new Date(t.getTime() - tDelta * 1000)
@@ -102,5 +102,27 @@ export const findSpeedDiffAtApoapsisForCircular = (
   return subUnits(
     getSpeedAtDistance({ a, parentMass: orbit.parentMass }, apoapsis),
     getSpeedAtDistance(orbit, apoapsis)
+  )
+}
+
+/**
+ * Return the escaped orbit given a parent and an escaping one.
+ * The resulting escapedOrbit will be owned by the same Body as the parentOrbit
+ **/
+export const getEscapedOrbit = (
+  parentOrbit: Orbit,
+  escapingOrbit: Orbit,
+  escapeDate: Date
+): Orbit => {
+  const parentSpeed = getSpeedVector(parentOrbit, escapeDate)
+  const parentCoords = getCarthesianCoords(parentOrbit, escapeDate)
+  const relativeSpeed = getSpeedVector(escapingOrbit, escapeDate)
+  const relativeCoords = getCarthesianCoords(escapingOrbit, escapeDate)
+
+  return recalculateOrbitForPosAndSpeed(
+    parentOrbit,
+    sumVector(parentCoords, relativeCoords),
+    sumVector(parentSpeed, relativeSpeed),
+    escapeDate
   )
 }

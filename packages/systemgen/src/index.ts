@@ -1,7 +1,7 @@
 import { createID, Planet, Spacecraft, Star, System } from '@othrworld/core'
 import { getRandomItemFromArray, randInt, randFloat } from '@othrworld/gen-core'
 import { unit } from '@othrworld/units'
-import { getBodyMass, getBodySOIRadiusBounds } from '@othrworld/body-utils'
+import { getBodyMass, getBodySOIRadius } from '@othrworld/body-utils'
 
 import { generatePlanet } from './planet'
 
@@ -52,9 +52,9 @@ export const generateSystem = (): System => {
         .map(() => {
           const parent = getRandomItemFromArray(rootPlanets)
           const parentMass = getBodyMass(parent)
-          const [minR] = getBodySOIRadiusBounds(parent)
+          const soi = getBodySOIRadius(parent)
           const minDistance = parent.radius * 1.1
-          const maxDistance = minR * 0.8
+          const maxDistance = soi * 0.8
 
           if (maxDistance < minDistance) return null
           return generatePlanet({

@@ -2,8 +2,8 @@ import { isOrbitHyperbola, Orbit, Planet } from '@othrworld/core'
 import { Distance, multUnit } from '@othrworld/units'
 import {
   getApoapsis,
+  getNextDateForDistance,
   getPeriapsis,
-  getRadialCoords,
 } from '@othrworld/orbital-mechanics'
 
 import { getBodyMass } from './mass'
@@ -18,28 +18,25 @@ const getSOIRadiusBaseUnit = withMemoSimple((body: Planet) =>
 const getBodySOIRadiusAtDistance = (body: Planet, r: Distance): Distance =>
   multUnit(r, getSOIRadiusBaseUnit(body))
 
-/** Radius of the SOI at a given date */
-export const getBodySOIRadius = (body: Planet, t: Date): number => {
-  const { r } = getRadialCoords(body.orbit, t)
-  return getBodySOIRadiusAtDistance(body, r)
-}
-
 /** Returns the lowest SOI Radius (at periapsis) */
-export const getLowestBodySOIRadius = (body: Planet) =>
+export const getBodySOIRadius = (body: Planet) =>
   getBodySOIRadiusAtDistance(body, getPeriapsis(body.orbit))
 
-export const getHighestBodySOIRadius = (body: Planet) =>
-  getBodySOIRadiusAtDistance(body, getApoapsis(body.orbit))
-
-/** Return the bounds of the SOI sphere (smallest at periapsis, biggest at apoapsis) */
-/** TODO move to a body-utils package */
-export const getBodySOIRadiusBounds = (body: Planet): [number, number] => [
-  getLowestBodySOIRadius(body),
-  getHighestBodySOIRadius(body),
-]
+// ---- SOI and elements in orbit ----
 
 /** Returns true if the given orbit around the body is always contained within the SOI */
-export const isOrbitContainedInSOI = (body: Planet, orbit: Orbit): boolean => {
+const isOrbitContainedInSOI = (body: Planet, orbit: Orbit): boolean => {
   if (isOrbitHyperbola(orbit)) return false
-  return getApoapsis(orbit) < getLowestBodySOIRadius(body)
+  return getApoapsis(orbit) < getBodySOIRadius(body)
+}
+
+/** @unstable */
+export const getOrbitSOIEscapeDate = (
+  body: Planet,
+  orbit: Orbit,
+  t: Date
+): Date | null => {
+  if (isOrbitContainedInSOI(body, orbit)) return null
+  // Using Lowest Body SOI for now
+  return getNextDateForDistance(orbit, getBodySOIRadius(body), t)
 }

@@ -1,15 +1,15 @@
-import { createFixedID } from "@othrworld/core";
-import { unit } from "@othrworld/units";
-import { recalculateOrbitForPosAndSpeed } from "../";
-import { orbitEllipse1 } from "./fixtures";
+import { createFixedID } from '@othrworld/core'
+import { unit } from '@othrworld/units'
+import { recalculateOrbitForPosAndSpeed } from '../src'
+import { orbitEllipse1 } from './fixtures'
 
-test("Orbit Change: recalculateOrbitForPosAndSpeed", () => {
+test('Orbit Change: recalculateOrbitForPosAndSpeed', () => {
   expect(
     recalculateOrbitForPosAndSpeed(
       orbitEllipse1,
       { x: unit(50), y: unit(50) },
       { x: unit(-0.0000001), y: unit(0.0000001) },
-      new Date("2020-04-04")
+      new Date('2020-04-04')
     )
   ).toMatchInlineSnapshot(`
     Object {
@@ -20,14 +20,14 @@ test("Orbit Change: recalculateOrbitForPosAndSpeed", () => {
       "phi": 3.9269908169872414,
       "t0": 2020-01-01T10:04:15.275Z,
     }
-  `);
+  `)
 
   expect(
     recalculateOrbitForPosAndSpeed(
       {
         a: unit(26701796.135601416),
         e: 0.865097802881665,
-        parentId: createFixedID("ID"),
+        parentId: createFixedID('ID'),
         parentMass: unit(1.5053255358940854e24),
         phi: 0.3311171591510967,
         t0: new Date(1611602521370),
@@ -45,5 +45,5 @@ test("Orbit Change: recalculateOrbitForPosAndSpeed", () => {
       "phi": 0.3311171591845633,
       "t0": 2021-01-25T19:18:39.396Z,
     }
-  `);
-});
+  `)
+})

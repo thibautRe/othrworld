@@ -17,6 +17,14 @@ export const orbitEllipse2: OrbitEllipse = {
   parentId: createFixedID('ellipse2'),
   parentMass: unit(120459201),
 }
+export const orbitEllipseMoon: OrbitEllipse = {
+  a: unit(384399000),
+  e: 0.0549,
+  parentId: createFixedID('Moon'),
+  parentMass: unit(5.97237e24),
+  phi: 0,
+  t0: new Date('2020-05-05'),
+}
 export const orbitHyperbola1: OrbitHyperbola = {
   a: unit(-204943921),
   e: 1.4,

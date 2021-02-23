@@ -1,4 +1,4 @@
-import { multUnit, unit, Unit } from '@othrworld/units'
+import { multUnit, sumUnits, unit, Unit } from '@othrworld/units'
 
 export interface RadialCoords<T extends string> {
   r: Unit<T>
@@ -36,6 +36,13 @@ export const rotateCarth = <T extends string>(
 
 export const getLen = <T extends string>(vec: CarthCoords<T>): Unit<T> =>
   unit(Math.hypot(vec.x, vec.y))
+
+export const sumVector = <T extends string>(
+  ...vecs: CarthCoords<T>[]
+): CarthCoords<T> => ({
+  x: sumUnits(...vecs.map((v) => v.x)),
+  y: sumUnits(...vecs.map((v) => v.y)),
+})
 
 export const multVector = <T extends string>(
   vec: CarthCoords<T>,
