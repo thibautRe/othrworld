@@ -35,7 +35,10 @@ const applySpacecraftSpeedChange = (
   s: Spacecraft,
   t: Date,
   speed: SpeedCoords
-): Spacecraft => ({ ...s, orbit: applySpeedChange(s.orbit, t, speed) })
+): Spacecraft => ({
+  ...s,
+  orbit: { ...applySpeedChange(s.orbit, t, speed), parentId: s.orbit.parentId },
+})
 
 const consomateFuel = (
   s: Spacecraft,

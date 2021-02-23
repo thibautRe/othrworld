@@ -11,12 +11,7 @@ interface OrbitBaseElements {
   /** Epoch when planet is at pericenter */
   t0: Date
 
-  /** ID of the parent body */
-  parentId: ID<'body'>
-
-  /** Mass of the parent
-   * @note This might be better stored somewhere else but is useful for calculations
-   */
+  /** Mass of the parent */
   parentMass: Mass
 
   /** semi-major axis angle from horizontal (radians) */
@@ -38,6 +33,11 @@ export interface OrbitHyperbola extends OrbitBaseElements {
 }
 
 export type Orbit = OrbitEllipse | OrbitHyperbola
+
+/** Orbit to be used in a system */
+export type SystemOrbit<TOrbit extends Orbit = Orbit> = TOrbit & {
+  parentId: ID<'body'>
+}
 
 export const isOrbitElliptical = (orbit: Orbit): orbit is OrbitEllipse =>
   orbit.e < 1

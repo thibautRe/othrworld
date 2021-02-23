@@ -1,6 +1,6 @@
 import { Density, Mass, Time, Volume, Force, Energy } from '@othrworld/units'
 import { ID } from './id'
-import { Orbit, OrbitManeuver } from './orbit'
+import { Orbit, OrbitManeuver, SystemOrbit } from './orbit'
 
 export interface Spacecraft {
   id: ID<'spacecraft'>
@@ -8,7 +8,7 @@ export interface Spacecraft {
   name: string
   dryMass: Mass
   parts: SpacecraftPart[]
-  orbit: Orbit
+  orbit: SystemOrbit
   maneuvers: OrbitManeuver[]
 }
 
