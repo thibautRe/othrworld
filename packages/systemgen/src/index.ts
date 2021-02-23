@@ -1,4 +1,4 @@
-import { createID, Spacecraft, Star, System } from '@othrworld/core'
+import { createID, Planet, Spacecraft, Star, System } from '@othrworld/core'
 import { getRandomItemFromArray, randInt, randFloat } from '@othrworld/gen-core'
 import { unit } from '@othrworld/units'
 import { getBodyMass, getBodySOIRadiusBounds } from '@othrworld/body-utils'
@@ -7,6 +7,9 @@ import { generatePlanet } from './planet'
 
 export * from './debug'
 export * from './solar'
+
+// TODO move some place else (NPM?)
+const nonFalsyChecker = <K>(k: K | null | undefined | false): k is K => !!k
 
 export const generateSystem = (): System => {
   // TODO: random star generation
@@ -63,7 +66,7 @@ export const generateSystem = (): System => {
             maxDistance,
           })
         })
-        .filter(Boolean)
+        .filter(nonFalsyChecker)
     : []
 
   const bodies = [...rootPlanets, ...moons]

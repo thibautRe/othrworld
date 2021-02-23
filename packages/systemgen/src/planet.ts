@@ -4,7 +4,7 @@ import { generate } from '@othrworld/namegen-nobel'
 import { Mass, unit } from '@othrworld/units'
 
 interface GeneratePlanetProps {
-  parentId?: Planet['id']
+  parentId: Planet['id']
   parentMass: Mass
   minRadius: number
   maxRadius: number

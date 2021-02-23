@@ -70,7 +70,7 @@ const MeanToEcc = (M: MeanAnomaly, orbit: Orbit): EccentricAnomaly => {
   // Find the ideal initial value for the Newton solver
   let E: EccentricAnomaly = unit(M)
   if (memoLastEcc.has(orbit)) {
-    E = memoLastEcc.get(orbit)
+    E = memoLastEcc.get(orbit)!
   } else if (e > 0.8) {
     E = unit(Math.PI)
   }

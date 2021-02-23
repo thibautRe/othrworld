@@ -9,7 +9,7 @@
 export const withMemoSimple = <P extends object, R>(fun: (p: P) => R) => {
   const wm = new WeakMap<P, R>()
   return (p: P): R => {
-    if (wm.has(p)) return wm.get(p)
+    if (wm.has(p)) return wm.get(p)!
     const r = fun(p)
     wm.set(p, r)
     return r
@@ -24,13 +24,13 @@ export const withMemoDouble = <P1 extends object, P2 extends object, R>(
   return (p1: P1, p2: P2): R => {
     let p2wm: WeakMap<P2, R>
     if (p1wm.has(p1)) {
-      p2wm = p1wm.get(p1)
+      p2wm = p1wm.get(p1)!
     } else {
       p2wm = new WeakMap<P2, R>()
       p1wm.set(p1, p2wm)
     }
 
-    if (p2wm.has(p2)) return p2wm.get(p2)
+    if (p2wm.has(p2)) return p2wm.get(p2)!
     const r = fun(p1, p2)
     p2wm.set(p2, r)
     return r
