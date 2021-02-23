@@ -4,8 +4,8 @@ import {
   Orbit,
   getApoapsis,
   getPeriapsis,
-} from '@othrworld/orbital-mechanics'
-import { radialToCarth } from '@othrworld/orbital-mechanics/dist/coords'
+} from '@othrworld/orbit'
+import { radialToCarth } from '@othrworld/orbit/dist/coords'
 import { styled } from '@othrworld/stitches-config'
 
 import { useFixedSizeAdapter, useToScaleAdapter } from './SVGView'

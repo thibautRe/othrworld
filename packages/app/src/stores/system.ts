@@ -2,10 +2,7 @@ import create, { StateCreator } from 'zustand'
 import { devtools } from 'zustand/middleware'
 import { Body, SystemOrbit, Spacecraft, System } from '@othrworld/core'
 import { generateDebugSystem } from '@othrworld/systemgen'
-import {
-  getCarthesianCoords,
-  OrbitManeuver,
-} from '@othrworld/orbital-mechanics'
+import { getCarthesianCoords, OrbitManeuver } from '@othrworld/orbit'
 import { sumUnits } from '@othrworld/units'
 
 type SystemState = {

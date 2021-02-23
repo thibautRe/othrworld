@@ -8,7 +8,7 @@
   "include": ["src/**/*"],
   "references": [
     { "path": "../core" },
-    { "path": "../orbital-mechanics" },
+    { "path": "../orbit" },
     { "path": "../units" }
   ]
 }

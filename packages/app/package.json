@@ -4,7 +4,7 @@
   "private": true,
   "dependencies": {
     "@othrworld/core": "*",
-    "@othrworld/orbital-mechanics": "*",
+    "@othrworld/orbit": "*",
     "@othrworld/spacecraft-utils": "*",
     "@othrworld/stitches-config": "*",
     "@othrworld/systemgen": "*",

@@ -1,4 +1,4 @@
-import { OrbitManeuver } from '@othrworld/orbital-mechanics'
+import { OrbitManeuver } from '@othrworld/orbit'
 import { Density, Mass, Time, Volume, Force, Energy } from '@othrworld/units'
 
 import { ID } from './id'

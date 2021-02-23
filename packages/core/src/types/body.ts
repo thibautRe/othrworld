@@ -1,5 +1,5 @@
 import { Density, Distance } from '@othrworld/units'
-import { OrbitEllipse } from '@othrworld/orbital-mechanics'
+import { OrbitEllipse } from '@othrworld/orbit'
 
 import { ID } from './id'
 import { SystemOrbit } from './systemOrbit'

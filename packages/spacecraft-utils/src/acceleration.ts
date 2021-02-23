@@ -3,7 +3,7 @@ import {
   isSpacecraftEngine,
   SpacecraftFuelContainer,
 } from '@othrworld/core'
-import { applySpeedChange, SpeedCoords } from '@othrworld/orbital-mechanics'
+import { applySpeedChange, SpeedCoords } from '@othrworld/orbit'
 import {
   sumUnits,
   unit,

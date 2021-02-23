@@ -13,7 +13,7 @@
   "include": ["src/**/*"],
   "references": [
     { "path": "../core" },
-    { "path": "../orbital-mechanics" },
+    { "path": "../orbit" },
     { "path": "../spacecraft-utils" },
     { "path": "../stitches-config" },
     { "path": "../systemgen" }

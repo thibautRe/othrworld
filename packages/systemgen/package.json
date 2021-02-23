@@ -8,7 +8,7 @@
     "@othrworld/core": "*",
     "@othrworld/gen-core": "*",
     "@othrworld/namegen-nobel": "*",
-    "@othrworld/orbital-mechanics": "*",
+    "@othrworld/orbit": "*",
     "@othrworld/body-utils": "*",
     "@othrworld/units": "*"
   },

@@ -9,7 +9,7 @@
   "references": [
     { "path": "../core" },
     { "path": "../memo-utils" },
-    { "path": "../orbital-mechanics" },
+    { "path": "../orbit" },
     { "path": "../units" }
   ]
 }

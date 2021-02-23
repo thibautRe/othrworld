@@ -6,7 +6,7 @@ import {
   findSpeedDiffAtApoapsisForCircular,
   getHohmannTransfer,
   isOrbitHyperbola,
-} from '@othrworld/orbital-mechanics'
+} from '@othrworld/orbit'
 import { applyDeltaV, getMaxAcceleration } from '@othrworld/spacecraft-utils'
 import {
   Distance,

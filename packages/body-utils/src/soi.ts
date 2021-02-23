@@ -6,7 +6,7 @@ import {
   getPeriapsis,
   isOrbitHyperbola,
   Orbit,
-} from '@othrworld/orbital-mechanics'
+} from '@othrworld/orbit'
 import { withMemoSimple } from '@othrworld/memo-utils'
 
 import { getBodyMass } from './mass'

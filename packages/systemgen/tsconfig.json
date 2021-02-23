@@ -10,7 +10,7 @@
     { "path": "../core" },
     { "path": "../gen-core" },
     { "path": "../namegen-nobel" },
-    { "path": "../orbital-mechanics" },
+    { "path": "../orbit" },
     { "path": "../body-utils" },
     { "path": "../units" }
   ]

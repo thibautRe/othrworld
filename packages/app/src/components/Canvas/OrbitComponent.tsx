@@ -1,5 +1,5 @@
 import React from 'react'
-import { Orbit, isOrbitElliptical } from '@othrworld/orbital-mechanics'
+import { Orbit, isOrbitElliptical } from '@othrworld/orbit'
 
 import { OrbitEllipseComponent, OrbitEllipseProps } from './OrbitEllipse'
 import { OrbitItem } from './OrbitItem'

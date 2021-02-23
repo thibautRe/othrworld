@@ -1,6 +1,6 @@
 import React from 'react'
 import { Planet } from '@othrworld/core'
-import { getCarthesianCoords } from '@othrworld/orbital-mechanics'
+import { getCarthesianCoords } from '@othrworld/orbit'
 import { styled } from '@othrworld/stitches-config'
 
 import { AtmosphereComponent } from './AtmosphereComponent'

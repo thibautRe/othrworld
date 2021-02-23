@@ -6,7 +6,7 @@ import {
   getNextPeriapsisPassage,
   getSpeed,
   getVInf,
-} from '@othrworld/orbital-mechanics'
+} from '@othrworld/orbit'
 import { Body, Planet, Spacecraft } from '@othrworld/core'
 import {
   getSpacecraftTotalDeltaV,

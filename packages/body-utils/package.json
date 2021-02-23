@@ -7,7 +7,7 @@
   "dependencies": {
     "@othrworld/core": "*",
     "@othrworld/memo-utils": "*",
-    "@othrworld/orbital-mechanics": "*",
+    "@othrworld/orbit": "*",
     "@othrworld/units": "*"
   },
   "scripts": {

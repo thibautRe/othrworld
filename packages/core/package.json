@@ -6,7 +6,7 @@
   "types": "dist/index.d.ts",
   "dependencies": {
     "@othrworld/units": "*",
-    "@othrworld/orbital-mechanics": "*"
+    "@othrworld/orbit": "*"
   },
   "scripts": {
     "start": "tsc -w",
