@@ -1,13 +1,9 @@
 import { isOrbitHyperbola, Orbit, Planet } from '@othrworld/core'
 import { Distance, multUnit } from '@othrworld/units'
 import {
-  sumVector,
   getApoapsis,
-  getCarthesianCoords,
   getNextDateForDistance,
   getPeriapsis,
-  getSpeedVector,
-  recalculateOrbitForPosAndSpeed,
 } from '@othrworld/orbital-mechanics'
 
 import { getBodyMass } from './mass'
@@ -43,26 +39,4 @@ export const getOrbitSOIEscapeDate = (
   if (isOrbitContainedInSOI(body, orbit)) return null
   // Using Lowest Body SOI for now
   return getNextDateForDistance(orbit, getBodySOIRadius(body), t)
-}
-
-/**
- * Returns the escape orbit at a given date
- * @unstable
- **/
-export const getEscapeOrbit = (
-  body: Planet,
-  orbit: Orbit,
-  escapeDate: Date
-): Orbit => {
-  const parentSpeed = getSpeedVector(body.orbit, escapeDate)
-  const parentCoords = getCarthesianCoords(body.orbit, escapeDate)
-  const relativeSpeed = getSpeedVector(orbit, escapeDate)
-  const relativeCoords = getCarthesianCoords(orbit, escapeDate)
-
-  return recalculateOrbitForPosAndSpeed(
-    body.orbit,
-    sumVector(parentCoords, relativeCoords),
-    sumVector(parentSpeed, relativeSpeed),
-    escapeDate
-  )
 }
