@@ -3,7 +3,7 @@ import React from 'react'
 
 import {
   useCanvasTransform,
-  useCanvasTransformStore,
+  useCanvasTransformRef,
 } from '../../stores/canvasTransform'
 import { MesureInfo, SVGMesure } from './SVGMesure'
 import { SVGView } from './SVGView'
@@ -46,15 +46,9 @@ const useMesureInfo = () => {
 }
 
 export const SvgRoot: React.FC = ({ children }) => {
-  const svgRef = React.useRef<SVGSVGElement>(null)
+  const svgRef = useCanvasTransformRef<SVGSVGElement>()
   const { x, y, k } = useCanvasTransform()
-  const applyZoomEvents = useCanvasTransformStore((s) => s.applyZoomEvents)
   const { mesureInfo, eventHandlers } = useMesureInfo()
-
-  React.useEffect(() => {
-    if (!svgRef.current) return
-    applyZoomEvents(svgRef.current)
-  }, [applyZoomEvents])
 
   return (
     <SVG ref={svgRef} id="canvas" {...eventHandlers}>

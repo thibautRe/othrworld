@@ -1,4 +1,5 @@
 import create from 'zustand'
+import React from 'react'
 import { zoom, ZoomBehavior, zoomIdentity } from 'd3-zoom'
 import { select, Selection } from 'd3-selection'
 import shallow from 'zustand/shallow'
@@ -8,7 +9,7 @@ import { useDateStore } from './date'
 import { getAbsoluteCoords, useSystemStore } from './system'
 import { GLOBAL_SCALE_MULTIPLIER } from '../components/Canvas/SVGView'
 
-type SVGSelection = Selection<SVGSVGElement, unknown, null, undefined>
+type SVGSelection = Selection<Element, unknown, null, undefined>
 interface CanvasTransform {
   x: number
   y: number
@@ -18,11 +19,11 @@ type CanvasTransformState = {
   x: number
   y: number
   k: number
-  zoomBehaviour: ZoomBehavior<SVGSVGElement, unknown>
+  zoomBehaviour: ZoomBehavior<Element, unknown>
   selection: SVGSelection | null
 
   setTransform: (transform: CanvasTransform) => void
-  applyZoomEvents: (elt: SVGSVGElement) => void
+  applyZoomEvents: (elt: Element) => void
 
   targetId: ID<'body'> | ID<'spacecraft'> | null
   targetFollowSubscribtion?: () => void
@@ -41,7 +42,7 @@ export const useCanvasTransformStore = create<CanvasTransformState>(
     x: initView.x,
     y: initView.y,
     k: initView.k,
-    zoomBehaviour: zoom<SVGSVGElement, unknown>()
+    zoomBehaviour: zoom<Element, unknown>()
       .filter((e) => !e.ctrlKey)
       .on('zoom', ({ transform: { x, y, k } }) => set({ x, y, k })),
     selection: null,
@@ -118,3 +119,18 @@ export const useCanvasTransformZoom = () =>
 const targetIdExtractor = ({ targetId }: CanvasTransformState) => targetId
 export const useCanvasTransformTargetId = () =>
   useCanvasTransformStore(targetIdExtractor)
+
+const applierSelector = ({ applyZoomEvents }: CanvasTransformState) =>
+  applyZoomEvents
+export const useCanvasTransformRef = <TElement extends Element>() => {
+  const ref = React.useRef<TElement>(null)
+  const apply = useCanvasTransformStore(applierSelector)
+  React.useEffect(() => {
+    console.log(ref.current)
+
+    if (!ref.current) return
+    apply(ref.current)
+  }, [apply])
+
+  return ref
+}
