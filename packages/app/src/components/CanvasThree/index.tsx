@@ -52,22 +52,18 @@ const CanvasCamera = () => {
   )
 }
 
-const Box = ({ sizeMult = 1 }) => (
-  <mesh>
-    <boxGeometry args={[1 * sizeMult, 1 * sizeMult, 0.1]} />
-    <meshBasicMaterial color="orange" opacity={0.2} transparent />
-  </mesh>
+const GlobalLamps = () => (
+  <>
+    <directionalLight args={['#FFFFFF', 0.01]} position={[-1, -1, -1]} />
+    <directionalLight args={['#fdfbf3', 0.03]} position={[0.2, 0.1, 1]} />
+  </>
 )
 
 export const CanvasThree = () => {
   return (
     <CanvasContainer>
+      <GlobalLamps />
       <SystemComponentThree />
-      <Box sizeMult={0.0001} />
-      <Box sizeMult={0.01} />
-      <Box sizeMult={1} />
-      <Box sizeMult={100} />
-      <Box sizeMult={10000} />
     </CanvasContainer>
   )
 }

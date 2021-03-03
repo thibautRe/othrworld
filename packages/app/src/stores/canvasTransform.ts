@@ -126,8 +126,6 @@ export const useCanvasTransformRef = <TElement extends Element>() => {
   const ref = React.useRef<TElement>(null)
   const apply = useCanvasTransformStore(applierSelector)
   React.useEffect(() => {
-    console.log(ref.current)
-
     if (!ref.current) return
     apply(ref.current)
   }, [apply])
