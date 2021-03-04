@@ -5,7 +5,7 @@ import { generateDebugSystem } from '@othrworld/systemgen'
 import { getCarthesianCoords, OrbitManeuver } from '@othrworld/orbit'
 import { sumUnits } from '@othrworld/units'
 
-type SystemState = {
+export type SystemState = {
   system: System
   setSystem: (s: System) => void
   getBody: (bodyId: Body['id']) => Body | undefined
