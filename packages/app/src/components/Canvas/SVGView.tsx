@@ -59,6 +59,8 @@ export const useToScaleAdapter = () => {
   const { k } = useViewContext()
   const globalK = useCanvasTransformZoom()
   const scale = (k / globalK) * GLOBAL_SCALE_MULTIPLIER
+  console.log(scale)
+
   return (distance: number) => distance / scale
 }
 

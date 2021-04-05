@@ -16,6 +16,8 @@ import { useSystemStore } from './stores/system'
 import { useDateStore, useIsPaused } from './stores/date'
 import { useFrame } from './hooks/useFrame'
 import { useCanvasTransformStore } from './stores/canvasTransform'
+import { CanvasThree } from './components/CanvasThree'
+import { renderInThree } from './config'
 
 css.global({ body: { fontFamily: '$sansSerif' } })
 
@@ -69,11 +71,16 @@ export const App = () => {
 
   const isPaused = useIsPaused()
   useFrame(!isPaused ? useDateStore.getState().runFrame : null)
+
   return (
     <>
-      <SvgRoot>
-        <SystemComponent />
-      </SvgRoot>
+      {renderInThree ? (
+        <CanvasThree />
+      ) : (
+        <SvgRoot>
+          <SystemComponent />
+        </SvgRoot>
+      )}
       <CanvasTooltips />
       <StatusBarComponent />
     </>
